@@ -13,7 +13,7 @@ const LandingPage = () => {
         routing={true}
         insights={true}
       >
-        <Configure hitsPerPage={5} />
+        <Configure hitsPerPage={20} />
         <Menu />
         <ShopList />
       </InstantSearch>

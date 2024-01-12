@@ -4,8 +4,18 @@ const typeLabelMapping: { [key: string]: string } = {
 };
 
 const priceLabelMapping: { [key: string]: string } = {
-  PRICE_LEVEL_MODERATE: '一般價位$',
-  PRICE_LEVEL_INEXPENSIVE: '高價位$$',
+  PRICE_LEVEL_MODERATE: '$ 一般價位',
+  PRICE_LEVEL_INEXPENSIVE: '$$ 高價位',
 };
 
-export { typeLabelMapping, priceLabelMapping };
+const orderTypeLabelMapping: { [key: string]: string } = {
+  delivery: '外送',
+  dineIn: '內用',
+  takeOut: '外帶',
+};
+
+export {
+  typeLabelMapping,
+  priceLabelMapping,
+  orderTypeLabelMapping,
+};

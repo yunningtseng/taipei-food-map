@@ -9,7 +9,21 @@ export async function uploadData() {
     const placeId = item.id;
     const docRef = doc(db, 'places', placeId);
 
-    batch.set(docRef, item);
+    const orderType = [];
+    if (item.dineIn) {
+      orderType.push('dineIn');
+    }
+    if (item.takeout) {
+      orderType.push('takeOut');
+    }
+    if (item.delivery) {
+      orderType.push('delivery');
+    }
+
+    batch.set(docRef, {
+      ...item,
+      orderType,
+    });
   }
 
   await batch.commit();

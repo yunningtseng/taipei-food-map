@@ -1,18 +1,18 @@
 import { Highlight } from 'react-instantsearch';
-import styled from 'styled-components';
+import { styled } from '@mui/material/styles';
 
-const StyledShopList = styled.div({
+const StyledShopList = styled('div')(({ theme }) => ({
   display: 'flex',
   border: '1px solid #ccc',
-  marginBottom: '0.5rem',
-});
+  marginBottom: theme.spacing(1),
+}));
 
-const StyledShop = styled.div({
+const StyledShop = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  gap: '0.5rem',
-  margin: '0.5rem',
-});
+  gap: theme.spacing(1),
+  margin: theme.spacing(1),
+}));
 
 const StyledHighlight = styled(Highlight)({
   width: '300px',

@@ -3,13 +3,14 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
+import { styled } from '@mui/material/styles';
 import { useState } from 'react';
-import styled from 'styled-components';
 import FilterSection from './FilterSection';
 
 const StyledDrawer = styled(Drawer)({
   height: '100%',
   flexShrink: 0,
+
   '& .MuiDrawer-paper': {
     position: 'relative',
   },
@@ -21,7 +22,6 @@ const StyledButton = styled(Button)({
 
 const Menu = () => {
   const [open, setOpen] = useState(true);
-  console.log(open);
 
   const handleDrawerOpen = () => {
     setOpen(true);

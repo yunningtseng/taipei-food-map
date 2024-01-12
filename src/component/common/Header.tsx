@@ -1,16 +1,16 @@
-import styled from 'styled-components';
 import { Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-const StyledHeader = styled.div({
+const StyledHeader = styled('div')(({ theme }) => ({
   width: '100%',
   position: 'fixed',
   textAlign: 'center',
-  paddingTop: '1rem',
-  paddingBottom: '1rem',
-  color: '#bbab8c',
-  backgroundColor: '#faeed1',
+  paddingTop: theme.spacing(2),
+  paddingBottom: theme.spacing(2),
+  color: theme.palette.grey[900],
+  backgroundColor: theme.palette.grey[400],
   zIndex: 10,
-});
+}));
 
 const Header = () => {
   return (
