@@ -2,16 +2,25 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { FeatureCollection } from 'geojson';
 import mapboxgl from 'mapbox-gl';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useInfiniteHits } from 'react-instantsearch';
 import Map, { Layer, Popup, Source } from 'react-map-gl';
+import styled from 'styled-components';
+import usePersonStore from '../../store/shopStore';
 import { PlaceInfo } from '../../types/placeInfo';
 import { ShopHit } from '../../types/shop';
 
 const accessToken = import.meta.env.VITE_MAP_BOX_TOKEN;
 
+const StyledPopup = styled(Popup)({
+  '& .mapboxgl-popup-tip': {
+    border: 0,
+  },
+});
+
 const ShopMap = () => {
   const [popupInfo, setPopupInfo] = useState<PlaceInfo | null>(null);
+  const [cursor, setCursor] = useState<string>('grab');
 
   const { hits } = useInfiniteHits<ShopHit>();
 
@@ -67,6 +76,8 @@ const ShopMap = () => {
 
     const hoveredFeature = features && features[0];
 
+    setPopupInfo(null);
+
     if (hoveredFeature && hoveredFeature.properties) {
       setPopupInfo({
         id: hoveredFeature.properties.id,
@@ -78,6 +89,10 @@ const ShopMap = () => {
     }
   };
 
+  const onMouseEnter = useCallback(() => setCursor('pointer'), []);
+  const onMouseLeave = useCallback(() => setCursor('grab'), []);
+  const onDragStart = useCallback(() => setCursor('grabbing'), []);
+
   return (
     <Box>
       <Typography>Map</Typography>
@@ -88,12 +103,15 @@ const ShopMap = () => {
           latitude: 24.992943058604755,
           zoom: 13,
         }}
-        style={{ width: 600, height: 600 }}
-        mapStyle='mapbox://styles/mapbox/streets-v12'
-        cursor='pointer'
+        style={{ width: 800, height: 600 }}
+        mapStyle='mapbox://styles/mapbox/outdoors-v11'
         interactiveLayerIds={['places']}
         onClick={onClick}
- 
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        onDragStart={onDragStart}
+        onDragEnd={onMouseLeave}
+        cursor={cursor}
       >
         <Source id='places' type='geojson' data={geoJsonData}></Source>
         <Layer
@@ -108,15 +126,16 @@ const ShopMap = () => {
           }}
         />
         {popupInfo && (
-          <Popup
+          <StyledPopup
             key={Math.random()}
             closeButton={false}
             longitude={popupInfo.longitude}
             latitude={popupInfo.latitude}
+            offset={12}
           >
             <div>{popupInfo.name}</div>
             <div>{popupInfo.description}</div>
-          </Popup>
+          </StyledPopup>
         )}
       </Map>
     </Box>
