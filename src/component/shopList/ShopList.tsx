@@ -1,22 +1,18 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { Hit as AlgoliaHit } from 'instantsearch.js';
-import { Highlight, Hits, useInfiniteHits } from 'react-instantsearch';
+import { Highlight, Hits } from 'react-instantsearch';
 import {
   StyledHighlight,
   StyledShop,
   StyledShopList,
 } from './styles/ShopList.styles';
+import { ShopHit } from '../../types/shop';
 
 type HitProps = {
-  hit: AlgoliaHit<{
-    name: string;
-    nationalPhoneNumber: string;
-    formattedAddress: string;
-  }>;
+  hit: ShopHit;
 };
 
-function Hit({ hit }: HitProps) {
+function HitComponent({ hit }: HitProps) {
   return (
     <StyledShopList>
       <Box>Image</Box>
@@ -30,7 +26,6 @@ function Hit({ hit }: HitProps) {
 }
 
 const ShopList = () => {
-  useInfiniteHits();
   return (
     <Box>
       <Typography variant='h6' textAlign='center'>
@@ -39,17 +34,8 @@ const ShopList = () => {
 
       <Box display='flex'>
         <Box minWidth={275} m={1}>
-          <Hits hitComponent={Hit} />
+          <Hits hitComponent={HitComponent} />
         </Box>
-
-        {/* <Box>
-          <Hits hitComponent={Hit} />
-          <Pagination />
-        </Box> */}
-
-        {/* <InfiniteHits showPrevious={false} hitComponent={Hit} /> */}
-
-        <Box minWidth={500}>Google Map</Box>
       </Box>
     </Box>
   );

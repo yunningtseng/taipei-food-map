@@ -1,8 +1,9 @@
 import Box from '@mui/material/Box';
 import { Configure, InstantSearch } from 'react-instantsearch';
 import { searchClient } from '../utils/algolia';
-import Menu from './sideBar/Drawer';
 import ShopList from './shopList/ShopList';
+import MapFilter from './shopMap/ShopMap';
+import FilterSection from './sideBar/FilterSection';
 
 const LandingPage = () => {
   return (
@@ -14,8 +15,9 @@ const LandingPage = () => {
         insights={true}
       >
         <Configure hitsPerPage={20} />
-        <Menu />
+        <FilterSection />
         <ShopList />
+        <MapFilter />
       </InstantSearch>
     </Box>
   );
