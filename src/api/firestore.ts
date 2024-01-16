@@ -47,6 +47,11 @@ export async function uploadData() {
       rating = 3;
     }
 
+    const geoloc = {
+      lat: item.location.latitude,
+      lng: item.location.longitude,
+    };
+
     const otherType = [];
     if (item.goodForChildren) {
       otherType.push('goodForChildren');
@@ -60,6 +65,7 @@ export async function uploadData() {
       orderType,
       paymentType,
       rating,
+      _geoloc: geoloc,
       otherType,
     });
   }

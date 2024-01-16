@@ -1,17 +1,17 @@
 import Box from '@mui/material/Box';
 import { FeatureCollection } from 'geojson';
 import mapboxgl from 'mapbox-gl';
-import { useCallback, useState } from 'react';
-import { useInfiniteHits } from 'react-instantsearch';
-import Map, { Layer, Source } from 'react-map-gl';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import { useGeoSearch, useInfiniteHits } from 'react-instantsearch';
+import Map, { Layer, MapRef, Source } from 'react-map-gl';
 import useShopInfoStore from '../../store/useShopInfoStore';
 import { PlaceInfo } from '../../types/placeInfo';
 import { ShopHit } from '../../types/shop';
 import {
-  StyledShopName,
   StyledHighlightPaint,
   StyledPaint,
   StyledPopup,
+  StyledShopName,
 } from './styles/ShopMap.styles';
 
 const accessToken = import.meta.env.VITE_MAP_BOX_TOKEN;
@@ -22,11 +22,14 @@ const ShopMap = () => {
   const selectedShop = useShopInfoStore((state) => state.selectedShop);
   const hoveredShop = useShopInfoStore((state) => state.hoveredShop);
 
+  const mapRef = useRef<MapRef>(null);
   const [cursor, setCursor] = useState<string>('grab');
 
   const { hits } = useInfiniteHits<ShopHit>();
+  const { refine } = useGeoSearch();
 
-  const convertToGeoJSON = (hits: ShopHit[]) => {
+
+  const convertToGeoJSON = useCallback((hits: ShopHit[]) => {
     const features = hits.map((hit) => ({
       type: 'Feature',
       properties: {
@@ -44,9 +47,9 @@ const ShopMap = () => {
       type: 'FeatureCollection',
       features: features,
     } as FeatureCollection;
-  };
+  }, []);
 
-  const geoJsonData = convertToGeoJSON(hits);
+  const geoJsonData = useMemo(() => convertToGeoJSON(hits), [hits]);
 
   const handleShopInteraction = (
     event: mapboxgl.MapLayerMouseEvent,
@@ -84,9 +87,20 @@ const ShopMap = () => {
   const onMouseLeave = useCallback(() => setCursor('grab'), []);
   const onDragStart = useCallback(() => setCursor('grabbing'), []);
 
+  const onMoveEnd = useCallback(() => {
+    const bounds = mapRef.current!.getBounds();
+
+    refine({
+      northEast: bounds.getNorthEast(),
+      southWest: bounds.getSouthWest(),
+    });
+  }, []);
+
   return (
     <Box>
       <Map
+        ref={mapRef}
+        onMoveEnd={onMoveEnd}
         mapboxAccessToken={accessToken}
         initialViewState={{
           longitude: 121.50201171117608,
