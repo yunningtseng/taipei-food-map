@@ -5,6 +5,7 @@ const StyledShopList = styled('div')(({ theme }) => ({
   display: 'flex',
   border: '1px solid #ccc',
   marginBottom: theme.spacing(1),
+  cursor: 'pointer',
 }));
 
 const StyledShop = styled('div')(({ theme }) => ({

@@ -1,25 +1,27 @@
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import { FeatureCollection } from 'geojson';
 import mapboxgl from 'mapbox-gl';
 import { useCallback, useState } from 'react';
 import { useInfiniteHits } from 'react-instantsearch';
-import Map, { Layer, Popup, Source } from 'react-map-gl';
-import styled from 'styled-components';
-import usePersonStore from '../../store/shopStore';
+import Map, { Layer, Source } from 'react-map-gl';
+import useShopInfoStore from '../../store/useShopInfoStore';
 import { PlaceInfo } from '../../types/placeInfo';
 import { ShopHit } from '../../types/shop';
+import {
+  StyledShopName,
+  StyledHighlightPaint,
+  StyledPaint,
+  StyledPopup,
+} from './styles/ShopMap.styles';
 
 const accessToken = import.meta.env.VITE_MAP_BOX_TOKEN;
 
-const StyledPopup = styled(Popup)({
-  '& .mapboxgl-popup-tip': {
-    border: 0,
-  },
-});
-
 const ShopMap = () => {
-  const [popupInfo, setPopupInfo] = useState<PlaceInfo | null>(null);
+  const setSelectedShop = useShopInfoStore((state) => state.setSelectedShop);
+  const setHoveredShop = useShopInfoStore((state) => state.setHoveredShop);
+  const selectedShop = useShopInfoStore((state) => state.selectedShop);
+  const hoveredShop = useShopInfoStore((state) => state.hoveredShop);
+
   const [cursor, setCursor] = useState<string>('grab');
 
   const { hits } = useInfiniteHits<ShopHit>();
@@ -46,47 +48,36 @@ const ShopMap = () => {
 
   const geoJsonData = convertToGeoJSON(hits);
 
-  // const pins = useMemo(
-  //   () =>
-  //     points.map((city, index) => (
-  //       <Marker
-  //         key={`marker-${index}`}
-  //         longitude={city.longitude}
-  //         latitude={city.latitude}
-  //         anchor='bottom'
-  //         onClick={(e) => {
-  //           // If we let the click event propagates to the map, it will immediately close the popup
-  //           // with `closeOnClick: true`
-  //           e.originalEvent.stopPropagation();
-  //           setPopupInfo(city);
-  //         }}
-  //       >
-  //         <Pin />
-  //       </Marker>
-  //     )),
-  //   []
-  // );
-
-  const onClick = (event: mapboxgl.MapLayerMouseEvent) => {
+  const handleShopInteraction = (
+    event: mapboxgl.MapLayerMouseEvent,
+    setShop: (shop: PlaceInfo | null) => void
+  ) => {
     const {
       features,
       lngLat: { lng, lat },
     } = event;
     event.originalEvent.stopPropagation();
 
-    const hoveredFeature = features && features[0];
+    const feature = features && features[0];
+    setShop(null);
 
-    setPopupInfo(null);
-
-    if (hoveredFeature && hoveredFeature.properties) {
-      setPopupInfo({
-        id: hoveredFeature.properties.id,
-        name: hoveredFeature.properties.name,
-        description: hoveredFeature.properties.description,
+    if (feature && feature.properties) {
+      setShop({
+        id: feature.properties.id,
+        name: feature.properties.name,
+        description: feature.properties.description,
         longitude: lng,
         latitude: lat,
       });
     }
+  };
+
+  const handleShopSelection = (event: mapboxgl.MapLayerMouseEvent) => {
+    handleShopInteraction(event, setSelectedShop);
+  };
+
+  const handleShopHover = (event: mapboxgl.MapLayerMouseEvent) => {
+    handleShopInteraction(event, setHoveredShop);
   };
 
   const onMouseEnter = useCallback(() => setCursor('pointer'), []);
@@ -95,7 +86,6 @@ const ShopMap = () => {
 
   return (
     <Box>
-      <Typography>Map</Typography>
       <Map
         mapboxAccessToken={accessToken}
         initialViewState={{
@@ -106,7 +96,8 @@ const ShopMap = () => {
         style={{ width: 800, height: 600 }}
         mapStyle='mapbox://styles/mapbox/outdoors-v11'
         interactiveLayerIds={['places']}
-        onClick={onClick}
+        onClick={handleShopSelection}
+        onMouseMove={handleShopHover}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         onDragStart={onDragStart}
@@ -114,27 +105,42 @@ const ShopMap = () => {
         cursor={cursor}
       >
         <Source id='places' type='geojson' data={geoJsonData}></Source>
+        <Layer id='places' source='places' type='circle' paint={StyledPaint} />
         <Layer
-          id='places'
-          type='circle'
+          id='places-highlighted'
           source='places'
-          paint={{
-            'circle-color': '#4264fb',
-            'circle-radius': 6,
-            'circle-stroke-width': 2,
-            'circle-stroke-color': '#ffffff',
-          }}
+          type='circle'
+          paint={StyledHighlightPaint}
+          filter={[
+            'any',
+            ['==', ['get', 'id'], selectedShop?.id ?? ''],
+            ['==', ['get', 'id'], hoveredShop?.id ?? ''],
+          ]}
         />
-        {popupInfo && (
+
+        {selectedShop && (
           <StyledPopup
             key={Math.random()}
             closeButton={false}
-            longitude={popupInfo.longitude}
-            latitude={popupInfo.latitude}
+            longitude={selectedShop.longitude}
+            latitude={selectedShop.latitude}
             offset={12}
           >
-            <div>{popupInfo.name}</div>
-            <div>{popupInfo.description}</div>
+            <StyledShopName>{selectedShop.name}</StyledShopName>
+            <div>{selectedShop.description}</div>
+          </StyledPopup>
+        )}
+
+        {selectedShop?.id !== hoveredShop?.id && hoveredShop && (
+          <StyledPopup
+            key={Math.random()}
+            closeButton={false}
+            longitude={hoveredShop.longitude}
+            latitude={hoveredShop.latitude}
+            offset={12}
+          >
+            <StyledShopName>{hoveredShop.name}</StyledShopName>
+            <div>{hoveredShop.description}</div>
           </StyledPopup>
         )}
       </Map>
