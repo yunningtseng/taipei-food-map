@@ -1,8 +1,10 @@
+import { ThemeProvider } from '@mui/material';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import { useEffect } from 'react';
 import LandingPage from './component/LandingPage';
 import Layout from './component/common/Layout';
+import { theme } from './utils/muiThemeConfig';
 // import { getData, uploadData } from './api/firestore';
-import 'mapbox-gl/dist/mapbox-gl.css';
 
 function App() {
   useEffect(() => {
@@ -12,9 +14,11 @@ function App() {
 
   return (
     <>
-      <Layout>
-        <LandingPage></LandingPage>
-      </Layout>
+      <ThemeProvider theme={theme}>
+        <Layout>
+          <LandingPage></LandingPage>
+        </Layout>
+      </ThemeProvider>
     </>
   );
 }

@@ -10,6 +10,7 @@ export type Shop = {
   primaryType: string;
   rating: number;
   location: { [key: string]: number };
+  googleMapsUri: string;
   otherType: string[];
 };
 

@@ -28,7 +28,6 @@ const ShopMap = () => {
   const { hits } = useInfiniteHits<ShopHit>();
   const { refine } = useGeoSearch();
 
-
   const convertToGeoJSON = useCallback((hits: ShopHit[]) => {
     const features = hits.map((hit) => ({
       type: 'Feature',
@@ -97,17 +96,17 @@ const ShopMap = () => {
   }, []);
 
   return (
-    <Box>
+    <Box mt={4}>
       <Map
         ref={mapRef}
         onMoveEnd={onMoveEnd}
         mapboxAccessToken={accessToken}
         initialViewState={{
-          longitude: 121.50201171117608,
-          latitude: 24.992943058604755,
+          longitude: 121.54378594922848,
+          latitude: 25.042074596459575,
           zoom: 13,
         }}
-        style={{ width: 800, height: 600 }}
+        style={{ width: 'calc(100vw - 53rem)', height: 600 }}
         mapStyle='mapbox://styles/mapbox/outdoors-v11'
         interactiveLayerIds={['places']}
         onClick={handleShopSelection}

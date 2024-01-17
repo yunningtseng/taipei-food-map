@@ -2,9 +2,9 @@ import { Box } from '@mui/material';
 import { ReactNode } from 'react';
 import Header from './Header';
 
-interface Props {
+type Props = {
   children: ReactNode;
-}
+};
 
 const Layout = ({ children }: Props) => {
   return (

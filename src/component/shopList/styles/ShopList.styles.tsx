@@ -1,5 +1,13 @@
-import { Highlight } from 'react-instantsearch';
 import { styled } from '@mui/material/styles';
+import { Highlight } from 'react-instantsearch';
+
+const StyledShopListContainer = styled('div')(({ theme }) => ({
+  display: 'flex',
+  height: 'calc(100% - 3rem)',
+  margin: theme.spacing(3),
+  overflow: 'hidden',
+  overflowY: 'auto',
+}));
 
 const StyledShopList = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -8,7 +16,16 @@ const StyledShopList = styled('div')(({ theme }) => ({
   cursor: 'pointer',
 }));
 
+const StyledShopImg = styled('div')(({ theme }) => ({
+  width: '8rem',
+  height: '7rem',
+  margin: theme.spacing(1),
+  backgroundColor: '#ccc',
+  borderRadius: '5px',
+}));
+
 const StyledShop = styled('div')(({ theme }) => ({
+  width: '20rem',
   display: 'flex',
   flexDirection: 'column',
   gap: theme.spacing(1),
@@ -16,10 +33,12 @@ const StyledShop = styled('div')(({ theme }) => ({
 }));
 
 const StyledHighlight = styled(Highlight)({
-  width: '300px',
+  width: '15rem',
   whiteSpace: 'nowrap',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
 });
 
-export { StyledShopList, StyledShop, StyledHighlight };
+export {
+  StyledHighlight, StyledShop, StyledShopImg, StyledShopList, StyledShopListContainer
+};

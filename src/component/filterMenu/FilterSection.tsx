@@ -2,11 +2,12 @@ import { Box, Typography } from '@mui/material';
 import { UseRefinementListProps } from 'react-instantsearch';
 import {
   orderTypeLabelMapping,
+  otherLabelMapping,
+  paymentLabelMapping,
   priceLabelMapping,
-  typeLabelMapping,
 } from '../../const/LabelMapping';
-import CategoryFilter from './common/CategoryFilter';
-import CheckBoxFilter from './common/CheckBoxFilter';
+import HierarchyFilter from './common/HierarchyFilter';
+import SelectionFilter from './common/SelectionFilter';
 
 function translateItems(labelMapping?: {
   [key: string]: string;
@@ -32,41 +33,42 @@ function translateItems(labelMapping?: {
 
 const FilterSection = () => {
   return (
-    <Box m={3}>
+    <Box width={200} m={3}>
       <Typography variant='h6'>種類</Typography>
-      <CheckBoxFilter
-        attribute='primaryType'
-        transformItems={translateItems(typeLabelMapping)}
-      />
+      <HierarchyFilter attributes={['lv1', 'lv2']} />
 
       <Typography variant='h6'>價位</Typography>
-      <CheckBoxFilter
+      <SelectionFilter
         attribute='priceLevel'
         transformItems={translateItems(priceLabelMapping)}
+        filterType='checkBox'
       />
 
       <Typography variant='h6'>用餐方式</Typography>
-      <CategoryFilter
+      <SelectionFilter
         attribute='orderType'
         transformItems={translateItems(orderTypeLabelMapping)}
+        filterType='category'
       />
 
       <Typography variant='h6'>付款方式</Typography>
-      <CategoryFilter
+      <SelectionFilter
         attribute='paymentType'
-        // transformItems={translateItems(orderTypeLabelMapping)}
+        filterType='category'
+        transformItems={translateItems(paymentLabelMapping)}
       />
 
       <Typography variant='h6'>評分</Typography>
-      <CheckBoxFilter
-        attribute='rating'
-        // transformItems={translateItems(orderTypeLabelMapping)}
+      <SelectionFilter
+        attribute='ratingStar'
+        filterType='checkBox'
       />
 
       <Typography variant='h6'>其他</Typography>
-      <CheckBoxFilter
+      <SelectionFilter
         attribute='otherType'
-        // transformItems={translateItems(orderTypeLabelMapping)}
+        filterType='checkBox'
+        transformItems={translateItems(otherLabelMapping)}
       />
     </Box>
   );

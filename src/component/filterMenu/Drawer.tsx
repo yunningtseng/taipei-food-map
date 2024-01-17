@@ -1,5 +1,5 @@
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import { Button } from '@mui/material';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -43,7 +43,7 @@ const Menu = () => {
 
               <Box display='flex' alignItems='center'>
                 <StyledButton onClick={handleDrawerClose}>
-                  <ChevronLeftIcon />
+                  <KeyboardArrowLeftIcon />
                 </StyledButton>
               </Box>
             </Box>
@@ -52,7 +52,7 @@ const Menu = () => {
       ) : (
         <Box display={open ? 'none' : 'flex'} alignItems='center' m={2}>
           <StyledButton onClick={handleDrawerOpen}>
-            <ChevronRightIcon />
+            <KeyboardArrowRightIcon />
           </StyledButton>
         </Box>
       )}

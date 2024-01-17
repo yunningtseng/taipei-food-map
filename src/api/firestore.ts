@@ -1,11 +1,16 @@
 import { doc, getDoc, writeBatch } from 'firebase/firestore';
-import localData from '../../data/data.json';
+import localData from '../../data/cakeData.json';
 import { db } from '../utils/firebaseInit';
 
 export async function uploadData() {
   const batch = writeBatch(db);
 
   for (const item of localData.places) {
+    const category = 'dessert';
+    const hierarchy = 'cake';
+    const lv1 = '甜點';
+    const lv2 = '甜點 > 蛋糕';
+
     const placeId = item.id;
     const docRef = doc(db, 'places', placeId);
 
@@ -34,17 +39,17 @@ export async function uploadData() {
       paymentType.push('NFC');
     }
 
-    let rating = 0;
+    let ratingStar = 0;
     if (item.rating === 5) {
       rating = 5;
     } else if (item.rating >= 4.5 && item.rating < 5) {
-      rating = 4.5;
+      ratingStar = 4.5;
     } else if (item.rating >= 4 && item.rating < 4.5) {
-      rating = 4;
+      ratingStar = 4;
     } else if (item.rating >= 3.5 && item.rating < 4) {
-      rating = 3.5;
+      ratingStar = 3.5;
     } else if (item.rating >= 3 && item.rating < 3.5) {
-      rating = 3;
+      ratingStar = 3;
     }
 
     const geoloc = {
@@ -62,9 +67,13 @@ export async function uploadData() {
 
     batch.set(docRef, {
       ...item,
+      category,
+      hierarchy,
+      lv1,
+      lv2,
       orderType,
       paymentType,
-      rating,
+      ratingStar,
       _geoloc: geoloc,
       otherType,
     });

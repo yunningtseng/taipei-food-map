@@ -1,12 +1,15 @@
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { Link, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import { Highlight, Hits } from 'react-instantsearch';
 import useShopInfoStore from '../../store/useShopInfoStore';
 import { ShopHit } from '../../types/shop';
 import {
   StyledHighlight,
   StyledShop,
+  StyledShopImg,
   StyledShopList,
+  StyledShopListContainer,
 } from './styles/ShopList.styles';
 
 type HitProps = {
@@ -47,11 +50,21 @@ function HitComponent({ hit }: HitProps) {
       onMouseEnter={handleShopMouseEnter}
       onMouseLeave={handleShopMouseLeave}
     >
-      <Box>Image</Box>
+      <StyledShopImg />
       <StyledShop>
         <StyledHighlight hit={hit} attribute='displayName.text' />
-        <Highlight hit={hit} attribute='nationalPhoneNumber' />
         <Highlight hit={hit} attribute='formattedAddress' />
+        <Link
+          target='_blank'
+          href={hit.googleMapsUri}
+          underline='none'
+          display='flex'
+        >
+          <Typography variant='body2' mr={1}>
+            查看 Google Map
+          </Typography>
+          <OpenInNewIcon fontSize='small' />
+        </Link>
       </StyledShop>
     </StyledShopList>
   );
@@ -59,17 +72,11 @@ function HitComponent({ hit }: HitProps) {
 
 const ShopList = () => {
   return (
-    <Box>
-      <Typography variant='h6' textAlign='center'>
-        Shop List
-      </Typography>
-
-      <Box display='flex'>
-        <Box minWidth={275} m={1}>
-          <Hits hitComponent={HitComponent} />
-        </Box>
+    <StyledShopListContainer>
+      <Box minWidth={275} m={1}>
+        <Hits hitComponent={HitComponent} />
       </Box>
-    </Box>
+    </StyledShopListContainer>
   );
 };
 
