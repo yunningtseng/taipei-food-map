@@ -7,7 +7,7 @@ import {
   StyledListItemCount,
   StyledListItemIcon,
   StyledListItemText,
-} from '../styles/Filter.styles';
+} from './styles/Filter.styles';
 
 type Props = {
   attribute: string;
@@ -43,9 +43,7 @@ const SelectionFilter = ({ attribute, transformItems, filterType }: Props) => {
                 isSelected={item.isRefined}
               />
             )}
-            <StyledListItemCount
-              primary={`(${item.count})`}
-            />
+            <StyledListItemCount primary={`(${item.count})`} />
           </StyledListItemButton>
         </StyledListItem>
       ))}

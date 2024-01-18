@@ -10,8 +10,8 @@ const hierarchyLabelMapping: { [key: string]: string } = {
 };
 
 const priceLabelMapping: { [key: string]: string } = {
-  PRICE_LEVEL_MODERATE: '$ 一般價位',
-  PRICE_LEVEL_INEXPENSIVE: '$$ 高價位',
+  PRICE_LEVEL_MODERATE: '$$ 一般價位',
+  PRICE_LEVEL_INEXPENSIVE: '$ 低價位',
 };
 
 const orderTypeLabelMapping: { [key: string]: string } = {

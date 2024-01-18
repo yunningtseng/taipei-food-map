@@ -6,6 +6,8 @@ export async function uploadData() {
   const batch = writeBatch(db);
 
   for (const item of localData.places) {
+    // const mrtId = item.StationPosition.GeoHash;
+    // const docRef = doc(db, 'locations', mrtId);
     const category = 'dessert';
     const hierarchy = 'cake';
     const lv1 = '甜點';
@@ -41,7 +43,7 @@ export async function uploadData() {
 
     let ratingStar = 0;
     if (item.rating === 5) {
-      rating = 5;
+      ratingStar = 5;
     } else if (item.rating >= 4.5 && item.rating < 5) {
       ratingStar = 4.5;
     } else if (item.rating >= 4 && item.rating < 4.5) {
@@ -57,14 +59,6 @@ export async function uploadData() {
       lng: item.location.longitude,
     };
 
-    const otherType = [];
-    if (item.goodForChildren) {
-      otherType.push('goodForChildren');
-    }
-    if (item.goodForGroups) {
-      otherType.push('goodForGroups');
-    }
-
     batch.set(docRef, {
       ...item,
       category,
@@ -75,7 +69,6 @@ export async function uploadData() {
       paymentType,
       ratingStar,
       _geoloc: geoloc,
-      otherType,
     });
   }
 

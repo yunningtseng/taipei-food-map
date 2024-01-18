@@ -1,27 +1,30 @@
 import { styled } from '@mui/material/styles';
-import { Highlight } from 'react-instantsearch';
 
 const StyledShopListContainer = styled('div')(({ theme }) => ({
   display: 'flex',
   height: 'calc(100% - 3rem)',
   margin: theme.spacing(3),
+  border: '1px solid #ccc',
   overflow: 'hidden',
   overflowY: 'auto',
 }));
 
 const StyledShopList = styled('div')(({ theme }) => ({
   display: 'flex',
-  border: '1px solid #ccc',
   marginBottom: theme.spacing(1),
+  borderBottom: '1px solid #ccc',
   cursor: 'pointer',
 }));
 
-const StyledShopImg = styled('div')(({ theme }) => ({
-  width: '8rem',
-  height: '7rem',
+const StyledShopImg = styled('img')(({ theme }) => ({
+  width: '9rem',
+  height: '8rem',
   margin: theme.spacing(1),
   backgroundColor: '#ccc',
-  borderRadius: '5px',
+  borderRadius: '0.5rem',
+  overflow: 'hidden',
+  objectFit: 'cover',
+  objectPosition: 'center',
 }));
 
 const StyledShop = styled('div')(({ theme }) => ({
@@ -32,13 +35,18 @@ const StyledShop = styled('div')(({ theme }) => ({
   margin: theme.spacing(1),
 }));
 
-const StyledHighlight = styled(Highlight)({
+const StyledShopName = styled('div')(({ theme }) => ({
+  ...theme.typography.body1,
   width: '15rem',
   whiteSpace: 'nowrap',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
-});
+}));
 
 export {
-  StyledHighlight, StyledShop, StyledShopImg, StyledShopList, StyledShopListContainer
+  StyledShop,
+  StyledShopImg,
+  StyledShopList,
+  StyledShopListContainer,
+  StyledShopName,
 };
