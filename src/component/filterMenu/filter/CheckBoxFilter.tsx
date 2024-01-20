@@ -6,16 +6,14 @@ import {
   StyledListItemButton,
   StyledListItemCount,
   StyledListItemIcon,
-  StyledListItemText,
-} from './styles/Filter.styles';
+} from '../styles/Filter.styles';
 
 type Props = {
   attribute: string;
   transformItems?: UseRefinementListProps['transformItems'];
-  filterType?: string;
 };
 
-const SelectionFilter = ({ attribute, transformItems, filterType }: Props) => {
+const CheckBoxFilter = ({ attribute, transformItems }: Props) => {
   const { items, refine } = useRefinementList({
     attribute,
     transformItems,
@@ -31,18 +29,10 @@ const SelectionFilter = ({ attribute, transformItems, filterType }: Props) => {
             }}
             dense
           >
-            {filterType === 'checkBox' && (
-              <StyledListItemIcon>
-                <Checkbox edge='start' checked={item.isRefined} disableRipple />
-              </StyledListItemIcon>
-            )}
-            {filterType === 'checkBox' && <ListItemText primary={item.label} />}
-            {filterType === 'category' && (
-              <StyledListItemText
-                primary={item.label}
-                isSelected={item.isRefined}
-              />
-            )}
+            <StyledListItemIcon>
+              <Checkbox edge='start' checked={item.isRefined} disableRipple />
+            </StyledListItemIcon>
+            <ListItemText primary={item.label} />
             <StyledListItemCount primary={`(${item.count})`} />
           </StyledListItemButton>
         </StyledListItem>
@@ -51,4 +41,4 @@ const SelectionFilter = ({ attribute, transformItems, filterType }: Props) => {
   );
 };
 
-export default SelectionFilter;
+export default CheckBoxFilter;

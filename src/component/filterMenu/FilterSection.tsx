@@ -1,18 +1,19 @@
 import { Box, Typography } from '@mui/material';
 import { UseRefinementListProps } from 'react-instantsearch';
 import { orderTypeLabelMapping } from '../../const/LabelMapping';
-import HierarchyFilter from './HierarchyFilter';
-import SelectionFilter from './SelectionFilter';
+import CategoryFilter from './filter/CategoryFilter';
+import CheckBoxFilter from './filter/CheckBoxFilter';
+import HierarchyFilter from './filter/HierarchyFilter';
 
-function translateItems(labelMapping?: {
+const translateItems = (labelMapping?: {
   [key: string]: string;
-}): UseRefinementListProps['transformItems'] {
+}): UseRefinementListProps['transformItems'] => {
   return (items) =>
     items.map((item) => ({
       ...item,
       label: labelMapping ? labelMapping[item.label] : item.label,
     }));
-}
+};
 
 // function translateItems2(labelMapping?: {
 //   [key: string]: string;
@@ -30,17 +31,16 @@ const FilterSection = () => {
   return (
     <Box width={200} m={3}>
       <Typography variant='h6'>種類</Typography>
-      <HierarchyFilter attributes={['lv1', 'lv2']} />
+      <HierarchyFilter attributes={['hierarchyLv1', 'hierarchyLv2']} />
 
       <Typography variant='h6'>用餐方式</Typography>
-      <SelectionFilter
+      <CategoryFilter
         attribute='orderType'
         transformItems={translateItems(orderTypeLabelMapping)}
-        filterType='category'
       />
 
       <Typography variant='h6'>評分</Typography>
-      <SelectionFilter attribute='ratingStar' filterType='checkBox' />
+      <CheckBoxFilter attribute='ratingStar' />
     </Box>
   );
 };

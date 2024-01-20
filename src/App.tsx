@@ -5,13 +5,17 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import LandingPage from './component/LandingPage';
 import Layout from './component/common/Layout';
 import { theme } from './utils/muiThemeConfig';
+// import { uploadAllData } from './api/firestore';
 // import { getData, uploadData } from './api/firestore';
 
 const queryClient = new QueryClient();
 
 function App() {
   useEffect(() => {
-    // uploadData();
+    // uploadAllData();
+    // uploadData('cakeData');
+    // uploadData('douhuaData');
+    // uploadData('iceData');
     // getData();
   }, []);
 

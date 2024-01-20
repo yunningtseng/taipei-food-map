@@ -1,10 +1,10 @@
 import { Box, ListItemText } from '@mui/material';
 import { useHierarchicalMenu } from 'react-instantsearch';
-import { HierarchicalListProps } from '../../types/hierarchy';
+import { HierarchicalListProps } from '../../../types/hierarchy';
 import {
   StyledHierarchyListItem,
   StyledListItemCount,
-} from './styles/Filter.styles';
+} from '../styles/Filter.styles';
 
 type Props = {
   attributes: string[];

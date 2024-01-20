@@ -2,6 +2,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Link, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import { Hits } from 'react-instantsearch';
+import { useFetchShopPhoto } from '../../hooks/useFetchShopPhoto';
 import useShopInfoStore from '../../store/useShopInfoStore';
 import { ShopHit } from '../../types/shop';
 import {
@@ -11,17 +12,35 @@ import {
   StyledShopListContainer,
   StyledShopName,
 } from './styles/ShopList.styles';
-// import ShopPhoto from './ShopPhoto';
 
 type HitProps = {
   hit: ShopHit;
 };
 
-const photo = '';
+type PhotoComponentProps = {
+  hit: ShopHit;
+  index: number;
+};
 
-console.log(photo);
+const PhotoComponent = ({ hit, index }: PhotoComponentProps) => {
+  const savedImgUrl = hit.imgUrls[index.toString()];
+  const hasImgUrl = savedImgUrl !== undefined;
 
-function HitComponent({ hit }: HitProps) {
+  const { fetchedUrl, isLoading } = useFetchShopPhoto(
+    hasImgUrl ? '' : hit.photoNames[index],
+    hit.id,
+    index
+  );
+  const imgUrl = hasImgUrl ? savedImgUrl : fetchedUrl;
+
+  if (!hasImgUrl && isLoading) {
+    return 'Loading...';
+  }
+
+  return <StyledShopImg src={imgUrl} alt='place'></StyledShopImg>;
+};
+
+const HitComponent = ({ hit }: HitProps) => {
   const setSelectedShop = useShopInfoStore((state) => state.setSelectedShop);
   const setHoveredShop = useShopInfoStore((state) => state.setHoveredShop);
 
@@ -55,12 +74,7 @@ function HitComponent({ hit }: HitProps) {
       onMouseEnter={handleShopMouseEnter}
       onMouseLeave={handleShopMouseLeave}
     >
-      <StyledShopImg
-        src='https://lh3.googleusercontent.com/places/ANXAkqENxaR_rd_MGNCPEjwZfWi-lk0qDrCMzNErEZo6IOXM4QYEavjcWdpO20V1mCsh8OiWe42oT6RFbp2SK6nj5stYC5FDz-xnPvg=s4800-w400-h350'
-        alt='Place'
-      ></StyledShopImg>
-
-      {/* <ShopPhoto /> */}
+      <PhotoComponent hit={hit} index={0} />
 
       <StyledShop>
         <StyledShopName>{hit.displayName.text}</StyledShopName>
@@ -76,6 +90,12 @@ function HitComponent({ hit }: HitProps) {
           <Typography>{`${hit.userRatingCount} 則留言`}</Typography>
         </Box>
 
+        {hit.editorialSummary && (
+          <Box>
+            <Typography>{hit.editorialSummary.text}</Typography>
+          </Box>
+        )}
+
         <Link
           target='_blank'
           href={hit.googleMapsUri}
@@ -90,8 +110,9 @@ function HitComponent({ hit }: HitProps) {
       </StyledShop>
     </StyledShopList>
   );
-}
+};
 
+// TODO infinite scroll
 const ShopList = () => {
   return (
     <StyledShopListContainer>

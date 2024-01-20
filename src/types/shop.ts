@@ -12,6 +12,8 @@ export type Shop = {
   location: { [key: string]: number };
   googleMapsUri: string;
   otherType: string[];
+  photoNames: string[];
+  imgUrls: Record<string, string>;
 };
 
 export type ShopHit = Shop & Hit;
