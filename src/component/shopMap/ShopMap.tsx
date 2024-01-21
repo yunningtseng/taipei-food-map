@@ -89,10 +89,10 @@ const ShopMap = () => {
   const onMoveEnd = useCallback(() => {
     const bounds = mapRef.current!.getBounds();
 
-    refine({
-      northEast: bounds.getNorthEast(),
-      southWest: bounds.getSouthWest(),
-    });
+    // refine({
+    //   northEast: bounds.getNorthEast(),
+    //   southWest: bounds.getSouthWest(),
+    // });
   }, []);
 
   return (

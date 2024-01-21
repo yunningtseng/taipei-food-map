@@ -1,125 +1,53 @@
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { Link, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import { Hits } from 'react-instantsearch';
-import { useFetchShopPhoto } from '../../hooks/useFetchShopPhoto';
-import useShopInfoStore from '../../store/useShopInfoStore';
+import { useEffect, useRef } from 'react';
+import { useInfiniteHits } from 'react-instantsearch';
 import { ShopHit } from '../../types/shop';
-import {
-  StyledShop,
-  StyledShopImg,
-  StyledShopList,
-  StyledShopListContainer,
-  StyledShopName,
-} from './styles/ShopList.styles';
+import SortFilter from './ShopSorter';
+import ShopListItem from './ShopListItem';
+import { StyledShopListContainer } from './styles/ShopList.styles';
 
-type HitProps = {
-  hit: ShopHit;
-};
+const ShopList = () => {
+  const { hits, isLastPage, showMore } = useInfiniteHits<ShopHit>();
+  const targetRef = useRef(null);
 
-type PhotoComponentProps = {
-  hit: ShopHit;
-  index: number;
-};
+  useEffect(() => {
+    if (targetRef.current === null) return undefined;
 
-const PhotoComponent = ({ hit, index }: PhotoComponentProps) => {
-  const savedImgUrl = hit.imgUrls[index.toString()];
-  const hasImgUrl = savedImgUrl !== undefined;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && !isLastPage) {
+          showMore();
+        }
+      });
+    });
 
-  const { fetchedUrl, isLoading } = useFetchShopPhoto(
-    hasImgUrl ? '' : hit.photoNames[index],
-    hit.id,
-    index
-  );
-  const imgUrl = hasImgUrl ? savedImgUrl : fetchedUrl;
+    observer.observe(targetRef.current);
 
-  if (!hasImgUrl && isLoading) {
-    return 'Loading...';
+    return () => {
+      observer.disconnect();
+    };
+  }, [isLastPage, showMore]);
+
+  // FIXME 修正查無商店的顯示方式
+  if (hits.length === 0) {
+    return <Typography>查無商店!</Typography>;
   }
 
-  return <StyledShopImg src={imgUrl} alt='place'></StyledShopImg>;
-};
-
-const HitComponent = ({ hit }: HitProps) => {
-  const setSelectedShop = useShopInfoStore((state) => state.setSelectedShop);
-  const setHoveredShop = useShopInfoStore((state) => state.setHoveredShop);
-
-  const handleShopSelection = () => {
-    setSelectedShop({
-      id: hit.id,
-      name: hit.displayName.text,
-      description: hit.formattedAddress,
-      longitude: hit.location.longitude,
-      latitude: hit.location.latitude,
-    });
-  };
-
-  const handleShopMouseEnter = () => {
-    setHoveredShop({
-      id: hit.id,
-      name: hit.displayName.text,
-      description: hit.formattedAddress,
-      longitude: hit.location.longitude,
-      latitude: hit.location.latitude,
-    });
-  };
-
-  const handleShopMouseLeave = () => {
-    setHoveredShop(null);
-  };
-
   return (
-    <StyledShopList
-      onClick={handleShopSelection}
-      onMouseEnter={handleShopMouseEnter}
-      onMouseLeave={handleShopMouseLeave}
-    >
-      <PhotoComponent hit={hit} index={0} />
+    <Box m={3}>
+      <SortFilter />
 
-      <StyledShop>
-        <StyledShopName>{hit.displayName.text}</StyledShopName>
-        <Typography>{hit.formattedAddress}</Typography>
-
-        <Box display='flex' alignItems='center'>
-          <Typography>評分：</Typography>
-          <Typography>{hit.rating}</Typography>
+      <StyledShopListContainer>
+        <Box minWidth={275} m={1}>
+          {hits.map((hit) => (
+            <ShopListItem key={hit.objectID} hit={hit} />
+          ))}
+          <div ref={targetRef} aria-hidden='true' />
+          <Typography>資料到底囉！</Typography>
         </Box>
-
-        <Box display='flex' alignItems='center'>
-          <Typography>評論數：</Typography>
-          <Typography>{`${hit.userRatingCount} 則留言`}</Typography>
-        </Box>
-
-        {hit.editorialSummary && (
-          <Box>
-            <Typography>{hit.editorialSummary.text}</Typography>
-          </Box>
-        )}
-
-        <Link
-          target='_blank'
-          href={hit.googleMapsUri}
-          underline='none'
-          display='flex'
-        >
-          <Typography variant='body2' mr={1}>
-            查看 Google Map
-          </Typography>
-          <OpenInNewIcon fontSize='small' />
-        </Link>
-      </StyledShop>
-    </StyledShopList>
-  );
-};
-
-// TODO infinite scroll
-const ShopList = () => {
-  return (
-    <StyledShopListContainer>
-      <Box minWidth={275} m={1}>
-        <Hits hitComponent={HitComponent} />
-      </Box>
-    </StyledShopListContainer>
+      </StyledShopListContainer>
+    </Box>
   );
 };
 
