@@ -8,9 +8,11 @@ const StyledPopup = styled(Popup)({
 });
 
 const StyledShopName = styled('div')({
-  width: '14rm',
-  whiteSpace: 'nowrap',
+  width: '10rem',
   overflow: 'hidden',
+  display: '-webkit-box',
+  WebkitBoxOrient: 'vertical',
+  WebkitLineClamp: 2,
   textOverflow: 'ellipsis',
 });
 
