@@ -13,31 +13,28 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
-import { hierarchyLabelMapping } from '../../const/LabelMapping';
 import useShopInfoStore from '../../store/useShopInfoStore';
-import { ShopHit } from '../../types/shop';
+import { Place } from '../../types/place';
 import {
-  StyledCategoryChip,
   StyledShop,
   StyledShopContainer,
   StyledShopContent,
   StyledShopName,
   StyledTooltip,
 } from './styles/ShopList.styles';
-import ShopPhoto from './ShopPhoto';
+// import ShopPhoto from './ShopPhoto';
 
-type HitProps = {
-  hit: ShopHit;
+type ShopListItemProps = {
+  item: Place;
 };
 
-const ShopListItem = ({ hit }: HitProps) => {
-  const setSelectedShop = useShopInfoStore((state) => state.setSelectedShop);
-  const setHoveredShop = useShopInfoStore((state) => state.setHoveredShop);
+const ShopListItem = ({ item }: ShopListItemProps) => {
+  const setSelectedShop = useShopInfoStore.use.setSelectedShop();
+  const setHoveredShop = useShopInfoStore.use.setHoveredShop();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
-  // !
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -48,21 +45,21 @@ const ShopListItem = ({ hit }: HitProps) => {
 
   const handleShopSelection = () => {
     setSelectedShop({
-      id: hit.id,
-      name: hit.displayName.text,
-      description: hit.formattedAddress,
-      longitude: hit.location.longitude,
-      latitude: hit.location.latitude,
+      id: item.id,
+      name: item.displayName,
+      description: item.formattedAddress,
+      longitude: item.location.longitude,
+      latitude: item.location.latitude,
     });
   };
 
   const handleShopMouseEnter = () => {
     setHoveredShop({
-      id: hit.id,
-      name: hit.displayName.text,
-      description: hit.formattedAddress,
-      longitude: hit.location.longitude,
-      latitude: hit.location.latitude,
+      id: item.id,
+      name: item.displayName,
+      description: item.formattedAddress,
+      longitude: item.location.longitude,
+      latitude: item.location.latitude,
     });
   };
 
@@ -70,17 +67,13 @@ const ShopListItem = ({ hit }: HitProps) => {
     setHoveredShop(null);
   };
 
-  const CategoryChip = hit.categoryLv2.map((item: string, index: number) => (
-    <StyledCategoryChip label={hierarchyLabelMapping[item]} chipColor={index} />
-  ));
-
   return (
     <StyledShopContainer
       onClick={handleShopSelection}
       onMouseEnter={handleShopMouseEnter}
       onMouseLeave={handleShopMouseLeave}
     >
-      <ShopPhoto hit={hit} index={0} />
+      {/* <ShopPhoto item={item} index={0} /> */}
       <StyledShop>
         <StyledShopName
           action={
@@ -88,7 +81,7 @@ const ShopListItem = ({ hit }: HitProps) => {
               <MoreVertIcon />
             </IconButton>
           }
-          title={hit.displayName.text}
+          title={item.displayName}
         />
         <Menu
           id='demo-positioned-menu'
@@ -108,7 +101,7 @@ const ShopListItem = ({ hit }: HitProps) => {
           <MenuItem>
             <Link
               target='_blank'
-              href={hit.googleMapsUri}
+              href={item.googleMapsUri}
               underline='none'
               display='flex'
             >
@@ -121,7 +114,7 @@ const ShopListItem = ({ hit }: HitProps) => {
           <MenuItem>
             <Link
               target='_blank'
-              href={hit.googleMapsUri}
+              href={item.googleMapsUri}
               underline='none'
               display='flex'
             >
@@ -134,7 +127,7 @@ const ShopListItem = ({ hit }: HitProps) => {
           <MenuItem>
             <Link
               target='_blank'
-              href={hit.googleMapsUri}
+              href={item.googleMapsUri}
               underline='none'
               display='flex'
             >
@@ -150,16 +143,14 @@ const ShopListItem = ({ hit }: HitProps) => {
           <Box display='flex' gap={1}>
             <LocationOnIcon fontSize='small' />
             <Typography variant='body2' width={256}>
-              {hit.formattedAddress}
+              {item.formattedAddress}
             </Typography>
           </Box>
 
-          {hit.editorialSummary && (
+          {item.editorialSummary && (
             <Box display='flex' gap={1} mt={1}>
               <SellIcon fontSize='small' />
-              <Typography variant='body2'>
-                {hit.editorialSummary.text}
-              </Typography>
+              <Typography variant='body2'>{item.editorialSummary}</Typography>
             </Box>
           )}
         </StyledShopContent>
@@ -168,14 +159,14 @@ const ShopListItem = ({ hit }: HitProps) => {
             <StyledTooltip title='評分數' placement='top' arrow>
               <Box display='flex' alignItems='center' gap={1}>
                 <StarIcon fontSize='small' />
-                <Typography>{hit.rating}</Typography>
+                <Typography>{item.rating}</Typography>
               </Box>
             </StyledTooltip>
 
             <StyledTooltip title='評論數' placement='top' arrow>
               <Box display='flex' alignItems='center' gap={1}>
                 <MessageIcon fontSize='small' />
-                <Typography>{hit.userRatingCount}</Typography>
+                <Typography>{item.userRatingCount}</Typography>
               </Box>
             </StyledTooltip>
           </Box>
@@ -187,10 +178,6 @@ const ShopListItem = ({ hit }: HitProps) => {
               </IconButton>
             </StyledTooltip>
           </CardActions>
-        </Box>
-
-        <Box display='flex' gap={1} flexWrap='wrap'>
-          {CategoryChip}
         </Box>
       </StyledShop>
     </StyledShopContainer>

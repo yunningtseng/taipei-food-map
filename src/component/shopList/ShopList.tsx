@@ -1,49 +1,25 @@
 import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import { useEffect, useRef } from 'react';
-import { useInfiniteHits } from 'react-instantsearch';
-import { ShopHit } from '../../types/shop';
-import SortFilter from './ShopSorter';
+import { useFetchPlaces } from '../../hooks/useFetchPlaces';
 import ShopListItem from './ShopListItem';
+import SortFilter from './ShopSorter';
 import { StyledShopListContainer } from './styles/ShopList.styles';
 
 const ShopList = () => {
-  const { hits, isLastPage, showMore } = useInfiniteHits<ShopHit>();
-  const targetRef = useRef(null);
+  const { data, isLoading } = useFetchPlaces();
 
-  useEffect(() => {
-    if (targetRef.current === null) return undefined;
+  if (isLoading) return <div>Loading...</div>;
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting && !isLastPage) {
-          showMore();
-        }
-      });
-    });
-
-    observer.observe(targetRef.current);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [isLastPage, showMore]);
-
-  // FIXME 修正查無商店的顯示方式
-  if (hits.length === 0) {
-    return <Typography>查無商店!</Typography>;
-  }
+  if (!data) return <div>No data.</div>;
 
   return (
     <Box m={3}>
       <SortFilter />
-
       <StyledShopListContainer>
         <Box minWidth={275} m={1}>
-          {hits.map((hit) => (
-            <ShopListItem key={hit.objectID} hit={hit} />
+          {data.map((item) => (
+            <ShopListItem key={item.id} item={item} />
           ))}
-          <div ref={targetRef} aria-hidden='true' />
           <Typography>資料到底囉！</Typography>
         </Box>
       </StyledShopListContainer>

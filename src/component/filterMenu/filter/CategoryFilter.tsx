@@ -1,37 +1,47 @@
-import { UseMenuProps, useMenu } from 'react-instantsearch';
+import useQueryShopStore from '../../../store/useQueryShopStore';
 import {
   StyledListItem,
   StyledListItemButton,
-  StyledListItemCount,
   StyledListItemText,
 } from '../styles/Filter.styles';
 
 type Props = {
-  attribute: string;
-  transformItems?: UseMenuProps['transformItems'];
+  type: string;
+  dataList: string[] | number[];
 };
 
-const CategoryFilter = ({ attribute, transformItems }: Props) => {
-  const { items, refine } = useMenu({
-    attribute,
-    transformItems,
-  });
+const CategoryFilter = ({ type, dataList }: Props) => {
+  const orderType = useQueryShopStore.use.orderType();
+  const setOrderType = useQueryShopStore.use.setOrderType();
+
+  const rating = useQueryShopStore.use.rating();
+  const setRating = useQueryShopStore.use.setRating();
+
+  const handleClick = (item: string | number) => () => {
+    if (type === 'rating') {
+      setRating(rating === item ? 0 : (item as number));
+    } else if (type === 'order') {
+      setOrderType(orderType === item ? '' : (item as string));
+    }
+  };
+
+  const isSelected = (item: string | number) => {
+    if (type === 'rating') {
+      return rating === item;
+    } else if (type === 'order') {
+      return orderType === item;
+    }
+  };
 
   return (
     <>
-      {items.map((item) => (
-        <StyledListItem key={item.label}>
-          <StyledListItemButton
-            onClick={() => {
-              refine(item.value);
-            }}
-            dense
-          >
+      {dataList.map((item) => (
+        <StyledListItem key={item}>
+          <StyledListItemButton onClick={handleClick(item)} dense>
             <StyledListItemText
-              primary={item.label}
-              isSelected={item.isRefined}
+              primary={item}
+              isSelected={isSelected(item) as boolean}
             />
-            <StyledListItemCount primary={`(${item.count})`} />
           </StyledListItemButton>
         </StyledListItem>
       ))}

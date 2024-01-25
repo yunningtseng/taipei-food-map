@@ -1,21 +1,27 @@
 import { create } from 'zustand';
-import { PlaceInfo } from '../types/placeInfo';
+import { MapPlaceInfo } from '../types/mapPlaceInfo';
+import { createSelectors } from './createSelectors';
 
 type ShopInfoState = {
-  selectedShop: PlaceInfo | null;
-  hoveredShop: PlaceInfo | null;
+  selectedShop: MapPlaceInfo | null;
+  hoveredShop: MapPlaceInfo | null;
 };
 
 type ShopInfoAction = {
-  setSelectedShop: (place: PlaceInfo | null) => void;
-  setHoveredShop: (place: PlaceInfo | null) => void;
+  setSelectedShop: (place: MapPlaceInfo | null) => void;
+  setHoveredShop: (place: MapPlaceInfo | null) => void;
 };
 
-const useShopInfoStore = create<ShopInfoState & ShopInfoAction>((set) => ({
+const useShopInfoStoreBase = create<ShopInfoState & ShopInfoAction>((set) => ({
   selectedShop: null,
   hoveredShop: null,
-  setSelectedShop: (place) => set({ selectedShop: place }),
-  setHoveredShop: (place) => set({ hoveredShop: place }),
+  setSelectedShop: (place) =>
+    set(() => ({
+      selectedShop: place,
+    })),
+  setHoveredShop: (place) => set(() => ({ hoveredShop: place })),
 }));
+
+const useShopInfoStore = createSelectors(useShopInfoStoreBase);
 
 export default useShopInfoStore;

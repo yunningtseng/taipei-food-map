@@ -4,7 +4,7 @@ import { searchClient } from '../utils/algolia';
 import FilterSection from './filterMenu/FilterSection';
 import ShopDetail from './shopList/ShopDetail';
 import ShopList from './shopList/ShopList';
-import MapFilter from './shopMap/ShopMap';
+import ShopMap from './shopMap/ShopMap';
 
 const LandingPage = () => {
   return (
@@ -26,7 +26,7 @@ const LandingPage = () => {
           <ShopList />
           <Box position='relative'>
             <ShopDetail />
-            <MapFilter />
+            <ShopMap />
           </Box>
         </InstantSearch>
       </Box>

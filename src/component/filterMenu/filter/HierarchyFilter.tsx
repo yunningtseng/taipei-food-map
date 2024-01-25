@@ -1,67 +1,35 @@
-import { Box, ListItemText } from '@mui/material';
-import { useHierarchicalMenu } from 'react-instantsearch';
-import { HierarchicalListProps } from '../../../types/hierarchy';
+import useQueryShopStore from '../../../store/useQueryShopStore';
 import {
-  StyledHierarchyListItem,
-  StyledListItemCount,
+  StyledListItem,
+  StyledListItemButton,
+  StyledListItemText,
 } from '../styles/Filter.styles';
 
 type Props = {
-  attributes: string[];
+  dataList: string[];
 };
 
-const HierarchicalList = ({
-  items,
-  createURL,
-  onNavigate,
-  isTop,
-}: HierarchicalListProps) => {
-  if (items.length === 0) {
-    return null;
-  }
+const HierarchyFilter = ({ dataList }: Props) => {
+  const textQuery = useQueryShopStore.use.textQuery();
+  const setTextQuery = useQueryShopStore.use.setTextQuery();
+
+  const handleClick = (item: string) => () => {
+    setTextQuery(textQuery === item ? '' : item);
+  };
 
   return (
     <>
-      {items.map((item) => (
-        <Box key={item.value}>
-          <StyledHierarchyListItem
-            onClick={(event) => {
-              createURL(item.value);
-              event.preventDefault();
-              onNavigate(item.value);
-            }}
-            isTop={isTop}
-            isSelected={item.isRefined}
-          >
-            <ListItemText>{item.label}</ListItemText>
-            <StyledListItemCount>{`(${item.count})`}</StyledListItemCount>
-          </StyledHierarchyListItem>
-          {item.data && (
-            <HierarchicalList
-              items={item.data}
-              onNavigate={onNavigate}
-              createURL={createURL}
-              isTop={false}
+      {dataList.map((item) => (
+        <StyledListItem key={item}>
+          <StyledListItemButton onClick={handleClick(item)} dense>
+            <StyledListItemText
+              primary={item}
+              isSelected={item === textQuery}
             />
-          )}
-        </Box>
+          </StyledListItemButton>
+        </StyledListItem>
       ))}
     </>
-  );
-};
-
-const HierarchyFilter = ({ attributes }: Props) => {
-  const { items, refine, createURL } = useHierarchicalMenu({
-    attributes,
-  });
-
-  return (
-    <HierarchicalList
-      items={items}
-      onNavigate={refine}
-      createURL={createURL}
-      isTop
-    />
   );
 };
 

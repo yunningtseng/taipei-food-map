@@ -1,13 +1,8 @@
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
-import Chip from '@mui/material/Chip';
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
-
-type CategoryChipProps = {
-  chipColor: number;
-};
 
 const StyledShopListContainer = styled('div')({
   display: 'flex',
@@ -79,20 +74,6 @@ const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
   },
 }));
 
-// ! 
-const StyledCategoryChip = styled(Chip, {
-  shouldForwardProp: (prop) => prop !== 'chipColor',
-})<CategoryChipProps>(({ theme, chipColor }) => ({
-  ...theme.typography.caption,
-
-  ...(chipColor === 0 && {
-    backgroundColor: theme.palette.grey[300],
-  }),
-  ...(chipColor === 1 && {
-    backgroundColor: theme.palette.grey[300],
-  }),
-}));
-
 export {
   StyledShop,
   StyledShopContainer,
@@ -101,5 +82,4 @@ export {
   StyledShopListContainer,
   StyledShopName,
   StyledTooltip,
-  StyledCategoryChip,
 };

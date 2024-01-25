@@ -1,20 +1,20 @@
 import { useFetchShopPhoto } from '../../hooks/useFetchShopPhoto';
-import { ShopHit } from '../../types/shop';
+import { Place } from '../../types/place';
 import { StyledShopImg } from './styles/ShopList.styles';
 
 type PhotoComponentProps = {
-  hit: ShopHit;
+  item: Place;
   index: number;
 };
 
-const ShopPhoto = ({ hit, index }: PhotoComponentProps) => {
-  const savedImgUrl = hit.imgUrls[index.toString()];
+const ShopPhoto = ({ item, index }: PhotoComponentProps) => {
+  const savedImgUrl = item.imgUrls[index.toString()];
   const hasImgUrl = savedImgUrl !== undefined;
 
   const { fetchedUrl, isLoading } = useFetchShopPhoto(
-    hasImgUrl ? '' : hit.photoNames[index],
-    hit.id,
-    index
+    hasImgUrl ? '' : item.photoNames[index],
+    // item.id,
+    // index
   );
   const imgUrl = hasImgUrl ? savedImgUrl : fetchedUrl;
 
