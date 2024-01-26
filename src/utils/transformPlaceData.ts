@@ -2,7 +2,6 @@ import { RawPlace } from '../types/place';
 
 export const transformPlaceData = (textQuery: string, data: RawPlace[]) => {
   const shopList = [];
-  console.log(data);
 
   for (const item of data) {
     const id = item.id;

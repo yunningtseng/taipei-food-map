@@ -1,38 +1,15 @@
 import { create } from 'zustand';
 import { createSelectors } from './createSelectors';
-
-type SetLocationRestrictionProps = {
-  rectangle: {
-    low: {
-      latitude: number;
-      longitude: number;
-    };
-    high: {
-      latitude: number;
-      longitude: number;
-    };
-  };
-};
-
-export type GetLocationsProps = {
-  textQuery: string;
-  locationRestriction: SetLocationRestrictionProps;
-};
-
-type QueryShopState = GetLocationsProps & {
-  rating: number;
-  orderType: string;
-};
-
-type QueryShopAction = {
-  setTextQuery: (queryText: string) => void;
-  setRating: (rating: number) => void;
-  setOrderType: (orderType: string) => void;
-};
+import { QueryShopAction, QueryShopState } from '../types/queryShop';
 
 const useQueryShopStoreBase = create<QueryShopState & QueryShopAction>(
   (set) => ({
     textQuery: '蛋糕',
+    locationCenter: {
+      longitude: 121.508511,
+      latitude: 25.042274,
+    },
+    distance: 1,
     locationRestriction: {
       rectangle: {
         low: {
@@ -48,9 +25,8 @@ const useQueryShopStoreBase = create<QueryShopState & QueryShopAction>(
     rating: 0,
     orderType: '',
     setTextQuery: (textQuery) => set(() => ({ textQuery })),
-    setLocationRestriction: (
-      locationRestriction: SetLocationRestrictionProps
-    ) => set(() => ({ locationRestriction })),
+    setLocationCenter: (locationCenter) => set(() => ({ locationCenter })),
+    setDistance: (distance) => set(() => ({ distance })),
     setRating: (rating) => set(() => ({ rating })),
     setOrderType: (orderType) => set(() => ({ orderType })),
   })

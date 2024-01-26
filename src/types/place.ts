@@ -66,3 +66,11 @@ export type Place = Omit<
   imgUrls: Record<string, string>;
   editorialSummary: string;
 };
+
+export type MapPlace = {
+  id: string;
+  name: string;
+  description: string;
+  longitude: number;
+  latitude: number;
+};

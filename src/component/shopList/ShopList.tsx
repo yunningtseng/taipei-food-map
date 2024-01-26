@@ -2,19 +2,19 @@ import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import { useFetchPlaces } from '../../hooks/useFetchPlaces';
 import ShopListItem from './ShopListItem';
-import SortFilter from './ShopSorter';
+// import SortFilter from './ShopSorter';
 import { StyledShopListContainer } from './styles/ShopList.styles';
 
 const ShopList = () => {
   const { data, isLoading } = useFetchPlaces();
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Box width={575}>Loading...</Box>;
 
   if (!data) return <div>No data.</div>;
 
   return (
     <Box m={3}>
-      <SortFilter />
+      {/* <SortFilter /> */}
       <StyledShopListContainer>
         <Box minWidth={275} m={1}>
           {data.map((item) => (

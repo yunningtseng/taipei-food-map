@@ -1,6 +1,6 @@
 import { useFetchShopPhoto } from '../../hooks/useFetchShopPhoto';
 import { Place } from '../../types/place';
-import { StyledShopImg } from './styles/ShopList.styles';
+import { StyledNoShopImg, StyledShopImg } from './styles/ShopList.styles';
 
 type PhotoComponentProps = {
   item: Place;
@@ -12,14 +12,19 @@ const ShopPhoto = ({ item, index }: PhotoComponentProps) => {
   const hasImgUrl = savedImgUrl !== undefined;
 
   const { fetchedUrl, isLoading } = useFetchShopPhoto(
-    hasImgUrl ? '' : item.photoNames[index],
+    hasImgUrl ? '' : item.photoNames[index]
     // item.id,
     // index
   );
   const imgUrl = hasImgUrl ? savedImgUrl : fetchedUrl;
+  console.log('imgUrl', imgUrl);
 
   if (!hasImgUrl && isLoading) {
-    return 'Loading...';
+    return <StyledNoShopImg>Loading...</StyledNoShopImg>;
+  }
+
+  if (!imgUrl) {
+    return <StyledNoShopImg>No Image</StyledNoShopImg>;
   }
 
   return <StyledShopImg src={imgUrl} alt='place'></StyledShopImg>;

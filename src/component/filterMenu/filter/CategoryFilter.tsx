@@ -1,3 +1,4 @@
+import Box from '@mui/material/Box';
 import useQueryShopStore from '../../../store/useQueryShopStore';
 import {
   StyledListItem,
@@ -34,7 +35,7 @@ const CategoryFilter = ({ type, dataList }: Props) => {
   };
 
   return (
-    <>
+    <Box display='flex'>
       {dataList.map((item) => (
         <StyledListItem key={item}>
           <StyledListItemButton onClick={handleClick(item)} dense>
@@ -45,7 +46,7 @@ const CategoryFilter = ({ type, dataList }: Props) => {
           </StyledListItemButton>
         </StyledListItem>
       ))}
-    </>
+    </Box>
   );
 };
 

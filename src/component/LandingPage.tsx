@@ -1,6 +1,4 @@
 import Box from '@mui/material/Box';
-import { Configure, InstantSearch } from 'react-instantsearch';
-import { searchClient } from '../utils/algolia';
 import FilterSection from './filterMenu/FilterSection';
 import ShopDetail from './shopList/ShopDetail';
 import ShopList from './shopList/ShopList';
@@ -15,20 +13,12 @@ const LandingPage = () => {
         height='calc(100vh - 4.5rem)'
         pt={6}
       >
-        <InstantSearch
-          indexName='places'
-          searchClient={searchClient}
-          routing={true}
-          insights={true}
-        >
-          <Configure />
-          <FilterSection />
-          <ShopList />
-          <Box position='relative'>
-            <ShopDetail />
-            <ShopMap />
-          </Box>
-        </InstantSearch>
+        <FilterSection />
+        <ShopList />
+        <Box position='relative'>
+          <ShopDetail />
+          <ShopMap />
+        </Box>
       </Box>
     </div>
   );

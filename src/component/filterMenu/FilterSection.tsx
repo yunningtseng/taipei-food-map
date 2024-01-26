@@ -1,11 +1,11 @@
 import { Box, Typography } from '@mui/material';
 import CategoryFilter from './filter/CategoryFilter';
 import HierarchyFilter from './filter/HierarchyFilter';
-// import MRTFilterSection from './filter/MRTFilter';
+import MRTFilterSection from './filter/MRTFilter';
 
 const FilterSection = () => {
   return (
-    <Box width={210} m={3}>
+    <Box width={300} ml={3} mt={5}>
       <Typography variant='h6'>種類</Typography>
       <HierarchyFilter
         dataList={[
@@ -25,7 +25,8 @@ const FilterSection = () => {
       <Typography variant='h6'>評分</Typography>
       <CategoryFilter type='rating' dataList={['5', '4', '3', '2', '1']} />
 
-      {/* <MRTFilterSection /> */}
+      <Typography variant='h6'>捷運站</Typography>
+      <MRTFilterSection />
     </Box>
   );
 };

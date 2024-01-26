@@ -16,8 +16,8 @@ const ShopSorter = () => {
         // value={}
         onChange={() => {}}
       >
-        {options.map((option) => (
-          <Tab label={option.label} onClick={() => {}} />
+        {options.map((option, index) => (
+          <Tab key={index} label={option.label} onClick={() => {}} />
         ))}
       </Tabs>
     </Box>

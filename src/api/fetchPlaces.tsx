@@ -1,5 +1,5 @@
-import { GetLocationsProps } from '../store/useQueryShopStore';
 import { RawPlace } from '../types/place';
+import { GetLocationsProps } from '../types/queryShop';
 
 type ResultData = {
   places?: RawPlace[];

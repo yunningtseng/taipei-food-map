@@ -13,7 +13,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
-import useShopInfoStore from '../../store/useShopInfoStore';
+import useShopInfoStore from '../../store/useGetShopInfoStore';
 import { Place } from '../../types/place';
 import {
   StyledShop,
@@ -154,7 +154,7 @@ const ShopListItem = ({ item }: ShopListItemProps) => {
             </Box>
           )}
         </StyledShopContent>
-        <Box display='flex' justifyContent='space-between'>
+        <Box display='flex' justifyContent='space-between' pl={2}>
           <Box display='flex' gap={2} alignItems='center'>
             <StyledTooltip title='評分數' placement='top' arrow>
               <Box display='flex' alignItems='center' gap={1}>

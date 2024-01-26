@@ -1,12 +1,12 @@
 import Box from '@mui/material/Box';
 import { FeatureCollection } from 'geojson';
 import mapboxgl from 'mapbox-gl';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Map, { Layer, MapRef, Source } from 'react-map-gl';
 import { useFetchPlaces } from '../../hooks/useFetchPlaces';
-import useShopInfoStore from '../../store/useShopInfoStore';
-import { Place } from '../../types/place';
-import { MapPlaceInfo } from '../../types/mapPlaceInfo';
+import useQueryShopStore from '../../store/useQueryShopStore';
+import useShopInfoStore from '../../store/useGetShopInfoStore';
+import { MapPlace, Place } from '../../types/place';
 import {
   StyledHighlightPaint,
   StyledPaint,
@@ -23,6 +23,8 @@ const ShopMap = () => {
   const setHoveredShop = useShopInfoStore.use.setHoveredShop();
   const selectedShop = useShopInfoStore.use.selectedShop();
   const hoveredShop = useShopInfoStore.use.hoveredShop();
+
+  const locationCenter = useQueryShopStore.use.locationCenter();
 
   const mapRef = useRef<MapRef>(null);
   const [cursor, setCursor] = useState<string>('grab');
@@ -53,7 +55,7 @@ const ShopMap = () => {
   const handleShopInteraction = useCallback(
     (
       event: mapboxgl.MapLayerMouseEvent,
-      setShop: (shop: MapPlaceInfo | null) => void
+      setShop: (shop: MapPlace | null) => void
     ) => {
       const {
         features,
@@ -89,14 +91,11 @@ const ShopMap = () => {
   const onMouseLeave = useCallback(() => setCursor('grab'), []);
   const onDragStart = useCallback(() => setCursor('grabbing'), []);
 
-  // TODO
-  const onMoveEnd = useCallback(() => {
-    // const bounds = mapRef.current!.getBounds();
-    // refine({
-    //   northEast: bounds.getNorthEast(),
-    //   southWest: bounds.getSouthWest(),
-    // });
-  }, []);
+  useEffect(() => {
+    mapRef.current?.flyTo({
+      center: [locationCenter.longitude, locationCenter.latitude],
+    });
+  }, [locationCenter]);
 
   return (
     <Box mt={4}>
@@ -106,12 +105,11 @@ const ShopMap = () => {
         initialViewState={{
           longitude: 121.508511,
           latitude: 25.042274,
-          zoom: 13,
+          zoom: 15,
         }}
-        style={{ width: 'calc(100vw - 53rem)', height: 600 }}
+        style={{ width: 'calc(100vw - 47rem)', height: 900 }}
         mapStyle='mapbox://styles/mapbox/outdoors-v11'
         interactiveLayerIds={['places']}
-        onMoveEnd={onMoveEnd}
         onClick={handleShopSelection}
         onMouseMove={handleShopHover}
         onMouseEnter={onMouseEnter}
