@@ -1,6 +1,4 @@
 import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import { useState } from 'react';
 import mrt from '../../../../data/mrt.json';
@@ -36,14 +34,14 @@ const MRTFilterSection = () => {
       <Box>
         {lineInfo.map((line) => (
           <Box key={line.id}>
-            <List component='nav'>
-              <ListItemButton
+            <StyledListItem>
+              <StyledListItemButton
                 selected={line.id === selectedLine}
                 onClick={(event) => handleClick(event, line.id)}
               >
                 <ListItemText primary={line.name} />
-              </ListItemButton>
-            </List>
+              </StyledListItemButton>
+            </StyledListItem>
           </Box>
         ))}
       </Box>
@@ -56,7 +54,7 @@ const MRTFilterSection = () => {
     return (
       <StyledStationContainer>
         {data.map((station) => (
-          <StyledListItem>
+          <StyledListItem key={station.stationID}>
             <StyledListItemButton
               onClick={() => {
                 setLocationCenter(station.stationPosition);
@@ -75,7 +73,7 @@ const MRTFilterSection = () => {
   };
 
   return (
-    <Box display='flex' gap={2}>
+    <Box display='flex' gap={2} mt={1}>
       <Line />
       <Station data={mrtData[selectedLine]} />
     </Box>

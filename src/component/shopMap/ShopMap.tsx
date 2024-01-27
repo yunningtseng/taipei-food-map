@@ -1,11 +1,14 @@
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import StarIcon from '@mui/icons-material/Star';
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import { FeatureCollection } from 'geojson';
 import mapboxgl from 'mapbox-gl';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Map, { Layer, MapRef, Source } from 'react-map-gl';
 import { useFetchPlaces } from '../../hooks/useFetchPlaces';
-import useQueryShopStore from '../../store/useQueryShopStore';
 import useShopInfoStore from '../../store/useGetShopInfoStore';
+import useQueryShopStore from '../../store/useQueryShopStore';
 import { MapPlace, Place } from '../../types/place';
 import {
   StyledHighlightPaint,
@@ -36,7 +39,9 @@ const ShopMap = () => {
         properties: {
           id: item.id,
           name: item.displayName,
-          description: item.formattedAddress,
+          address: item.formattedAddress,
+          rating: item.rating,
+          userRatingCount: item.userRatingCount,
         },
         geometry: {
           type: 'Point',
@@ -64,15 +69,18 @@ const ShopMap = () => {
       event.originalEvent.stopPropagation();
 
       const feature = features && features[0];
+
       setShop(null);
 
       if (feature && feature.properties) {
         setShop({
           id: feature.properties.id,
           name: feature.properties.name,
-          description: feature.properties.description,
+          address: feature.properties.address,
           longitude: lng,
           latitude: lat,
+          rating: feature.properties.rating,
+          userRatingCount: feature.properties.userRatingCount,
         });
       }
     },
@@ -97,6 +105,40 @@ const ShopMap = () => {
     });
   }, [locationCenter]);
 
+  const MapShop = ({
+    name,
+    address,
+    rating,
+    userRatingCount,
+    longitude,
+    latitude,
+  }: MapPlace) => {
+    return (
+      <StyledPopup
+        key={Math.random()}
+        closeButton={false}
+        longitude={longitude}
+        latitude={latitude}
+        offset={12}
+      >
+        <StyledShopName>{name}</StyledShopName>
+
+        <Box display='flex'>
+          <StarIcon fontSize='small' />
+          <Typography
+            variant='body2'
+            ml={0.5}
+          >{`${rating} (${userRatingCount})`}</Typography>
+        </Box>
+
+        <Box display='flex' alignItems='center' mt={1}>
+          <LocationOnIcon fontSize='small' />
+          <Typography variant='body2'>{address}</Typography>
+        </Box>
+      </StyledPopup>
+    );
+  };
+
   return (
     <Box mt={4}>
       <Map
@@ -107,7 +149,7 @@ const ShopMap = () => {
           latitude: 25.042274,
           zoom: 15,
         }}
-        style={{ width: 'calc(100vw - 47rem)', height: 900 }}
+        style={{ width: 'calc(100vw - 43rem)', height: 900 }}
         mapStyle='mapbox://styles/mapbox/outdoors-v11'
         interactiveLayerIds={['places']}
         onClick={handleShopSelection}
@@ -133,29 +175,25 @@ const ShopMap = () => {
         />
 
         {selectedShop && (
-          <StyledPopup
-            key={Math.random()}
-            closeButton={false}
+          <MapShop
+            name={selectedShop.name}
+            address={selectedShop.address}
+            rating={selectedShop.rating}
             longitude={selectedShop.longitude}
             latitude={selectedShop.latitude}
-            offset={12}
-          >
-            <StyledShopName>{selectedShop.name}</StyledShopName>
-            <div>{selectedShop.description}</div>
-          </StyledPopup>
+            userRatingCount={selectedShop.userRatingCount}
+          />
         )}
 
         {selectedShop?.id !== hoveredShop?.id && hoveredShop && (
-          <StyledPopup
-            key={Math.random()}
-            closeButton={false}
+          <MapShop
+            name={hoveredShop.name}
+            address={hoveredShop.address}
+            rating={hoveredShop.rating}
             longitude={hoveredShop.longitude}
             latitude={hoveredShop.latitude}
-            offset={12}
-          >
-            <StyledShopName>{hoveredShop.name}</StyledShopName>
-            <div>{hoveredShop.description}</div>
-          </StyledPopup>
+            userRatingCount={hoveredShop.userRatingCount}
+          />
         )}
       </Map>
     </Box>

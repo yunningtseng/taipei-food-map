@@ -19,13 +19,19 @@ const FilterSection = () => {
         ]}
       />
 
-      <Typography variant='h6'>用餐方式</Typography>
+      <Typography variant='h6' mt={2}>
+        用餐方式
+      </Typography>
       <CategoryFilter type='order' dataList={['內用', '外帶', '外送']} />
 
-      <Typography variant='h6'>評分</Typography>
+      <Typography variant='h6' mt={2}>
+        評分
+      </Typography>
       <CategoryFilter type='rating' dataList={['5', '4', '3', '2', '1']} />
 
-      <Typography variant='h6'>捷運站</Typography>
+      <Typography variant='h6' mt={2}>
+        捷運站
+      </Typography>
       <MRTFilterSection />
     </Box>
   );

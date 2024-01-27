@@ -17,7 +17,6 @@ const ShopPhoto = ({ item, index }: PhotoComponentProps) => {
     // index
   );
   const imgUrl = hasImgUrl ? savedImgUrl : fetchedUrl;
-  console.log('imgUrl', imgUrl);
 
   if (!hasImgUrl && isLoading) {
     return <StyledNoShopImg>Loading...</StyledNoShopImg>;

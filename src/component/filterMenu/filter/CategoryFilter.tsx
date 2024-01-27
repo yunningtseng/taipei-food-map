@@ -35,7 +35,7 @@ const CategoryFilter = ({ type, dataList }: Props) => {
   };
 
   return (
-    <Box display='flex'>
+    <Box display='flex' justifyContent='space-between'>
       {dataList.map((item) => (
         <StyledListItem key={item}>
           <StyledListItemButton onClick={handleClick(item)} dense>

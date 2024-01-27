@@ -43,13 +43,17 @@ const ShopListItem = ({ item }: ShopListItemProps) => {
     setAnchorEl(null);
   };
 
+  console.log(item);
+
   const handleShopSelection = () => {
     setSelectedShop({
       id: item.id,
       name: item.displayName,
-      description: item.formattedAddress,
+      address: item.formattedAddress,
       longitude: item.location.longitude,
       latitude: item.location.latitude,
+      rating: item.rating,
+      userRatingCount: item.userRatingCount,
     });
   };
 
@@ -57,9 +61,11 @@ const ShopListItem = ({ item }: ShopListItemProps) => {
     setHoveredShop({
       id: item.id,
       name: item.displayName,
-      description: item.formattedAddress,
+      address: item.formattedAddress,
       longitude: item.location.longitude,
       latitude: item.location.latitude,
+      rating: item.rating,
+      userRatingCount: item.userRatingCount,
     });
   };
 

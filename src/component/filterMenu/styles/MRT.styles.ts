@@ -32,7 +32,7 @@ const StyledListItemText = styled(ListItemText, {
 
 const StyledStationContainer = styled('div')({
   width: '10rem',
-  height: '38rem',
+  height: '32rem',
   overflow: 'hidden',
   overflowY: 'auto',
 });

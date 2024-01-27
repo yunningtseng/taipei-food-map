@@ -68,9 +68,11 @@ export type Place = Omit<
 };
 
 export type MapPlace = {
-  id: string;
+  id?: string;
   name: string;
-  description: string;
+  address: string;
   longitude: number;
   latitude: number;
+  rating: number;
+  userRatingCount: number;
 };

@@ -18,6 +18,9 @@ const StyledListItemButton = styled(ListItemButton)(({ theme }) => ({
 const StyledListItemText = styled(ListItemText, {
   shouldForwardProp: (prop) => prop !== 'isSelected',
 })<ListItemTextProps>(({ theme, isSelected }) => ({
+  display: 'flex',
+  justifyContent: 'center',
+
   ...(isSelected && {
     '& .MuiTypography-root': {
       ...theme.typography.button,

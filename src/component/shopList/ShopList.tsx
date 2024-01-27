@@ -2,7 +2,7 @@ import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import { useFetchPlaces } from '../../hooks/useFetchPlaces';
 import ShopListItem from './ShopListItem';
-// import SortFilter from './ShopSorter';
+import SortFilter from './ShopSorter';
 import { StyledShopListContainer } from './styles/ShopList.styles';
 
 const ShopList = () => {
@@ -13,8 +13,8 @@ const ShopList = () => {
   if (!data) return <div>No data.</div>;
 
   return (
-    <Box m={3}>
-      {/* <SortFilter /> */}
+    <Box mt={3}>
+      <SortFilter />
       <StyledShopListContainer>
         <Box minWidth={275} m={1}>
           {data.map((item) => (
