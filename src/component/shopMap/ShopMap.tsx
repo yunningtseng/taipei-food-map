@@ -140,63 +140,62 @@ const ShopMap = () => {
   };
 
   return (
-    <Box mt={4}>
-      <Map
-        ref={mapRef}
-        mapboxAccessToken={accessToken}
-        initialViewState={{
-          longitude: 121.508511,
-          latitude: 25.042274,
-          zoom: 15,
-        }}
-        style={{ width: 'calc(100vw - 43rem)', height: 900 }}
-        mapStyle='mapbox://styles/mapbox/outdoors-v11'
-        interactiveLayerIds={['places']}
-        onClick={handleShopSelection}
-        onMouseMove={handleShopHover}
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
-        onDragStart={onDragStart}
-        onDragEnd={onMouseLeave}
-        cursor={cursor}
-      >
-        <Source id='places' type='geojson' data={geoJsonData}></Source>
-        <Layer id='places' source='places' type='circle' paint={StyledPaint} />
-        <Layer
-          id='places-highlighted'
-          source='places'
-          type='circle'
-          paint={StyledHighlightPaint}
-          filter={[
-            'any',
-            ['==', ['get', 'id'], selectedShop?.id ?? ''],
-            ['==', ['get', 'id'], hoveredShop?.id ?? ''],
-          ]}
+    <Map
+      ref={mapRef}
+      mapboxAccessToken={accessToken}
+      initialViewState={{
+        longitude: 121.508511,
+        latitude: 25.042274,
+        zoom: 13,
+      }}
+      // FIXME
+      style={{ width: '100%', height: '67rem' }}
+      mapStyle='mapbox://styles/mapbox/outdoors-v11'
+      interactiveLayerIds={['places']}
+      onClick={handleShopSelection}
+      onMouseMove={handleShopHover}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      onDragStart={onDragStart}
+      onDragEnd={onMouseLeave}
+      cursor={cursor}
+    >
+      <Source id='places' type='geojson' data={geoJsonData}></Source>
+      <Layer id='places' source='places' type='circle' paint={StyledPaint} />
+      <Layer
+        id='places-highlighted'
+        source='places'
+        type='circle'
+        paint={StyledHighlightPaint}
+        filter={[
+          'any',
+          ['==', ['get', 'id'], selectedShop?.id ?? ''],
+          ['==', ['get', 'id'], hoveredShop?.id ?? ''],
+        ]}
+      />
+
+      {selectedShop && (
+        <MapShop
+          name={selectedShop.name}
+          address={selectedShop.address}
+          rating={selectedShop.rating}
+          longitude={selectedShop.longitude}
+          latitude={selectedShop.latitude}
+          userRatingCount={selectedShop.userRatingCount}
         />
+      )}
 
-        {selectedShop && (
-          <MapShop
-            name={selectedShop.name}
-            address={selectedShop.address}
-            rating={selectedShop.rating}
-            longitude={selectedShop.longitude}
-            latitude={selectedShop.latitude}
-            userRatingCount={selectedShop.userRatingCount}
-          />
-        )}
-
-        {selectedShop?.id !== hoveredShop?.id && hoveredShop && (
-          <MapShop
-            name={hoveredShop.name}
-            address={hoveredShop.address}
-            rating={hoveredShop.rating}
-            longitude={hoveredShop.longitude}
-            latitude={hoveredShop.latitude}
-            userRatingCount={hoveredShop.userRatingCount}
-          />
-        )}
-      </Map>
-    </Box>
+      {selectedShop?.id !== hoveredShop?.id && hoveredShop && (
+        <MapShop
+          name={hoveredShop.name}
+          address={hoveredShop.address}
+          rating={hoveredShop.rating}
+          longitude={hoveredShop.longitude}
+          latitude={hoveredShop.latitude}
+          userRatingCount={hoveredShop.userRatingCount}
+        />
+      )}
+    </Map>
   );
 };
 

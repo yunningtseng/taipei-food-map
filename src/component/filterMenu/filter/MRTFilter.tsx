@@ -1,5 +1,6 @@
 import Box from '@mui/material/Box';
 import ListItemText from '@mui/material/ListItemText';
+import * as React from 'react';
 import { useState } from 'react';
 import mrt from '../../../../data/mrt.json';
 import { lineInfo } from '../../../const/lineInfo';
@@ -10,7 +11,7 @@ import {
   StyledListItemButton,
   StyledListItemText,
   StyledStationContainer,
-} from '../styles/MRT.styles';
+} from '../styles/FilterContent.styles';
 
 const mrtData: MrtData = mrt;
 
@@ -18,18 +19,16 @@ type StationProps = {
   data: StationInfoProps[];
 };
 
-const MRTFilterSection = () => {
+type MRTFilterProps = {
+  setSelectedTitle: React.Dispatch<React.SetStateAction<string>>;
+  handleClick: () => void;
+};
+
+const MRTFilter = ({ setSelectedTitle, handleClick }: MRTFilterProps) => {
   const [selectedLine, setSelectedLine] = useState('BL');
-  const [selectedStation, setSelectedStation] = useState('頂埔');
+  const [selectedStation, setSelectedStation] = useState('西門');
 
   const Line = () => {
-    const handleClick = (
-      _: React.MouseEvent<HTMLDivElement, MouseEvent>,
-      line: string
-    ) => {
-      setSelectedLine(line);
-    };
-
     return (
       <Box>
         {lineInfo.map((line) => (
@@ -37,7 +36,9 @@ const MRTFilterSection = () => {
             <StyledListItem>
               <StyledListItemButton
                 selected={line.id === selectedLine}
-                onClick={(event) => handleClick(event, line.id)}
+                onClick={() => {
+                  setSelectedLine(line.id);
+                }}
               >
                 <ListItemText primary={line.name} />
               </StyledListItemButton>
@@ -59,6 +60,8 @@ const MRTFilterSection = () => {
               onClick={() => {
                 setLocationCenter(station.stationPosition);
                 setSelectedStation(station.stationName);
+                setSelectedTitle(station.stationName);
+                handleClick();
               }}
             >
               <StyledListItemText
@@ -80,4 +83,4 @@ const MRTFilterSection = () => {
   );
 };
 
-export default MRTFilterSection;
+export default MRTFilter;

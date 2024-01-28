@@ -1,39 +1,97 @@
-import { Box, Typography } from '@mui/material';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Grow from '@mui/material/Grow';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
+import { useRef, useState } from 'react';
 import CategoryFilter from './filter/CategoryFilter';
-import HierarchyFilter from './filter/HierarchyFilter';
-import MRTFilterSection from './filter/MRTFilter';
+import CommonFilter from './filter/CommonFilter';
+import MRTFilter from './filter/MRTFilter';
+import { StyledFilterButton } from './styles/FilterButton.styles';
 
-const FilterSection = () => {
+type FilterSectionProps = {
+  type: string;
+  title: string;
+  options: string[];
+};
+
+const FilterSection = ({ type, title, options }: FilterSectionProps) => {
+  const [selectedTitle, setSelectedTitle] = useState('');
+  const [open, setOpen] = useState(false);
+  const anchorRef = useRef<HTMLDivElement>(null);
+
+  const handleClick = () => {
+    setOpen((prevOpen) => !prevOpen);
+  };
+
+  const handleClose = (event: Event) => {
+    if (
+      anchorRef.current &&
+      anchorRef.current.contains(event.target as HTMLElement)
+    ) {
+      return;
+    }
+
+    setOpen(false);
+  };
+
   return (
-    <Box width={300} ml={3} mt={5}>
-      <Typography variant='h6'>種類</Typography>
-      <HierarchyFilter
-        dataList={[
-          '蛋糕',
-          '豆花',
-          '冰品飲料',
-          '冰淇淋',
-          '麵包',
-          '餅乾',
-          '巧克力',
-        ]}
-      />
-
-      <Typography variant='h6' mt={2}>
-        用餐方式
-      </Typography>
-      <CategoryFilter type='order' dataList={['內用', '外帶', '外送']} />
-
-      <Typography variant='h6' mt={2}>
-        評分
-      </Typography>
-      <CategoryFilter type='rating' dataList={['5', '4', '3', '2', '1']} />
-
-      <Typography variant='h6' mt={2}>
-        捷運站
-      </Typography>
-      <MRTFilterSection />
-    </Box>
+    <>
+      <ButtonGroup ref={anchorRef}>
+        <StyledFilterButton onClick={handleClick} size='medium'>
+          {selectedTitle ? selectedTitle : title}
+          <ArrowDropDownIcon />
+        </StyledFilterButton>
+      </ButtonGroup>
+      <Popper
+        sx={{
+          zIndex: 1,
+        }}
+        open={open}
+        anchorEl={anchorRef.current}
+        transition
+        disablePortal
+      >
+        {({ TransitionProps, placement }) => (
+          <Grow
+            {...TransitionProps}
+            style={{
+              transformOrigin:
+                placement === 'bottom' ? 'center top' : 'center bottom',
+            }}
+          >
+            <Paper>
+              <ClickAwayListener onClickAway={handleClose}>
+                <>
+                  {type === 'category' && (
+                    <CategoryFilter
+                      options={options}
+                      setSelectedTitle={setSelectedTitle}
+                      handleClick={handleClick}
+                    />
+                  )}
+                  {type === 'mrt' && (
+                    <MRTFilter
+                      setSelectedTitle={setSelectedTitle}
+                      handleClick={handleClick}
+                    />
+                  )}
+                  {type === 'general' && (
+                    <CommonFilter
+                      title={title}
+                      options={options}
+                      setSelectedTitle={setSelectedTitle}
+                      handleClick={handleClick}
+                    />
+                  )}
+                </>
+              </ClickAwayListener>
+            </Paper>
+          </Grow>
+        )}
+      </Popper>
+    </>
   );
 };
 

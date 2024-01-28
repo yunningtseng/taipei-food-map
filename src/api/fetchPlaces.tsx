@@ -8,6 +8,7 @@ type ResultData = {
 export async function fetchPlaces({
   textQuery,
   locationRestriction,
+  rating,
 }: GetLocationsProps) {
   const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
@@ -26,7 +27,7 @@ export async function fetchPlaces({
         languageCode: 'zh-TW',
         regionCode: 'TW',
         rankPreference: 'RELEVANCE',
-        minRating: 1,
+        minRating: rating,
         locationRestriction,
       }),
     }

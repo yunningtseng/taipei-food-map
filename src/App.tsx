@@ -1,6 +1,6 @@
 import { ThemeProvider } from '@mui/material';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-// import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useEffect } from 'react';
 import LandingPage from './component/LandingPage';
@@ -25,7 +25,7 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+        <ReactQueryDevtools initialIsOpen={false} />
         <ThemeProvider theme={theme}>
           <Layout>
             <LandingPage></LandingPage>

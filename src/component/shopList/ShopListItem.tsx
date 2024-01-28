@@ -43,8 +43,6 @@ const ShopListItem = ({ item }: ShopListItemProps) => {
     setAnchorEl(null);
   };
 
-  console.log(item);
-
   const handleShopSelection = () => {
     setSelectedShop({
       id: item.id,

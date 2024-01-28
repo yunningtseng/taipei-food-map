@@ -14,6 +14,7 @@ type LocationRestrictionProps = {
 export type GetLocationsProps = {
   textQuery: string;
   locationRestriction: LocationRestrictionProps;
+  rating: number;
 };
 
 type LocationCenter = {
@@ -24,7 +25,6 @@ type LocationCenter = {
 export type QueryShopState = GetLocationsProps & {
   locationCenter: LocationCenter;
   distance: number;
-  rating: number;
   orderType: string;
 };
 
@@ -34,4 +34,5 @@ export type QueryShopAction = {
   setDistance: (distance: number) => void;
   setRating: (rating: number) => void;
   setOrderType: (orderType: string) => void;
+  rating: number;
 };

@@ -7,7 +7,8 @@ import { styled } from '@mui/material/styles';
 const StyledShopListContainer = styled('div')({
   display: 'flex',
   // FIXME 修正高度
-  height: 'calc(100% - 2.5rem)',
+  height: 'calc(100% - 7rem)',
+  marginTop: '2rem',
   overflow: 'hidden',
   overflowY: 'auto',
   border: '1px solid #ccc',
