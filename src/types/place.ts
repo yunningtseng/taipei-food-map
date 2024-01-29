@@ -52,16 +52,12 @@ export type Place = Omit<
   | 'displayName'
   | 'addressComponents'
   | 'reviews'
-  | 'dineIn'
-  | 'takeout'
-  | 'delivery'
   | 'photos'
   | 'editorialSummary'
 > & {
   displayName: string;
   formattedAddress: string;
-  orderType: string[];
-  ratingStar: number;
+  distance: number;
   photoNames: string[];
   imgUrls: Record<string, string>;
   editorialSummary: string;
@@ -71,6 +67,7 @@ export type MapPlace = {
   id?: string;
   name: string;
   address: string;
+  distance: number;
   longitude: number;
   latitude: number;
   rating: number;

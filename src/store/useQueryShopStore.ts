@@ -1,10 +1,31 @@
 import { create } from 'zustand';
+import { LocationCenter, SelectKey } from '../types/queryShop';
 import { createSelectors } from './createSelectors';
-import { QueryShopAction, QueryShopState } from '../types/queryShop';
+
+type QueryShopState = {
+  locationCenter: LocationCenter;
+  distance: number;
+  foodType: string;
+  line: string;
+  station: string;
+  minRating: string;
+  sortBy: string;
+};
+
+type QueryShopAction = {
+  setLocationCenter: (locationCenter: LocationCenter) => void;
+  setDistance: (distance: number) => void;
+  setSelectValue: ({
+    selectKey,
+    value,
+  }: {
+    selectKey: SelectKey;
+    value: string;
+  }) => void;
+};
 
 const useQueryShopStoreBase = create<QueryShopState & QueryShopAction>(
   (set) => ({
-    textQuery: '蛋糕',
     locationCenter: {
       longitude: 121.508511,
       latitude: 25.042274,
@@ -22,13 +43,15 @@ const useQueryShopStoreBase = create<QueryShopState & QueryShopAction>(
         },
       },
     },
-    rating: 0,
-    orderType: '',
-    setTextQuery: (textQuery) => set(() => ({ textQuery })),
+    foodType: '蛋糕',
+    line: 'BL',
+    station: '西門',
+    minRating: '不限',
+    sortBy: '相關度',
+    setSelectValue: ({ selectKey, value }) =>
+      set(() => ({ [selectKey]: value })),
     setLocationCenter: (locationCenter) => set(() => ({ locationCenter })),
     setDistance: (distance) => set(() => ({ distance })),
-    setRating: (rating) => set(() => ({ rating })),
-    setOrderType: (orderType) => set(() => ({ orderType })),
   })
 );
 

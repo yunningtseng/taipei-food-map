@@ -1,5 +1,9 @@
 import Box from '@mui/material/Box';
-import FilterSection from './filterMenu/FilterSection';
+import mrt from '../../data/mrt.json';
+import { lineInfo } from '../const/lineInfo';
+import Dropdown from './filterMenu/Dropdown';
+import MenuSelect from './filterMenu/MenuSelect';
+import TwoColumnMenuSelect from './filterMenu/TwoColumnMenuSelect';
 import ShopList from './shopList/ShopList';
 import ShopMap from './shopMap/ShopMap';
 
@@ -14,32 +18,43 @@ const LandingPage = () => {
     >
       <Box>
         <Box display='flex' gap={3}>
-          <FilterSection
-            type='category'
-            title='種類'
-            options={[
-              '蛋糕',
-              '豆花',
-              '冰品飲料',
-              '冰淇淋',
-              '麵包',
-              '餅乾',
-              '巧克力',
-            ]}
-          />
-          <FilterSection type='mrt' title='捷運站' />
+          <Dropdown selectKey='foodType'>
+            <MenuSelect
+              selectKey='foodType'
+              options={[
+                '蛋糕',
+                '豆花',
+                '冰品飲料',
+                '冰淇淋',
+                '麵包',
+                '餅乾',
+                '巧克力',
+              ]}
+            />
+          </Dropdown>
 
-          <FilterSection
-            type='general'
-            title='評分'
-            options={['不限', '4.5', '4', '3.5', '3']}
-          />
+          <Dropdown selectKey='station'>
+            <TwoColumnMenuSelect
+              leftSelectKey='line'
+              rightSelectKey='station'
+              leftColumnOptions={lineInfo}
+              rightColumnOptions={mrt}
+            />
+          </Dropdown>
 
-          <FilterSection
-            type='general'
-            title='排序'
-            options={['相關度', '評分數', '評論數']}
-          />
+          <Dropdown selectKey='minRating'>
+            <MenuSelect
+              selectKey='minRating'
+              options={['不限', '4.5', '4', '3.5', '3']}
+            />
+          </Dropdown>
+
+          <Dropdown selectKey='sortBy'>
+            <MenuSelect
+              selectKey='sortBy'
+              options={['相關度', '評分數', '評論數']}
+            />
+          </Dropdown>
         </Box>
 
         <ShopList />

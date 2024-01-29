@@ -1,15 +1,21 @@
 import { RawPlace } from '../types/place';
-import { GetLocationsProps } from '../types/queryShop';
+import { LocationRestriction } from '../types/queryShop';
 
 type ResultData = {
   places?: RawPlace[];
 };
 
+export type Props = {
+  textQuery: string;
+  locationRestriction: LocationRestriction;
+  minRating: number;
+};
+
 export async function fetchPlaces({
   textQuery,
   locationRestriction,
-  rating,
-}: GetLocationsProps) {
+  minRating,
+}: Props) {
   const GOOGLE_API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
 
   const res = await fetch(
@@ -27,7 +33,7 @@ export async function fetchPlaces({
         languageCode: 'zh-TW',
         regionCode: 'TW',
         rankPreference: 'RELEVANCE',
-        minRating: rating,
+        minRating,
         locationRestriction,
       }),
     }

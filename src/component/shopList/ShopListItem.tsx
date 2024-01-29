@@ -5,6 +5,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import SellIcon from '@mui/icons-material/Sell';
 import StarIcon from '@mui/icons-material/Star';
+import StraightenIcon from '@mui/icons-material/Straighten';
 import Box from '@mui/material/Box';
 import CardActions from '@mui/material/CardActions';
 import IconButton from '@mui/material/IconButton';
@@ -14,6 +15,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import useShopInfoStore from '../../store/useGetShopInfoStore';
+import useQueryShopStore from '../../store/useQueryShopStore';
 import { Place } from '../../types/place';
 import {
   StyledShop,
@@ -24,13 +26,15 @@ import {
 } from './styles/ShopList.styles';
 // import ShopPhoto from './ShopPhoto';
 
-type ShopListItemProps = {
+type Props = {
   item: Place;
 };
 
-const ShopListItem = ({ item }: ShopListItemProps) => {
+const ShopListItem = ({ item }: Props) => {
   const setSelectedShop = useShopInfoStore.use.setSelectedShop();
   const setHoveredShop = useShopInfoStore.use.setHoveredShop();
+
+  const station = useQueryShopStore.use.station();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -48,6 +52,7 @@ const ShopListItem = ({ item }: ShopListItemProps) => {
       id: item.id,
       name: item.displayName,
       address: item.formattedAddress,
+      distance: item.distance,
       longitude: item.location.longitude,
       latitude: item.location.latitude,
       rating: item.rating,
@@ -60,6 +65,7 @@ const ShopListItem = ({ item }: ShopListItemProps) => {
       id: item.id,
       name: item.displayName,
       address: item.formattedAddress,
+      distance: item.distance,
       longitude: item.location.longitude,
       latitude: item.location.latitude,
       rating: item.rating,
@@ -158,6 +164,7 @@ const ShopListItem = ({ item }: ShopListItemProps) => {
             </Box>
           )}
         </StyledShopContent>
+
         <Box display='flex' justifyContent='space-between' pl={2}>
           <Box display='flex' gap={2} alignItems='center'>
             <StyledTooltip title='評分數' placement='top' arrow>
@@ -171,6 +178,13 @@ const ShopListItem = ({ item }: ShopListItemProps) => {
               <Box display='flex' alignItems='center' gap={1}>
                 <MessageIcon fontSize='small' />
                 <Typography>{item.userRatingCount}</Typography>
+              </Box>
+            </StyledTooltip>
+
+            <StyledTooltip title={`距離${station}捷運站${item.distance}公尺`} placement='top' arrow>
+              <Box display='flex' alignItems='center' gap={1}>
+                <StraightenIcon fontSize='small' />
+                <Typography>{item.distance}</Typography>
               </Box>
             </StyledTooltip>
           </Box>

@@ -6,29 +6,31 @@ import { transformPlaceData } from '../utils/transformPlaceData';
 import { calculateLocationRestriction } from '../utils/calculateLocationRestriction';
 
 export const useFetchPlaces = () => {
-  const textQuery = useQueryShopStore.use.textQuery();
+  const foodType = useQueryShopStore.use.foodType();
   const center = useQueryShopStore.use.locationCenter();
   const distance = useQueryShopStore.use.distance();
-  const rating = useQueryShopStore.use.rating();
+  const minRating = useQueryShopStore.use.minRating();
 
   const fetchAndTransformPlaces = useCallback(async () => {
     const locationRestriction = calculateLocationRestriction({
       center,
       distance,
     });
+
     const data = await fetchPlaces({
-      textQuery,
+      textQuery: foodType,
       locationRestriction,
-      rating,
+      minRating: minRating === '不限' ? 1 : Number(minRating),
     });
-    return transformPlaceData(textQuery, data);
-  }, [textQuery, center, distance, rating]);
+
+    return transformPlaceData(data, center);
+  }, [foodType, center, distance, minRating]);
 
   const res = useQuery({
-    queryKey: ['places', textQuery, center, distance, rating],
+    queryKey: ['places', foodType, center, distance, minRating],
     queryFn: fetchAndTransformPlaces,
     staleTime: 1000 * 60 * 60 * 24 * 7,
-    enabled: !!textQuery,
+    enabled: !!foodType,
   });
 
   return res;

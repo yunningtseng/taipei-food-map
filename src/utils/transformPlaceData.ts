@@ -1,6 +1,11 @@
+import * as turf from '@turf/turf';
 import { RawPlace } from '../types/place';
+import { LocationCenter } from '../types/queryShop';
 
-export const transformPlaceData = (textQuery: string, data: RawPlace[]) => {
+export const transformPlaceData = (
+  data: RawPlace[],
+  center: LocationCenter
+) => {
   const shopList = [];
 
   for (const item of data) {
@@ -8,39 +13,26 @@ export const transformPlaceData = (textQuery: string, data: RawPlace[]) => {
     const displayName = item.displayName.text;
 
     const location = {
-      latitude: item.location.latitude,
       longitude: item.location.longitude,
+      latitude: item.location.latitude,
     };
+
+    const turfDistance = turf.distance(
+      turf.point([center.longitude, center.latitude]),
+      turf.point([location.longitude, location.latitude])
+    );
+    const distance = Math.round(turfDistance * 1000);
+
     const primaryType = item.primaryType;
 
-    const orderType = [];
-    if (item.dineIn) {
-      orderType.push('dineIn');
-    }
-    if (item.takeout) {
-      orderType.push('takeOut');
-    }
-    if (item.delivery) {
-      orderType.push('delivery');
-    }
+    const dinIn = item.dineIn;
+    const takeout = item.takeout;
+    const delivery = item.delivery;
 
     const googleMapsUri = item.googleMapsUri;
 
     const rating = item.rating;
     const userRatingCount = item.userRatingCount;
-
-    let ratingStar = 0;
-    if (item.rating === 5) {
-      ratingStar = 5;
-    } else if (item.rating >= 4 && item.rating < 5) {
-      ratingStar = 4;
-    } else if (item.rating >= 3 && item.rating < 4) {
-      ratingStar = 3;
-    } else if (item.rating >= 2 && item.rating < 3) {
-      ratingStar = 2;
-    } else if (item.rating >= 1 && item.rating < 2) {
-      ratingStar = 1;
-    }
 
     const photoNames = item.photos?.map((photo) => photo.name) ?? [];
     const imgUrls = {};
@@ -87,10 +79,12 @@ export const transformPlaceData = (textQuery: string, data: RawPlace[]) => {
       id,
       displayName,
       location,
+      distance,
       primaryType,
-      orderType,
+      dinIn,
+      takeout,
+      delivery,
       googleMapsUri,
-      ratingStar,
       rating,
       userRatingCount,
       formattedAddress,

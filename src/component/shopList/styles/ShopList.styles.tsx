@@ -41,12 +41,11 @@ const StyledNoShopImg = styled('div')(({ theme }) => ({
   margin: theme.spacing(2),
 }));
 
-const StyledShop = styled('div')(({ theme }) => ({
+const StyledShop = styled('div')({
   width: '20rem',
   display: 'flex',
   flexDirection: 'column',
-  marginBottom: theme.spacing(2),
-}));
+});
 
 const StyledShopName = styled(CardHeader)(({ theme }) => ({
   padding: theme.spacing(1, 2),

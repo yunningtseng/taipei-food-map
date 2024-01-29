@@ -3,9 +3,10 @@ export type LineProps = {
 };
 
 export type StationInfoProps = {
-  stationID: string;
-  stationName: string;
-  stationPosition: {
+  id: string;
+  name: string;
+  label: string;
+  position: {
     longitude: number;
     latitude: number;
   };

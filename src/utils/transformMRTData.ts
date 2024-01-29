@@ -1,8 +1,14 @@
 import mrtDetail from '../../data/mrtWithRect.json';
-import { MrtLines, linePrefixesProps } from '../types/mrt';
+import { MrtData } from '../types/mrt';
+
+type LinePrefixKey = 'BL' | 'BR' | 'R' | 'O' | 'G' | 'Y';
+
+type LinePrefixes = {
+  [key in LinePrefixKey]: string;
+};
 
 export const transformMRTData = () => {
-  const mrtData: MrtLines = {
+  const mrtData: MrtData = {
     BL: [],
     R: [],
     BR: [],
@@ -11,7 +17,7 @@ export const transformMRTData = () => {
     Y: [],
   };
 
-  const linePrefixes: linePrefixesProps = {
+  const linePrefixes: LinePrefixes = {
     BL: 'BL',
     BR: 'BR',
     R: 'R',
@@ -21,14 +27,15 @@ export const transformMRTData = () => {
   };
 
   mrtDetail.forEach((item) => {
-    const prefix = item.StationID.slice(0, 2);
+    const prefix = (item.StationID.slice(0, 2) as LinePrefixKey);
     const line = linePrefixes[prefix] || linePrefixes[prefix[0]];
 
     if (line) {
       mrtData[line].push({
-        stationID: item.StationID,
-        stationName: item.StationName.Zh_tw,
-        stationPosition: {
+        id: item.StationID,
+        name: item.StationName.Zh_tw,
+        label: `${item.StationID} (${item.StationName.Zh_tw})`,
+        position: {
           longitude: item.StationPosition.PositionLon,
           latitude: item.StationPosition.PositionLat,
         },

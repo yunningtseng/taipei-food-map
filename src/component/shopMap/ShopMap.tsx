@@ -1,5 +1,6 @@
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import StarIcon from '@mui/icons-material/Star';
+import StraightenIcon from '@mui/icons-material/Straighten';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { FeatureCollection } from 'geojson';
@@ -28,6 +29,7 @@ const ShopMap = () => {
   const hoveredShop = useShopInfoStore.use.hoveredShop();
 
   const locationCenter = useQueryShopStore.use.locationCenter();
+  const station = useQueryShopStore.use.station();
 
   const mapRef = useRef<MapRef>(null);
   const [cursor, setCursor] = useState<string>('grab');
@@ -40,6 +42,7 @@ const ShopMap = () => {
           id: item.id,
           name: item.displayName,
           address: item.formattedAddress,
+          distance: item.distance,
           rating: item.rating,
           userRatingCount: item.userRatingCount,
         },
@@ -77,6 +80,7 @@ const ShopMap = () => {
           id: feature.properties.id,
           name: feature.properties.name,
           address: feature.properties.address,
+          distance: feature.properties.distance,
           longitude: lng,
           latitude: lat,
           rating: feature.properties.rating,
@@ -108,6 +112,7 @@ const ShopMap = () => {
   const MapShop = ({
     name,
     address,
+    distance,
     rating,
     userRatingCount,
     longitude,
@@ -133,7 +138,16 @@ const ShopMap = () => {
 
         <Box display='flex' alignItems='center' mt={1}>
           <LocationOnIcon fontSize='small' />
-          <Typography variant='body2'>{address}</Typography>
+          <Typography variant='body2' ml={0.5}>
+            {address}
+          </Typography>
+        </Box>
+
+        <Box display='flex' alignItems='center' mt={1}>
+          <StraightenIcon fontSize='small' />
+          <Typography variant='body2' ml={0.5}>
+            距離{station}捷運站 {distance} 公尺
+          </Typography>
         </Box>
       </StyledPopup>
     );
@@ -178,6 +192,7 @@ const ShopMap = () => {
         <MapShop
           name={selectedShop.name}
           address={selectedShop.address}
+          distance={selectedShop.distance}
           rating={selectedShop.rating}
           longitude={selectedShop.longitude}
           latitude={selectedShop.latitude}
@@ -189,6 +204,7 @@ const ShopMap = () => {
         <MapShop
           name={hoveredShop.name}
           address={hoveredShop.address}
+          distance={hoveredShop.distance}
           rating={hoveredShop.rating}
           longitude={hoveredShop.longitude}
           latitude={hoveredShop.latitude}
