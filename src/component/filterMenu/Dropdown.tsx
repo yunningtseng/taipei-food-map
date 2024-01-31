@@ -4,6 +4,7 @@ import Grow from '@mui/material/Grow';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import { ReactNode, useRef, useState } from 'react';
+import useShopInfoStore from '../../store/useGetShopInfoStore';
 import useQueryShopStore from '../../store/useQueryShopStore';
 import { SelectKey } from '../../types/queryShop';
 import FilterButton from './FilterButton';
@@ -18,9 +19,13 @@ const Dropdown = ({ selectKey, children }: Props) => {
   const anchorRef = useRef<HTMLButtonElement>(null);
 
   const title = useQueryShopStore.use[selectKey]();
+  const setSelectedShop = useShopInfoStore.use.setSelectedShop();
+  const setHoveredShop = useShopInfoStore.use.setHoveredShop();
 
   const handleClick = () => {
     setOpen((prevOpen) => !prevOpen);
+    setSelectedShop(null);
+    setHoveredShop(null); 
   };
 
   const handleClose = (event: Event) => {

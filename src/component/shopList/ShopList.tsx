@@ -22,17 +22,19 @@ const ShopList = () => {
     return newData;
   }, [data, sortBy]);
 
-  if (isLoading) return <Box width={530}>Loading...</Box>;
+  if (isLoading) return <Box width={400}>Loading...</Box>;
 
   if (!sortedData) return <div>No data.</div>;
 
   return (
     <StyledShopListContainer>
-      <Box minWidth={530} m={1}>
+      <Box width={400}>
         {sortedData.map((item) => (
           <ShopListItem key={item.id} item={item} />
         ))}
-        <Typography>資料到底囉！</Typography>
+        <Typography component='div' textAlign='center'>
+          資料到底囉！
+        </Typography>
       </Box>
     </StyledShopListContainer>
   );

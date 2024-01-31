@@ -17,6 +17,7 @@ import { useState } from 'react';
 import useShopInfoStore from '../../store/useGetShopInfoStore';
 import useQueryShopStore from '../../store/useQueryShopStore';
 import { Place } from '../../types/place';
+import ShopPhoto from '../../utils/ShopPhoto';
 import {
   StyledShop,
   StyledShopContainer,
@@ -24,7 +25,6 @@ import {
   StyledShopName,
   StyledTooltip,
 } from './styles/ShopList.styles';
-// import ShopPhoto from './ShopPhoto';
 
 type Props = {
   item: Place;
@@ -57,6 +57,7 @@ const ShopListItem = ({ item }: Props) => {
       latitude: item.location.latitude,
       rating: item.rating,
       userRatingCount: item.userRatingCount,
+      photoNames: item.photoNames,
     });
   };
 
@@ -70,6 +71,7 @@ const ShopListItem = ({ item }: Props) => {
       latitude: item.location.latitude,
       rating: item.rating,
       userRatingCount: item.userRatingCount,
+      photoNames: item.photoNames,
     });
   };
 
@@ -83,12 +85,12 @@ const ShopListItem = ({ item }: Props) => {
       onMouseEnter={handleShopMouseEnter}
       onMouseLeave={handleShopMouseLeave}
     >
-      {/* <ShopPhoto item={item} index={0} /> */}
+      <ShopPhoto id={item.id} photoNames={item.photoNames} />
       <StyledShop>
         <StyledShopName
           action={
-            <IconButton aria-label='settings' onClick={handleClick}>
-              <MoreVertIcon />
+            <IconButton onClick={handleClick}>
+              <MoreVertIcon fontSize='small' />
             </IconButton>
           }
           title={item.displayName}
@@ -124,7 +126,8 @@ const ShopListItem = ({ item }: Props) => {
           <MenuItem>
             <Link
               target='_blank'
-              href={item.googleMapsUri}
+              href={`https://www.google.com/maps/dir/?api=1&origin=${station}捷運站&destination=${item.displayName}&destination_place_id=${item.id}&travelmode=walking&hl=zh-TW
+              `}
               underline='none'
               display='flex'
             >
@@ -150,39 +153,43 @@ const ShopListItem = ({ item }: Props) => {
         </Menu>
 
         <StyledShopContent>
-          <Box display='flex' gap={1}>
+          <Box display='flex' gap={0.5}>
             <LocationOnIcon fontSize='small' />
-            <Typography variant='body2' width={256}>
+            <Typography variant='body2' width={200}>
               {item.formattedAddress}
             </Typography>
           </Box>
 
           {item.editorialSummary && (
-            <Box display='flex' gap={1} mt={1}>
+            <Box display='flex' gap={0.5} mt={1}>
               <SellIcon fontSize='small' />
               <Typography variant='body2'>{item.editorialSummary}</Typography>
             </Box>
           )}
         </StyledShopContent>
 
-        <Box display='flex' justifyContent='space-between' pl={2}>
-          <Box display='flex' gap={2} alignItems='center'>
+        <Box display='flex' justifyContent='space-between' pl={1}>
+          <Box display='flex' width={190} gap={2} alignItems='center'>
             <StyledTooltip title='評分數' placement='top' arrow>
-              <Box display='flex' alignItems='center' gap={1}>
+              <Box display='flex' alignItems='center' gap={0.5}>
                 <StarIcon fontSize='small' />
                 <Typography>{item.rating}</Typography>
               </Box>
             </StyledTooltip>
 
             <StyledTooltip title='評論數' placement='top' arrow>
-              <Box display='flex' alignItems='center' gap={1}>
+              <Box display='flex' alignItems='center' gap={0.5}>
                 <MessageIcon fontSize='small' />
                 <Typography>{item.userRatingCount}</Typography>
               </Box>
             </StyledTooltip>
 
-            <StyledTooltip title={`距離${station}捷運站${item.distance}公尺`} placement='top' arrow>
-              <Box display='flex' alignItems='center' gap={1}>
+            <StyledTooltip
+              title={`距離${station}捷運站${item.distance}公尺`}
+              placement='top'
+              arrow
+            >
+              <Box display='flex' alignItems='center' gap={0.5}>
                 <StraightenIcon fontSize='small' />
                 <Typography>{item.distance}</Typography>
               </Box>
@@ -192,7 +199,7 @@ const ShopListItem = ({ item }: Props) => {
           <CardActions disableSpacing>
             <StyledTooltip title='收藏' placement='top' arrow>
               <IconButton aria-label='add to favorites'>
-                <FavoriteIcon />
+                <FavoriteIcon fontSize='small' />
               </IconButton>
             </StyledTooltip>
           </CardActions>

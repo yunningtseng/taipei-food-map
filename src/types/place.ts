@@ -64,7 +64,7 @@ export type Place = Omit<
 };
 
 export type MapPlace = {
-  id?: string;
+  id: string;
   name: string;
   address: string;
   distance: number;
@@ -72,4 +72,15 @@ export type MapPlace = {
   latitude: number;
   rating: number;
   userRatingCount: number;
+  photoNames: string[];
+};
+
+export type MapPlaceProperties = {
+  id: string;
+  name: string;
+  address: string;
+  distance: number;
+  rating: number;
+  userRatingCount: number;
+  photoNames: string;
 };

@@ -1,8 +1,3 @@
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import StarIcon from '@mui/icons-material/Star';
-import StraightenIcon from '@mui/icons-material/Straighten';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import { FeatureCollection } from 'geojson';
 import mapboxgl from 'mapbox-gl';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -10,13 +5,9 @@ import Map, { Layer, MapRef, Source } from 'react-map-gl';
 import { useFetchPlaces } from '../../hooks/useFetchPlaces';
 import useShopInfoStore from '../../store/useGetShopInfoStore';
 import useQueryShopStore from '../../store/useQueryShopStore';
-import { MapPlace, Place } from '../../types/place';
-import {
-  StyledHighlightPaint,
-  StyledPaint,
-  StyledPopup,
-  StyledShopName,
-} from './styles/ShopMap.styles';
+import { MapPlace, MapPlaceProperties, Place } from '../../types/place';
+import MapShop from './MapShop';
+import { StyledHighlightPaint, StyledPaint } from './styles/ShopMap.styles';
 
 const accessToken = import.meta.env.VITE_MAP_BOX_TOKEN;
 
@@ -29,7 +20,6 @@ const ShopMap = () => {
   const hoveredShop = useShopInfoStore.use.hoveredShop();
 
   const locationCenter = useQueryShopStore.use.locationCenter();
-  const station = useQueryShopStore.use.station();
 
   const mapRef = useRef<MapRef>(null);
   const [cursor, setCursor] = useState<string>('grab');
@@ -45,6 +35,7 @@ const ShopMap = () => {
           distance: item.distance,
           rating: item.rating,
           userRatingCount: item.userRatingCount,
+          photoNames: item.photoNames,
         },
         geometry: {
           type: 'Point',
@@ -76,15 +67,26 @@ const ShopMap = () => {
       setShop(null);
 
       if (feature && feature.properties) {
+        const {
+          id,
+          name,
+          address,
+          distance,
+          rating,
+          userRatingCount,
+          photoNames,
+        } = feature.properties as MapPlaceProperties;
+
         setShop({
-          id: feature.properties.id,
-          name: feature.properties.name,
-          address: feature.properties.address,
-          distance: feature.properties.distance,
+          id,
+          name,
+          address,
+          distance,
           longitude: lng,
           latitude: lat,
-          rating: feature.properties.rating,
-          userRatingCount: feature.properties.userRatingCount,
+          rating,
+          userRatingCount,
+          photoNames: JSON.parse(photoNames),
         });
       }
     },
@@ -109,50 +111,6 @@ const ShopMap = () => {
     });
   }, [locationCenter]);
 
-  const MapShop = ({
-    name,
-    address,
-    distance,
-    rating,
-    userRatingCount,
-    longitude,
-    latitude,
-  }: MapPlace) => {
-    return (
-      <StyledPopup
-        key={Math.random()}
-        closeButton={false}
-        longitude={longitude}
-        latitude={latitude}
-        offset={12}
-      >
-        <StyledShopName>{name}</StyledShopName>
-
-        <Box display='flex'>
-          <StarIcon fontSize='small' />
-          <Typography
-            variant='body2'
-            ml={0.5}
-          >{`${rating} (${userRatingCount})`}</Typography>
-        </Box>
-
-        <Box display='flex' alignItems='center' mt={1}>
-          <LocationOnIcon fontSize='small' />
-          <Typography variant='body2' ml={0.5}>
-            {address}
-          </Typography>
-        </Box>
-
-        <Box display='flex' alignItems='center' mt={1}>
-          <StraightenIcon fontSize='small' />
-          <Typography variant='body2' ml={0.5}>
-            距離{station}捷運站 {distance} 公尺
-          </Typography>
-        </Box>
-      </StyledPopup>
-    );
-  };
-
   return (
     <Map
       ref={mapRef}
@@ -160,7 +118,7 @@ const ShopMap = () => {
       initialViewState={{
         longitude: 121.508511,
         latitude: 25.042274,
-        zoom: 13,
+        zoom: 14,
       }}
       // FIXME
       style={{ width: '100%', height: '67rem' }}
@@ -188,29 +146,8 @@ const ShopMap = () => {
         ]}
       />
 
-      {selectedShop && (
-        <MapShop
-          name={selectedShop.name}
-          address={selectedShop.address}
-          distance={selectedShop.distance}
-          rating={selectedShop.rating}
-          longitude={selectedShop.longitude}
-          latitude={selectedShop.latitude}
-          userRatingCount={selectedShop.userRatingCount}
-        />
-      )}
-
-      {selectedShop?.id !== hoveredShop?.id && hoveredShop && (
-        <MapShop
-          name={hoveredShop.name}
-          address={hoveredShop.address}
-          distance={hoveredShop.distance}
-          rating={hoveredShop.rating}
-          longitude={hoveredShop.longitude}
-          latitude={hoveredShop.latitude}
-          userRatingCount={hoveredShop.userRatingCount}
-        />
-      )}
+      <MapShop type='selectedShop' />
+      {selectedShop?.id !== hoveredShop?.id && <MapShop type='hoveredShop' />}
     </Map>
   );
 };
