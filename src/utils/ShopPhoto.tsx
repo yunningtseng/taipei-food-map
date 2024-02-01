@@ -8,9 +8,10 @@ import {
 type Props = {
   id: string;
   photoNames: Place['photoNames'];
+  isSmallSize: boolean;
 };
 
-const ShopPhoto = ({ id, photoNames }: Props) => {
+const ShopPhoto = ({ id, photoNames, isSmallSize }: Props) => {
   const { data, isLoading } = useFetchPhoto({
     id: id,
     photoName: photoNames.length ? photoNames[0] : '',
@@ -24,6 +25,12 @@ const ShopPhoto = ({ id, photoNames }: Props) => {
     return <StyledNoShopImg>No Image</StyledNoShopImg>;
   }
 
-  return <StyledShopImg src={data} alt='place'></StyledShopImg>;
+  return (
+    <StyledShopImg
+      src={data}
+      alt='place'
+      isSmallSize={isSmallSize}
+    ></StyledShopImg>
+  );
 };
 export default ShopPhoto;

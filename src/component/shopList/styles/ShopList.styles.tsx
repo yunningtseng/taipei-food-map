@@ -4,18 +4,31 @@ import CardHeader from '@mui/material/CardHeader';
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
 
-const StyledShopListContainer = styled('div')({
+type Props = {
+  isSmallSize: boolean;
+};
+
+const StyledShopListWrapper = styled('div')({
   display: 'flex',
-  // FIXME 修正高度
-  height: 'calc(100% - 7rem)',
-  marginTop: '2rem',
+  height: 'calc(100% - 6rem)',
   overflow: 'hidden',
   overflowY: 'auto',
   border: '1px solid #ccc',
   borderRadius: '0.5rem',
 });
 
-const StyledShopContainer = styled(Card)(({ theme }) => ({
+const StyledShopIListContainer = styled('div')(({ theme }) => ({
+  maxWidth: '26rem',
+
+  [theme.breakpoints.down('lg')]: {
+    maxWidth: '100%',
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+}));
+
+const StyledShopItemContainer = styled(Card)(({ theme }) => ({
   display: 'flex',
   marginBottom: theme.spacing(1),
   cursor: 'pointer',
@@ -25,10 +38,20 @@ const StyledShopContainer = styled(Card)(({ theme }) => ({
   '&:hover': {
     backgroundColor: theme.palette.grey[100],
   },
+
+  [theme.breakpoints.down('lg')]: {
+    width: '50%',
+  },
+
+  [theme.breakpoints.down('md')]: {
+    width: '100%',
+  },
 }));
 
-const StyledShopImg = styled('img')(({ theme }) => ({
-  width: '8rem',
+const StyledShopImg = styled('img', {
+  shouldForwardProp: (prop) => prop !== 'isSmallSize',
+})<Props>(({ theme, isSmallSize }) => ({
+  width: '9rem',
   height: '8rem',
   margin: theme.spacing(1),
   backgroundColor: '#ccc',
@@ -36,6 +59,21 @@ const StyledShopImg = styled('img')(({ theme }) => ({
   overflow: 'hidden',
   objectFit: 'cover',
   objectPosition: 'center',
+
+  ...(isSmallSize && {
+    minWidth: '8rem',
+    minHeight: '7rem',
+  }),
+
+  [theme.breakpoints.down('md')]: {
+    minWidth: '12rem',
+    minHeight: '9rem',
+
+    ...(isSmallSize && {
+      minWidth: '8rem',
+      minHeight: '7rem',
+    }),
+  },
 }));
 
 const StyledNoShopImg = styled('div')({
@@ -46,7 +84,8 @@ const StyledNoShopImg = styled('div')({
   alignItems: 'center',
 });
 
-const StyledShop = styled('div')({
+const StyledShopItem = styled('div')({
+  width: '100%',
   display: 'flex',
   flexDirection: 'column',
 });
@@ -56,12 +95,15 @@ const StyledShopName = styled(CardHeader)(({ theme }) => ({
 
   '& .MuiCardHeader-title': {
     ...theme.typography.subtitle1,
-    width: '12rem',
     overflow: 'hidden',
     display: '-webkit-box',
     WebkitBoxOrient: 'vertical',
     WebkitLineClamp: 2,
     textOverflow: 'ellipsis',
+  },
+
+  [theme.breakpoints.down('lg')]: {
+    maxWidth: '100%',
   },
 }));
 
@@ -70,6 +112,13 @@ const StyledShopContent = styled(CardContent)(({ theme }) => ({
 
   '&:last-child': {
     paddingBottom: 0,
+  },
+}));
+
+const StyledShopDescription = styled('div')(({ theme }) => ({
+  ...theme.typography.body2,
+  [theme.breakpoints.down('lg')]: {
+    width: '80%',
   },
 }));
 
@@ -86,12 +135,14 @@ const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
 }));
 
 export {
-  StyledShop,
-  StyledShopContainer,
-  StyledShopContent,
-  StyledShopImg,
   StyledNoShopImg,
-  StyledShopListContainer,
+  StyledShopContent,
+  StyledShopDescription,
+  StyledShopIListContainer,
+  StyledShopImg,
+  StyledShopItem,
+  StyledShopItemContainer,
+  StyledShopListWrapper,
   StyledShopName,
   StyledTooltip,
 };

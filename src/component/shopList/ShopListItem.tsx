@@ -1,6 +1,5 @@
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import MessageIcon from '@mui/icons-material/Message';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import SellIcon from '@mui/icons-material/Sell';
@@ -14,17 +13,20 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import useControlOpenListStore from '../../store/useControlList';
 import useShopInfoStore from '../../store/useGetShopInfoStore';
 import useQueryShopStore from '../../store/useQueryShopStore';
 import { Place } from '../../types/place';
 import ShopPhoto from '../../utils/ShopPhoto';
 import {
-  StyledShop,
-  StyledShopContainer,
   StyledShopContent,
+  StyledShopDescription,
+  StyledShopItem,
+  StyledShopItemContainer,
   StyledShopName,
   StyledTooltip,
 } from './styles/ShopList.styles';
+import Button from '@mui/material/Button';
 
 type Props = {
   item: Place;
@@ -36,10 +38,14 @@ const ShopListItem = ({ item }: Props) => {
 
   const station = useQueryShopStore.use.station();
 
+  const isShopOpenList = useControlOpenListStore.use.isShopOpenList();
+  const setShopOpenList = useControlOpenListStore.use.setShopOpenList();
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
     setAnchorEl(event.currentTarget);
   };
 
@@ -48,6 +54,7 @@ const ShopListItem = ({ item }: Props) => {
   };
 
   const handleShopSelection = () => {
+    setShopOpenList(isShopOpenList);
     setSelectedShop({
       id: item.id,
       name: item.displayName,
@@ -80,13 +87,17 @@ const ShopListItem = ({ item }: Props) => {
   };
 
   return (
-    <StyledShopContainer
+    <StyledShopItemContainer
       onClick={handleShopSelection}
       onMouseEnter={handleShopMouseEnter}
       onMouseLeave={handleShopMouseLeave}
     >
-      <ShopPhoto id={item.id} photoNames={item.photoNames} />
-      <StyledShop>
+      <ShopPhoto
+        id={item.id}
+        photoNames={item.photoNames}
+        isSmallSize={false}
+      />
+      <StyledShopItem>
         <StyledShopName
           action={
             <IconButton onClick={handleClick}>
@@ -95,6 +106,7 @@ const ShopListItem = ({ item }: Props) => {
           }
           title={item.displayName}
         />
+
         <Menu
           id='demo-positioned-menu'
           aria-labelledby='demo-positioned-button'
@@ -117,7 +129,7 @@ const ShopListItem = ({ item }: Props) => {
               underline='none'
               display='flex'
             >
-              <Typography variant='body2' mr={1}>
+              <Typography variant='body2' mr={1} onClick={handleClose}>
                 前往 Google Map
               </Typography>
               <OpenInNewIcon fontSize='small' />
@@ -131,7 +143,7 @@ const ShopListItem = ({ item }: Props) => {
               underline='none'
               display='flex'
             >
-              <Typography variant='body2' mr={1}>
+              <Typography variant='body2' mr={1} onClick={handleClose}>
                 規劃路線
               </Typography>
               <OpenInNewIcon fontSize='small' />
@@ -144,7 +156,7 @@ const ShopListItem = ({ item }: Props) => {
               underline='none'
               display='flex'
             >
-              <Typography variant='body2' mr={1}>
+              <Typography variant='body2' mr={1} onClick={handleClose}>
                 查看評論
               </Typography>
               <OpenInNewIcon fontSize='small' />
@@ -155,32 +167,27 @@ const ShopListItem = ({ item }: Props) => {
         <StyledShopContent>
           <Box display='flex' gap={0.5}>
             <LocationOnIcon fontSize='small' />
-            <Typography variant='body2' width={200}>
+            <StyledShopDescription>
               {item.formattedAddress}
-            </Typography>
+            </StyledShopDescription>
           </Box>
 
           {item.editorialSummary && (
-            <Box display='flex' gap={0.5} mt={1}>
+            <Box width='100%' display='flex' gap={0.5} mt={1}>
               <SellIcon fontSize='small' />
-              <Typography variant='body2'>{item.editorialSummary}</Typography>
+              <StyledShopDescription>
+                {item.editorialSummary}
+              </StyledShopDescription>
             </Box>
           )}
         </StyledShopContent>
 
-        <Box display='flex' justifyContent='space-between' pl={1}>
-          <Box display='flex' width={190} gap={2} alignItems='center'>
-            <StyledTooltip title='評分數' placement='top' arrow>
+        <Box display='flex' justifyContent='space-between' pl={1} mb={1}>
+          <Box display='flex' width='100%' gap={2} alignItems='center'>
+            <StyledTooltip title='評分數（評論數）' placement='top' arrow>
               <Box display='flex' alignItems='center' gap={0.5}>
                 <StarIcon fontSize='small' />
-                <Typography>{item.rating}</Typography>
-              </Box>
-            </StyledTooltip>
-
-            <StyledTooltip title='評論數' placement='top' arrow>
-              <Box display='flex' alignItems='center' gap={0.5}>
-                <MessageIcon fontSize='small' />
-                <Typography>{item.userRatingCount}</Typography>
+                <Typography>{`${item.rating} (${item.userRatingCount})`}</Typography>
               </Box>
             </StyledTooltip>
 
@@ -191,12 +198,20 @@ const ShopListItem = ({ item }: Props) => {
             >
               <Box display='flex' alignItems='center' gap={0.5}>
                 <StraightenIcon fontSize='small' />
-                <Typography>{item.distance}</Typography>
+                <Typography>{`${item.distance}m`}</Typography>
               </Box>
             </StyledTooltip>
           </Box>
 
           <CardActions disableSpacing>
+            <Button
+              onClick={() => {
+                setShopOpenList(isShopOpenList);
+              }}
+            >
+              位置
+            </Button>
+
             <StyledTooltip title='收藏' placement='top' arrow>
               <IconButton aria-label='add to favorites'>
                 <FavoriteIcon fontSize='small' />
@@ -204,8 +219,8 @@ const ShopListItem = ({ item }: Props) => {
             </StyledTooltip>
           </CardActions>
         </Box>
-      </StyledShop>
-    </StyledShopContainer>
+      </StyledShopItem>
+    </StyledShopItemContainer>
   );
 };
 

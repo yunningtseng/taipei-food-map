@@ -3,10 +3,11 @@ import mapboxgl from 'mapbox-gl';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Map, { Layer, MapRef, Source } from 'react-map-gl';
 import { useFetchPlaces } from '../../hooks/useFetchPlaces';
+import useControlOpenListStore from '../../store/useControlList';
 import useShopInfoStore from '../../store/useGetShopInfoStore';
 import useQueryShopStore from '../../store/useQueryShopStore';
 import { MapPlace, MapPlaceProperties, Place } from '../../types/place';
-import MapShop from './MapShop';
+import ShopMapInfo from './ShopMapInfo';
 import { StyledHighlightPaint, StyledPaint } from './styles/ShopMap.styles';
 
 const accessToken = import.meta.env.VITE_MAP_BOX_TOKEN;
@@ -20,6 +21,8 @@ const ShopMap = () => {
   const hoveredShop = useShopInfoStore.use.hoveredShop();
 
   const locationCenter = useQueryShopStore.use.locationCenter();
+
+  const isShopOpenList = useControlOpenListStore.use.isShopOpenList();
 
   const mapRef = useRef<MapRef>(null);
   const [cursor, setCursor] = useState<string>('grab');
@@ -111,6 +114,12 @@ const ShopMap = () => {
     });
   }, [locationCenter]);
 
+  useEffect(() => {
+    if (!isShopOpenList && mapRef.current) {
+      mapRef.current.resize();
+    }
+  }, [isShopOpenList]);
+
   return (
     <Map
       ref={mapRef}
@@ -120,8 +129,7 @@ const ShopMap = () => {
         latitude: 25.042274,
         zoom: 14,
       }}
-      // FIXME
-      style={{ width: '100%', height: '67rem' }}
+      style={{ width: '100%', height: 'calc(100vh - 9rem)' }}
       mapStyle='mapbox://styles/mapbox/outdoors-v11'
       interactiveLayerIds={['places']}
       onClick={handleShopSelection}
@@ -146,8 +154,10 @@ const ShopMap = () => {
         ]}
       />
 
-      <MapShop type='selectedShop' />
-      {selectedShop?.id !== hoveredShop?.id && <MapShop type='hoveredShop' />}
+      <ShopMapInfo type='selectedShop' />
+      {selectedShop?.id !== hoveredShop?.id && (
+        <ShopMapInfo type='hoveredShop' />
+      )}
     </Map>
   );
 };

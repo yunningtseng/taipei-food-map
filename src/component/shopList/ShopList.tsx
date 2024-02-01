@@ -1,10 +1,12 @@
-import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import { useMemo } from 'react';
 import { useFetchPlaces } from '../../hooks/useFetchPlaces';
 import useQueryShopStore from '../../store/useQueryShopStore';
 import ShopListItem from './ShopListItem';
-import { StyledShopListContainer } from './styles/ShopList.styles';
+import {
+  StyledShopIListContainer,
+  StyledShopListWrapper,
+} from './styles/ShopList.styles';
 
 const ShopList = () => {
   const { data, isLoading } = useFetchPlaces();
@@ -27,16 +29,13 @@ const ShopList = () => {
   if (!sortedData) return <div>No data.</div>;
 
   return (
-    <StyledShopListContainer>
-      <Box width={400}>
+    <StyledShopListWrapper>
+      <StyledShopIListContainer>
         {sortedData.map((item) => (
           <ShopListItem key={item.id} item={item} />
         ))}
-        <Typography component='div' textAlign='center'>
-          資料到底囉！
-        </Typography>
-      </Box>
-    </StyledShopListContainer>
+      </StyledShopIListContainer>
+    </StyledShopListWrapper>
   );
 };
 
