@@ -13,7 +13,6 @@ const StyledPopup = styled(Popup)(({ theme }) => ({
     border: 0,
   },
 
-  // ! Hide popup on mobile
   [theme.breakpoints.down('sm')]: {
     display: 'none',
   },

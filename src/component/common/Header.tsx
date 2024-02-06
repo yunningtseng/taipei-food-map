@@ -1,22 +1,16 @@
-import { Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
-
-const StyledHeader = styled('div')(({ theme }) => ({
-  width: '100%',
-  position: 'fixed',
-  textAlign: 'center',
-  paddingTop: theme.spacing(2),
-  paddingBottom: theme.spacing(2),
-  color: theme.palette.grey[900],
-  backgroundColor: theme.palette.grey[400],
-  zIndex: 10,
-}));
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 
 const Header = () => {
   return (
-    <StyledHeader>
-      <Typography variant='h6'>Food Map</Typography>
-    </StyledHeader>
+    <AppBar>
+      <Toolbar sx={{ height: '4rem' }}>
+        <Typography variant='h6' component='div'>
+          Food Map
+        </Typography>
+      </Toolbar>
+    </AppBar>
   );
 };
 

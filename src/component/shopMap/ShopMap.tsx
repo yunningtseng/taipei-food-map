@@ -3,10 +3,9 @@ import mapboxgl from 'mapbox-gl';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Map, { Layer, MapRef, Source } from 'react-map-gl';
 import { useFetchPlaces } from '../../hooks/useFetchPlaces';
-import useControlOpenListStore from '../../store/useControlList';
 import useShopInfoStore from '../../store/useGetShopInfoStore';
 import useQueryShopStore from '../../store/useQueryShopStore';
-import { MapPlace, MapPlaceProperties, Place } from '../../types/place';
+import { MapPlaceProperties, Place } from '../../types/place';
 import ShopMapInfo from './ShopMapInfo';
 import { StyledHighlightPaint, StyledPaint } from './styles/ShopMap.styles';
 
@@ -22,8 +21,6 @@ const ShopMap = () => {
 
   const locationCenter = useQueryShopStore.use.locationCenter();
 
-  const isShopOpenList = useControlOpenListStore.use.isShopOpenList();
-
   const mapRef = useRef<MapRef>(null);
   const [cursor, setCursor] = useState<string>('grab');
 
@@ -33,8 +30,8 @@ const ShopMap = () => {
         type: 'Feature',
         properties: {
           id: item.id,
-          name: item.displayName,
-          address: item.formattedAddress,
+          displayName: item.displayName,
+          address: item.address,
           distance: item.distance,
           rating: item.rating,
           userRatingCount: item.userRatingCount,
@@ -42,7 +39,7 @@ const ShopMap = () => {
         },
         geometry: {
           type: 'Point',
-          coordinates: [item.location.longitude, item.location.latitude],
+          coordinates: [item.longitude, item.latitude],
         },
       })) ?? [];
 
@@ -57,7 +54,7 @@ const ShopMap = () => {
   const handleShopInteraction = useCallback(
     (
       event: mapboxgl.MapLayerMouseEvent,
-      setShop: (shop: MapPlace | null) => void
+      setShop: (shop: Place | null) => void
     ) => {
       const {
         features,
@@ -72,7 +69,7 @@ const ShopMap = () => {
       if (feature && feature.properties) {
         const {
           id,
-          name,
+          displayName,
           address,
           distance,
           rating,
@@ -82,7 +79,7 @@ const ShopMap = () => {
 
         setShop({
           id,
-          name,
+          displayName,
           address,
           distance,
           longitude: lng,
@@ -114,11 +111,11 @@ const ShopMap = () => {
     });
   }, [locationCenter]);
 
-  useEffect(() => {
-    if (!isShopOpenList && mapRef.current) {
-      mapRef.current.resize();
-    }
-  }, [isShopOpenList]);
+  // useEffect(() => {
+  //   if (!isShopListOpen && mapRef.current) {
+  //     mapRef.current.resize();
+  //   }
+  // }, [isShopListOpen]);
 
   return (
     <Map
@@ -129,7 +126,10 @@ const ShopMap = () => {
         latitude: 25.042274,
         zoom: 14,
       }}
-      style={{ width: '100%', height: 'calc(100vh - 9rem)' }}
+      // style={{
+      //   width: '600px',
+      //   height: '600px',
+      // }}
       mapStyle='mapbox://styles/mapbox/outdoors-v11'
       interactiveLayerIds={['places']}
       onClick={handleShopSelection}

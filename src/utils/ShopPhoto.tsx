@@ -4,6 +4,7 @@ import {
   StyledNoShopImg,
   StyledShopImg,
 } from '../component/shopList/styles/ShopList.styles';
+import Box from '@mui/material/Box';
 
 type Props = {
   id: string;
@@ -14,7 +15,7 @@ type Props = {
 const ShopPhoto = ({ id, photoNames, isSmallSize }: Props) => {
   const { data, isLoading } = useFetchPhoto({
     id: id,
-    photoName: photoNames.length ? photoNames[0] : '',
+    photoName: photoNames?.length ? photoNames[0] : '',
   });
 
   if (isLoading) {
@@ -26,11 +27,13 @@ const ShopPhoto = ({ id, photoNames, isSmallSize }: Props) => {
   }
 
   return (
-    <StyledShopImg
-      src={data}
-      alt='place'
-      isSmallSize={isSmallSize}
-    ></StyledShopImg>
+    <Box display='flex' justifyContent='center'>
+      <StyledShopImg
+        src={data}
+        alt='place'
+        isSmallSize={isSmallSize}
+      ></StyledShopImg>
+    </Box>
   );
 };
 export default ShopPhoto;

@@ -27,7 +27,8 @@ export const transformMRTData = () => {
   };
 
   mrtDetail.forEach((item) => {
-    const prefix = (item.StationID.slice(0, 2) as LinePrefixKey);
+    const prefix = item.StationID.slice(0, 2) as LinePrefixKey;
+    // FIXME
     const line = linePrefixes[prefix] || linePrefixes[prefix[0]];
 
     if (line) {

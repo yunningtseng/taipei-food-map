@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
 import { ComponentProps, forwardRef } from 'react';
-import { StyledFilterButton } from './styles/FilterButton.styles';
+import { StyledFilterButton } from './styles/FilterContent.styles';
 
 const FilterButton = forwardRef<
   HTMLButtonElement,

@@ -24,7 +24,7 @@ const ShopList = () => {
     return newData;
   }, [data, sortBy]);
 
-  if (isLoading) return <Box width={400}>Loading...</Box>;
+  if (isLoading) return <Box width='26rem'>Loading...</Box>;
 
   if (!sortedData) return <div>No data.</div>;
 

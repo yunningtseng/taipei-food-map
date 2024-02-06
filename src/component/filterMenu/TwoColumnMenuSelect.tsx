@@ -5,10 +5,10 @@ import { StationInfoProps } from '../../types/mrt';
 import { SelectKey } from '../../types/queryShop';
 import { Option } from '../../types/select';
 import {
-  StyledListItem,
-  StyledListItemButton,
-  StyledListItemText,
-  StyledStationContainer,
+  StyledMenuItem,
+  StyledMenuItemButton,
+  StyledMenuItemText,
+  StyledRightColumnContainer,
 } from './styles/FilterContent.styles';
 
 type Props = {
@@ -45,32 +45,32 @@ const TwoColumnMenuSelect = ({
       <Box>
         {leftColumnOptions.map((option) => (
           <Box key={option.id}>
-            <StyledListItem>
-              <StyledListItemButton
+            <StyledMenuItem>
+              <StyledMenuItemButton
                 selected={option.id === leftSelectedItem}
                 onClick={() => {
                   selectLeftColumnItem(option.id);
                 }}
               >
                 <ListItemText primary={option.name} />
-              </StyledListItemButton>
-            </StyledListItem>
+              </StyledMenuItemButton>
+            </StyledMenuItem>
           </Box>
         ))}
       </Box>
 
-      <StyledStationContainer>
+      <StyledRightColumnContainer>
         {rightColumnOptions[leftSelectedItem].map((option) => (
-          <StyledListItem key={option.id}>
-            <StyledListItemButton onClick={() => selectRightColumnItem(option)}>
-              <StyledListItemText
+          <StyledMenuItem key={option.id}>
+            <StyledMenuItemButton onClick={() => selectRightColumnItem(option)}>
+              <StyledMenuItemText
                 isSelected={option.name === rightSelectedItem}
                 primary={option.label}
               />
-            </StyledListItemButton>
-          </StyledListItem>
+            </StyledMenuItemButton>
+          </StyledMenuItem>
         ))}
-      </StyledStationContainer>
+      </StyledRightColumnContainer>
     </Box>
   );
 };

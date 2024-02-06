@@ -1,15 +1,15 @@
 import { create } from 'zustand';
-import { MapPlace } from '../types/place';
+import { Place } from '../types/place';
 import { createSelectors } from './createSelectors';
 
 type ShopInfoState = {
-  selectedShop: MapPlace | null;
-  hoveredShop: MapPlace | null;
+  selectedShop: Place | null;
+  hoveredShop: Place | null;
 };
 
 type ShopInfoAction = {
-  setSelectedShop: (place: MapPlace | null) => void;
-  setHoveredShop: (place: MapPlace | null) => void;
+  setSelectedShop: (place: Place | null) => void;
+  setHoveredShop: (place: Place | null) => void;
 };
 
 const useGetShopInfoBase = create<ShopInfoState & ShopInfoAction>((set) => ({

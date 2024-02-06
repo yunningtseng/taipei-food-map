@@ -1,9 +1,11 @@
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { Typography } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import { ReactNode, useRef, useState } from 'react';
+import { dropDownMapping } from '../../const/dropDown';
 import useShopInfoStore from '../../store/useGetShopInfoStore';
 import useQueryShopStore from '../../store/useQueryShopStore';
 import { SelectKey } from '../../types/queryShop';
@@ -25,7 +27,7 @@ const Dropdown = ({ selectKey, children }: Props) => {
   const handleClick = () => {
     setOpen((prevOpen) => !prevOpen);
     setSelectedShop(null);
-    setHoveredShop(null); 
+    setHoveredShop(null);
   };
 
   const handleClose = (event: Event) => {
@@ -39,11 +41,15 @@ const Dropdown = ({ selectKey, children }: Props) => {
     setOpen(false);
   };
 
+  // FIXME
+  const displayTitle = dropDownMapping[selectKey];
+
   return (
     <>
-      <FilterButton ref={anchorRef} onClick={handleClick} size='medium'>
-        {title}
-        <ArrowDropDownIcon />
+      <FilterButton ref={anchorRef} onClick={handleClick} size='small'>
+        {/* ! TODO */}
+        <Typography variant='body2'>{`${title}${displayTitle} `}</Typography>
+        <ArrowDropDownIcon fontSize='small' />
       </FilterButton>
       <ClickAwayListener onClickAway={handleClose}>
         <Popper
@@ -53,7 +59,6 @@ const Dropdown = ({ selectKey, children }: Props) => {
           open={open}
           anchorEl={anchorRef.current}
           transition
-          disablePortal
         >
           {({ TransitionProps, placement }) => (
             <Grow

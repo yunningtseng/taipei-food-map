@@ -1,73 +1,79 @@
-import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 
-type Props = {
-  isShopOpenList: boolean;
-};
-
-const StyledContainer = styled('div', {
-  shouldForwardProp: (prop) => prop !== 'isSelected',
-})<Props>(({ theme, isShopOpenList }) => ({
+const StyledWrapper = styled('div')(({ theme }) => ({
+  height: '100%',
   display: 'flex',
-  // !
-  height: 'calc(100vh - 10rem)',
-  paddingTop: theme.spacing(12),
-  marginLeft: theme.spacing(4),
-  position: 'relative',
+  flexDirection: 'row-reverse',
+  margin: theme.spacing(0, 0, 0, 2),
+  paddingTop: theme.spacing(8),
 
   [theme.breakpoints.down('lg')]: {
-    display: isShopOpenList ? 'flex' : 'block',
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2),
+    height: 'auto',
+    flexDirection: 'column',
+    margin: 0,
   },
 }));
 
-const StyledFilter = styled('div')(({ theme }) => ({
-  display: 'flex',
-  gap: '1rem',
-
-  [theme.breakpoints.down('lg')]: {
-    width: '100%',
-  },
-}));
-
-const StyledShopListWrapper = styled('div', {
-  shouldForwardProp: (prop) => prop !== 'isSelected',
-})<Props>(({ theme, isShopOpenList }) => ({
-  display: 'flex',
-  position: 'relative',
-  height: 'calc(100vh - 10rem)',
-
-  [theme.breakpoints.down('lg')]: {
-    display: isShopOpenList ? 'block' : 'none',
-  },
-}));
-
-const StyledShopMap = styled('div', {
-  shouldForwardProp: (prop) => prop !== 'isSelected',
-})<Props>(({ theme, isShopOpenList }) => ({
+const StyledShopMap = styled('div')(({ theme }) => ({
   width: '100%',
   height: '100%',
+  display: 'flex',
+  flexDirection: 'row-reverse',
 
   [theme.breakpoints.down('lg')]: {
-    display: isShopOpenList ? 'none' : 'block',
+    // TODO
+    width: '100%',
+    // height: '50vh',
+    height: '100%',
+    position: 'fixed',
   },
 }));
 
-const StyledButton = styled(Button)(({ theme }) => ({
-  display: 'none',
-  minWidth: '6rem',
-  minHeight: '2.5rem',
+const StyledShopListWrapper = styled('div')(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
 
   [theme.breakpoints.down('lg')]: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: theme.spacing(1, 2, 0, 2),
+    position: 'relative',
+    zIndex: 20,
+    backgroundColor: '#fff',
+    borderRadius: '1rem',
+  },
+}));
+
+const StyledDivider = styled('div')(({ theme }) => ({
+  display: 'none',
+
+  [theme.breakpoints.down('lg')]: {
+    width: '3rem',
     display: 'block',
+    margin: theme.spacing(1.5),
+    borderRadius: '1rem',
+    border: '1.5px solid #ccc',
+  },
+}));
+
+const StyledHiddenDiv = styled('div')(({ theme }) => ({
+  display: 'none',
+
+  [theme.breakpoints.down('lg')]: {
+    height: '50vh',
+    display: 'block',
+    position: 'relative',
+    zIndex: 30,
+    pointerEvents: 'none',
+    // backgroundColor: '#ff000022',
   },
 }));
 
 export {
-  StyledContainer,
-  StyledFilter,
-  StyledShopListWrapper,
+  StyledWrapper,
   StyledShopMap,
-  StyledButton,
+  StyledShopListWrapper,
+  StyledDivider,
+  StyledHiddenDiv,
 };

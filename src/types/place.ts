@@ -10,14 +10,14 @@ export type RawPlace = {
   };
   rating: number;
   userRatingCount: number;
-  googleMapsUri: string;
+  googleMapsUri?: string;
   displayName: {
     text: string;
   };
   takeout?: boolean;
   dineIn?: boolean;
   delivery?: boolean;
-  primaryType: string;
+  primaryType?: string;
   reviews?: {
     name: string;
     relativePublishTimeDescription: string;
@@ -50,34 +50,39 @@ export type RawPlace = {
 export type Place = Omit<
   RawPlace,
   | 'displayName'
+  | 'location'
   | 'addressComponents'
   | 'reviews'
   | 'photos'
   | 'editorialSummary'
 > & {
   displayName: string;
-  formattedAddress: string;
-  distance: number;
-  photoNames: string[];
-  imgUrls: Record<string, string>;
-  editorialSummary: string;
-};
-
-export type MapPlace = {
-  id: string;
-  name: string;
   address: string;
   distance: number;
   longitude: number;
   latitude: number;
   rating: number;
   userRatingCount: number;
-  photoNames: string[];
+  photoNames?: string[];
+  imgUrls?: Record<string, string>;
+  editorialSummary?: string;
 };
+
+// export type MapPlace = {
+//   id: string;
+//   displayName: string;
+//   address: string;
+//   distance: number;
+//   longitude: number;
+//   latitude: number;
+//   rating: number;
+//   userRatingCount: number;
+//   photoNames: string[];
+// };
 
 export type MapPlaceProperties = {
   id: string;
-  name: string;
+  displayName: string;
   address: string;
   distance: number;
   rating: number;

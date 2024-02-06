@@ -4,7 +4,6 @@ import StraightenIcon from '@mui/icons-material/Straighten';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import useShopInfoStore from '../../store/useGetShopInfoStore';
-import useQueryShopStore from '../../store/useQueryShopStore';
 import ShopPhoto from '../../utils/ShopPhoto';
 import { StyledTooltip } from '../shopList/styles/ShopList.styles';
 import {
@@ -18,7 +17,6 @@ type Props = {
 };
 
 const ShopMapInfo = ({ type }: Props) => {
-  const station = useQueryShopStore.use.station();
   const shopData = useShopInfoStore.use[type]();
 
   if (!shopData) {
@@ -27,7 +25,7 @@ const ShopMapInfo = ({ type }: Props) => {
 
   const {
     id,
-    name,
+    displayName,
     address,
     distance,
     rating,
@@ -49,17 +47,13 @@ const ShopMapInfo = ({ type }: Props) => {
         <ShopPhoto id={id} photoNames={photoNames} isSmallSize />
 
         <Box>
-          <StyledShopName>{name}</StyledShopName>
+          <StyledShopName>{displayName}</StyledShopName>
 
           <Box display='flex' gap={1}>
             <StarIcon fontSize='small' />
             <Typography variant='body2'>{`${rating} (${userRatingCount})`}</Typography>
 
-            <StyledTooltip
-              title={`距離${station}捷運站${distance}公尺`}
-              placement='top'
-              arrow
-            >
+            <StyledTooltip title='離捷運站直線距離(公尺)' placement='top' arrow>
               <Box display='flex' alignItems='center' gap={0.5}>
                 <StraightenIcon fontSize='small' />
                 <Typography variant='body2'>{`${distance}公尺`}</Typography>

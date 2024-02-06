@@ -11,17 +11,14 @@ export const transformPlaceData = (
   for (const item of data) {
     const id = item.id;
     const displayName = item.displayName.text;
-
-    const location = {
-      longitude: item.location.longitude,
-      latitude: item.location.latitude,
-    };
+    const latitude = item.location.latitude;
+    const longitude = item.location.longitude;
 
     const turfDistance = turf.distance(
       turf.point([center.longitude, center.latitude]),
-      turf.point([location.longitude, location.latitude])
+      turf.point([longitude, latitude])
     );
-    const distance = Math.round(turfDistance * 1000);
+    const distance = Math.round((turfDistance * 1000) / 10) * 10;
 
     const primaryType = item.primaryType;
 
@@ -67,7 +64,7 @@ export const transformPlaceData = (
       }
     });
 
-    const formattedAddress =
+    const address =
       administrativeAreaLevel1 +
       administrativeAreaLevel2 +
       route +
@@ -78,7 +75,9 @@ export const transformPlaceData = (
     const newData = {
       id,
       displayName,
-      location,
+      address,
+      latitude,
+      longitude,
       distance,
       primaryType,
       dinIn,
@@ -87,7 +86,6 @@ export const transformPlaceData = (
       googleMapsUri,
       rating,
       userRatingCount,
-      formattedAddress,
       photoNames,
       imgUrls,
       editorialSummary,
