@@ -1,30 +1,28 @@
-// import FavoriteIcon from '@mui/icons-material/Favorite';
-// import LocationOnIcon from '@mui/icons-material/LocationOn';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-// import SellIcon from '@mui/icons-material/Sell';
 import StarIcon from '@mui/icons-material/Star';
 import StraightenIcon from '@mui/icons-material/Straighten';
-import Box from '@mui/material/Box';
-// import CardActions from '@mui/material/CardActions';
+import { useMediaQuery, useTheme } from '@mui/material';
+import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
 import Menu from '@mui/material/Menu';
 import Typography from '@mui/material/Typography';
 import { MouseEvent, useRef, useState } from 'react';
 import useShopInfoStore from '../../store/useGetShopInfoStore';
-import useListOpenStore from '../../store/useListOpenStore';
+import useCardOpenStore from '../../store/useListOpenStore';
 import useQueryShopStore from '../../store/useQueryShopStore';
 import { Place } from '../../types/place';
 import ShopPhoto from '../../utils/ShopPhoto';
+import { StyledCardChips } from './styles/ShopCard.styles';
 import {
+  StyledDescription,
+  StyledDescriptionContainer,
   StyledMenuItem,
   StyledShopContent,
   StyledShopContentContainer,
-  StyledShopDescription,
   StyledShopItem,
   StyledShopItemContainer,
-  StyledShopMenuIcon,
   StyledShopName,
   StyledTooltip,
 } from './styles/ShopList.styles';
@@ -34,12 +32,18 @@ type Props = {
 };
 
 const ShopListItem = ({ item }: Props) => {
+  const theme = useTheme();
+  const smDown = useMediaQuery(theme.breakpoints.down('sm'));
+
   const setSelectedShop = useShopInfoStore.use.setSelectedShop();
   const setHoveredShop = useShopInfoStore.use.setHoveredShop();
 
   const station = useQueryShopStore.use.station();
 
-  const setShopListOpen = useListOpenStore.use.setShopListOpen();
+  const setCardOpen = useCardOpenStore.use.setCardOpen();
+  const isCardOpen = useCardOpenStore.use.isCardOpen();
+
+  const selectedShop = useShopInfoStore.use.selectedShop();
 
   const moreIconButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -55,35 +59,47 @@ const ShopListItem = ({ item }: Props) => {
     setMenuOpen(false);
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'instant',
+    });
+  };
+
+  const cardCanOpen = isCardOpen && smDown && selectedShop;
+
   const handleShopSelection = () => {
-    setShopListOpen(false);
+    setCardOpen(true);
+    scrollToTop();
 
     setSelectedShop({
       id: item.id,
-      displayName: item.displayName,
+      name: item.name,
       address: item.address,
       distance: item.distance,
       longitude: item.longitude,
       latitude: item.latitude,
+      googleMapsUri: item.googleMapsUri,
       rating: item.rating,
       userRatingCount: item.userRatingCount,
-      photoNames: item.photoNames,
       editorialSummary: item.editorialSummary,
+      photoNames: item.photoNames,
     });
   };
 
   const handleShopMouseEnter = () => {
     setHoveredShop({
       id: item.id,
-      displayName: item.displayName,
+      name: item.name,
       address: item.address,
       distance: item.distance,
       longitude: item.longitude,
       latitude: item.latitude,
+      googleMapsUri: item.googleMapsUri,
       rating: item.rating,
       userRatingCount: item.userRatingCount,
-      photoNames: item.photoNames,
       editorialSummary: item.editorialSummary,
+      photoNames: item.photoNames,
     });
   };
 
@@ -93,6 +109,7 @@ const ShopListItem = ({ item }: Props) => {
 
   return (
     <StyledShopItemContainer
+      isCardOpen={cardCanOpen as boolean}
       onClick={handleShopSelection}
       onMouseEnter={handleShopMouseEnter}
       onMouseLeave={handleShopMouseLeave}
@@ -105,13 +122,15 @@ const ShopListItem = ({ item }: Props) => {
       <StyledShopItem>
         <StyledShopName
           action={
-            <StyledShopMenuIcon>
-              <IconButton ref={moreIconButtonRef} onClick={handleOpenMenu}>
-                <MoreVertIcon fontSize='small' />
-              </IconButton>
-            </StyledShopMenuIcon>
+            <>
+              {!cardCanOpen && (
+                <IconButton ref={moreIconButtonRef} onClick={handleOpenMenu}>
+                  <MoreVertIcon fontSize='small' />
+                </IconButton>
+              )}
+            </>
           }
-          title={item.displayName}
+          title={item.name}
         />
 
         <Menu
@@ -145,7 +164,7 @@ const ShopListItem = ({ item }: Props) => {
           <StyledMenuItem>
             <Link
               target='_blank'
-              href={`https://www.google.com/maps/dir/?api=1&origin=${station}捷運站&destination=${item.displayName}&destination_place_id=${item.id}&travelmode=walking&hl=zh-TW
+              href={`https://www.google.com/maps/dir/?api=1&origin=${station}捷運站&destination=${item.name}&destination_place_id=${item.id}&travelmode=walking&hl=zh-TW
               `}
               underline='none'
               display='flex'
@@ -172,42 +191,61 @@ const ShopListItem = ({ item }: Props) => {
         </Menu>
 
         <StyledShopContentContainer>
-          <Box display='flex' gap={0.5}>
-            <StyledShopContent>{item.address}</StyledShopContent>
-          </Box>
+          <StyledShopContent>{item.address}</StyledShopContent>
 
           {item.editorialSummary && (
-            <Box width='100%' display='flex' gap={0.5} mt={1}>
-              <StyledShopContent>{item.editorialSummary}</StyledShopContent>
-            </Box>
+            <StyledShopContent>{item.editorialSummary}</StyledShopContent>
           )}
         </StyledShopContentContainer>
 
-        <Box display='flex' justifyContent='space-between' pl={1} mb={1}>
-          <Box display='flex' width='100%' gap={2} alignItems='center'>
-            <StyledTooltip title='評分數（評論數）' placement='top' arrow>
-              <StyledShopDescription>
-                <StarIcon fontSize='small' />
-                {`${item.rating} (${item.userRatingCount})`}
-              </StyledShopDescription>
-            </StyledTooltip>
+        <StyledDescriptionContainer isCardOpen={cardCanOpen as boolean}>
+          <StyledTooltip title='評分數（評論數）' placement='top' arrow>
+            <StyledDescription>
+              <StarIcon fontSize='small' />
+              {`${item.rating} (${item.userRatingCount})`}
+            </StyledDescription>
+          </StyledTooltip>
 
-            <StyledTooltip title='離捷運站直線距離(公尺)' placement='top' arrow>
-              <StyledShopDescription>
-                <StraightenIcon fontSize='small' />
-                {`${item.distance}m`}
-              </StyledShopDescription>
-            </StyledTooltip>
-          </Box>
+          <StyledTooltip title='離捷運站直線距離(公尺)' placement='top' arrow>
+            <StyledDescription>
+              <StraightenIcon fontSize='small' />
+              {`${item.distance}m`}
+            </StyledDescription>
+          </StyledTooltip>
+        </StyledDescriptionContainer>
 
-          {/* <CardActions disableSpacing>
-            <StyledTooltip title='收藏' placement='top' arrow>
-              <IconButton aria-label='add to favorites'>
-                <FavoriteIcon fontSize='small' />
-              </IconButton>
-            </StyledTooltip>
-          </CardActions> */}
-        </Box>
+        {cardCanOpen && (
+          <StyledCardChips>
+            <Chip
+              label='Google Map'
+              component='a'
+              target='_blank'
+              href={item.googleMapsUri}
+              size='small'
+              clickable
+              icon={<OpenInNewIcon fontSize='small' />}
+            />
+            <Chip
+              label='規劃路線'
+              component='a'
+              target='_blank'
+              href={`https://www.google.com/maps/dir/?api=1&origin=${station}捷運站&destination=${item.name}&destination_place_id=${item.id}&travelmode=walking&hl=zh-TW
+          `}
+              size='small'
+              clickable
+              icon={<OpenInNewIcon fontSize='small' />}
+            />
+            <Chip
+              label='查看評論'
+              component='a'
+              target='_blank'
+              href={`https://search.google.com/local/reviews?placeid=${item.id}&hl=zh-TW&gl=TW`}
+              size='small'
+              clickable
+              icon={<OpenInNewIcon fontSize='small' />}
+            />
+          </StyledCardChips>
+        )}
       </StyledShopItem>
     </StyledShopItemContainer>
   );

@@ -21,11 +21,25 @@ const StyledShopMap = styled('div')(({ theme }) => ({
   flexDirection: 'row-reverse',
 
   [theme.breakpoints.down('lg')]: {
-    // TODO
     width: '100%',
-    // height: '50vh',
-    height: '100%',
+    height: '60%',
     position: 'fixed',
+  },
+
+  [theme.breakpoints.down('sm')]: {
+    height: '100%',
+  },
+}));
+
+const StyledHiddenDiv = styled('div')(({ theme }) => ({
+  display: 'none',
+
+  [theme.breakpoints.down('lg')]: {
+    height: '60vh',
+    display: 'block',
+    position: 'relative',
+    zIndex: 30,
+    pointerEvents: 'none',
   },
 }));
 
@@ -54,19 +68,6 @@ const StyledDivider = styled('div')(({ theme }) => ({
     margin: theme.spacing(1.5),
     borderRadius: '1rem',
     border: '1.5px solid #ccc',
-  },
-}));
-
-const StyledHiddenDiv = styled('div')(({ theme }) => ({
-  display: 'none',
-
-  [theme.breakpoints.down('lg')]: {
-    height: '50vh',
-    display: 'block',
-    position: 'relative',
-    zIndex: 30,
-    pointerEvents: 'none',
-    // backgroundColor: '#ff000022',
   },
 }));
 

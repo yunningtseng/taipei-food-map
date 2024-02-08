@@ -11,7 +11,6 @@ const FilterGroups = () => {
       <StyledTabs
         value={0}
         variant='scrollable'
-        scrollButtons={true}
         allowScrollButtonsMobile
         TabIndicatorProps={{
           style: { display: 'none' },

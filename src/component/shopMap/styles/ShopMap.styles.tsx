@@ -4,7 +4,7 @@ import { Popup } from 'react-map-gl';
 const StyledPopup = styled(Popup)(({ theme }) => ({
   '& .mapboxgl-popup-content': {
     width: '22rem',
-    padding: theme.spacing(0.75),
+    padding: theme.spacing(0.5),
     border: '2px solid #ccc',
     borderRadius: '5%',
     backgroundColor: theme.palette.grey[100],
@@ -21,9 +21,9 @@ const StyledPopup = styled(Popup)(({ theme }) => ({
 const StyledShopName = styled('div')(({ theme }) => ({
   ...theme.typography.body1,
   width: '12rem',
+  display: '-webkit-box',
   marginBottom: theme.spacing(1),
   overflow: 'hidden',
-  display: '-webkit-box',
   WebkitBoxOrient: 'vertical',
   WebkitLineClamp: 2,
   textOverflow: 'ellipsis',
@@ -33,6 +33,7 @@ const StyledDescription = styled('div')(({ theme }) => ({
   ...theme.typography.body2,
   width: '11rem',
   marginLeft: theme.spacing(0.5),
+  marginBottom: theme.spacing(1),
 }));
 
 const StyledPaint = {

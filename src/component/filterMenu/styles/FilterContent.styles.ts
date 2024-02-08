@@ -2,6 +2,8 @@ import Button from '@mui/material/Button';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
+import MenuItem from '@mui/material/MenuItem';
+import MenuList from '@mui/material/MenuList';
 import Tabs, { tabsClasses } from '@mui/material/Tabs';
 import { styled } from '@mui/material/styles';
 
@@ -10,15 +12,15 @@ type MenuItemTextProps = {
 };
 
 const StyledFilter = styled('div')(({ theme }) => ({
-  maxWidth: '26rem',
+  width: '26rem',
   display: 'flex',
   alignItems: 'center',
-  flexWrap: 'wrap',
-  gap: '1rem',
+  gap: theme.spacing(2),
   zIndex: 10,
 
   [theme.breakpoints.down('lg')]: {
     maxWidth: '100%',
+    margin: theme.spacing(0, 0.5),
     position: 'fixed',
   },
 }));
@@ -52,9 +54,17 @@ const StyledTabs = styled(Tabs)(({ theme }) => ({
   },
 }));
 
-const StyledFilterButton = styled(Button)({
+const StyledTabsMenuList = styled(MenuList)({
+  padding: 0,
+});
+
+const StyledTabsMenuSelect = styled(MenuItem)({
+  minHeight: 'auto',
+});
+
+const StyledFilterButton = styled(Button)(({ theme }) => ({
   display: 'flex',
-  gap: '0.5rem',
+  gap: theme.spacing(1),
   color: '#1d192b',
   backgroundColor: '#e8def8',
   borderRight: 'none',
@@ -65,10 +75,10 @@ const StyledFilterButton = styled(Button)({
     border: '1px solid #e0e0e0',
     borderRight: 'none',
   },
-});
+}));
 
 const StyledMenuItem = styled(ListItem)(({ theme }) => ({
-  padding: theme.spacing(0, 1, 0.5),
+  padding: theme.spacing(0),
 }));
 
 const StyledMenuItemButton = styled(ListItemButton)(({ theme }) => ({
@@ -90,12 +100,16 @@ const StyledMenuItemText = styled(ListItemText, {
   }),
 }));
 
-const StyledRightColumnContainer = styled('div')({
+const StyledRightColumnContainer = styled('div')(({ theme }) => ({
   width: '10rem',
-  height: '32rem',
+  height: '26rem',
   overflow: 'hidden',
   overflowY: 'auto',
-});
+
+  [theme.breakpoints.down('sm')]: {
+    height: '16rem',
+  },
+}));
 
 export {
   StyledFilter,
@@ -105,4 +119,6 @@ export {
   StyledMenuItemText,
   StyledRightColumnContainer,
   StyledTabs,
+  StyledTabsMenuList,
+  StyledTabsMenuSelect,
 };

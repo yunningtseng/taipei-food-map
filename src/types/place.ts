@@ -1,23 +1,23 @@
 export type RawPlace = {
   id: string;
+  displayName: {
+    text: string;
+  };
   addressComponents: {
     longText: string;
     types: string[];
   }[];
   location: {
-    latitude: number;
     longitude: number;
+    latitude: number;
   };
+  primaryType?: string;
+  dineIn?: boolean;
+  takeout?: boolean;
+  delivery?: boolean;
+  googleMapsUri?: string;
   rating: number;
   userRatingCount: number;
-  googleMapsUri?: string;
-  displayName: {
-    text: string;
-  };
-  takeout?: boolean;
-  dineIn?: boolean;
-  delivery?: boolean;
-  primaryType?: string;
   reviews?: {
     name: string;
     relativePublishTimeDescription: string;
@@ -56,33 +56,21 @@ export type Place = Omit<
   | 'photos'
   | 'editorialSummary'
 > & {
-  displayName: string;
+  name: string;
   address: string;
   distance: number;
   longitude: number;
   latitude: number;
   rating: number;
   userRatingCount: number;
+  editorialSummary?: string;
   photoNames?: string[];
   imgUrls?: Record<string, string>;
-  editorialSummary?: string;
 };
-
-// export type MapPlace = {
-//   id: string;
-//   displayName: string;
-//   address: string;
-//   distance: number;
-//   longitude: number;
-//   latitude: number;
-//   rating: number;
-//   userRatingCount: number;
-//   photoNames: string[];
-// };
 
 export type MapPlaceProperties = {
   id: string;
-  displayName: string;
+  name: string;
   address: string;
   distance: number;
   rating: number;

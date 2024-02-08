@@ -10,30 +10,15 @@ export const transformPlaceData = (
 
   for (const item of data) {
     const id = item.id;
-    const displayName = item.displayName.text;
-    const latitude = item.location.latitude;
+    const name = item.displayName.text;
     const longitude = item.location.longitude;
+    const latitude = item.location.latitude;
 
     const turfDistance = turf.distance(
       turf.point([center.longitude, center.latitude]),
       turf.point([longitude, latitude])
     );
     const distance = Math.round((turfDistance * 1000) / 10) * 10;
-
-    const primaryType = item.primaryType;
-
-    const dinIn = item.dineIn;
-    const takeout = item.takeout;
-    const delivery = item.delivery;
-
-    const googleMapsUri = item.googleMapsUri;
-
-    const rating = item.rating;
-    const userRatingCount = item.userRatingCount;
-
-    const photoNames = item.photos?.map((photo) => photo.name) ?? [];
-    const imgUrls = {};
-    const editorialSummary = item.editorialSummary?.text ?? '';
 
     let establishment = '';
     let subpremise = '';
@@ -72,13 +57,25 @@ export const transformPlaceData = (
       subpremise +
       establishment;
 
+    const primaryType = item.primaryType;
+    const dinIn = item.dineIn;
+    const takeout = item.takeout;
+    const delivery = item.delivery;
+    const googleMapsUri = item.googleMapsUri;
+    const rating = item.rating;
+    const userRatingCount = item.userRatingCount;
+    const editorialSummary = item.editorialSummary?.text ?? '';
+
+    const photoNames = item.photos?.map((photo) => photo.name) ?? [];
+    const imgUrls = {};
+
     const newData = {
       id,
-      displayName,
+      name,
       address,
-      latitude,
-      longitude,
       distance,
+      longitude,
+      latitude,
       primaryType,
       dinIn,
       takeout,
@@ -86,9 +83,9 @@ export const transformPlaceData = (
       googleMapsUri,
       rating,
       userRatingCount,
+      editorialSummary,
       photoNames,
       imgUrls,
-      editorialSummary,
     };
 
     shopList.push(newData);

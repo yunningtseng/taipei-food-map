@@ -41,7 +41,7 @@ const TwoColumnMenuSelect = ({
   };
 
   return (
-    <Box display='flex' gap={2} mt={1}>
+    <Box display='flex' gap={2}>
       <Box>
         {leftColumnOptions.map((option) => (
           <Box key={option.id}>

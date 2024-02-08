@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Map, { Layer, MapRef, Source } from 'react-map-gl';
 import { useFetchPlaces } from '../../hooks/useFetchPlaces';
 import useShopInfoStore from '../../store/useGetShopInfoStore';
+import useCardOpenStore from '../../store/useListOpenStore';
 import useQueryShopStore from '../../store/useQueryShopStore';
 import { MapPlaceProperties, Place } from '../../types/place';
 import ShopMapInfo from './ShopMapInfo';
@@ -20,8 +21,16 @@ const ShopMap = () => {
   const hoveredShop = useShopInfoStore.use.hoveredShop();
 
   const locationCenter = useQueryShopStore.use.locationCenter();
+  const setCardOpen = useCardOpenStore.use.setCardOpen();
 
   const mapRef = useRef<MapRef>(null);
+
+  useEffect(() => {
+    mapRef.current?.flyTo({
+      center: [locationCenter.longitude, locationCenter.latitude],
+    });
+  }, [locationCenter]);
+
   const [cursor, setCursor] = useState<string>('grab');
 
   const convertToGeoJSON = useCallback((placeListData?: Place[]) => {
@@ -30,7 +39,7 @@ const ShopMap = () => {
         type: 'Feature',
         properties: {
           id: item.id,
-          displayName: item.displayName,
+          name: item.name,
           address: item.address,
           distance: item.distance,
           rating: item.rating,
@@ -69,7 +78,7 @@ const ShopMap = () => {
       if (feature && feature.properties) {
         const {
           id,
-          displayName,
+          name,
           address,
           distance,
           rating,
@@ -79,7 +88,7 @@ const ShopMap = () => {
 
         setShop({
           id,
-          displayName,
+          name,
           address,
           distance,
           longitude: lng,
@@ -95,6 +104,7 @@ const ShopMap = () => {
 
   const handleShopSelection = (event: mapboxgl.MapLayerMouseEvent) => {
     handleShopInteraction(event, setSelectedShop);
+    setCardOpen(true);
   };
 
   const handleShopHover = (event: mapboxgl.MapLayerMouseEvent) => {
@@ -105,18 +115,6 @@ const ShopMap = () => {
   const onMouseLeave = useCallback(() => setCursor('grab'), []);
   const onDragStart = useCallback(() => setCursor('grabbing'), []);
 
-  useEffect(() => {
-    mapRef.current?.flyTo({
-      center: [locationCenter.longitude, locationCenter.latitude],
-    });
-  }, [locationCenter]);
-
-  // useEffect(() => {
-  //   if (!isShopListOpen && mapRef.current) {
-  //     mapRef.current.resize();
-  //   }
-  // }, [isShopListOpen]);
-
   return (
     <Map
       ref={mapRef}
@@ -126,10 +124,6 @@ const ShopMap = () => {
         latitude: 25.042274,
         zoom: 14,
       }}
-      // style={{
-      //   width: '600px',
-      //   height: '600px',
-      // }}
       mapStyle='mapbox://styles/mapbox/outdoors-v11'
       interactiveLayerIds={['places']}
       onClick={handleShopSelection}

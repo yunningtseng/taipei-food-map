@@ -1,9 +1,14 @@
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { useMediaQuery, useTheme } from '@mui/material';
 import useShopInfoStore from '../../store/useGetShopInfoStore';
-import useListOpenStore from '../../store/useListOpenStore';
+import useCardOpenStore from '../../store/useListOpenStore';
 import FilterGroups from '../filterMenu/FilterGroups';
 import ShopCard from '../shopList/ShopCard';
 import ShopList from '../shopList/ShopList';
+import {
+  StyledCardCloseButton,
+  StyledCardWrapper,
+} from '../shopList/styles/ShopCard.styles';
 import ShopMap from '../shopMap/ShopMap';
 import {
   StyledDivider,
@@ -18,12 +23,16 @@ const LandingPage = () => {
   const lgDown = useMediaQuery(theme.breakpoints.down('lg'));
   const smDown = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const isShopListOpen = useListOpenStore.use.isShopListOpen();
+  const isCardOpen = useCardOpenStore.use.isCardOpen();
   const selectedShop = useShopInfoStore.use.selectedShop();
-  // const hoveredShop = useShopInfoStore.use.hoveredShop();
-  // console.log(selectedShop, hoveredShop);
 
-  const shop = selectedShop;
+  const setCardOpen = useCardOpenStore.use.setCardOpen();
+
+  const openShopList = () => {
+    setCardOpen(false);
+  };
+
+  const cardCanOpen = isCardOpen && smDown && selectedShop;
 
   return (
     <StyledWrapper>
@@ -33,10 +42,16 @@ const LandingPage = () => {
 
       {lgDown && <FilterGroups />}
 
-      {/* TODO */}
-      {smDown && !isShopListOpen && shop && <ShopCard />}
+      {cardCanOpen && (
+        <StyledCardWrapper>
+          <ShopCard />
+          <StyledCardCloseButton onClick={openShopList}>
+            <HighlightOffIcon fontSize='small' />
+          </StyledCardCloseButton>
+        </StyledCardWrapper>
+      )}
 
-      {(!smDown || isShopListOpen || !shop) && (
+      {!cardCanOpen && (
         <>
           <StyledHiddenDiv />
           <StyledShopListWrapper>

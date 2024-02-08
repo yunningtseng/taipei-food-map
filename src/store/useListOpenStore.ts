@@ -1,21 +1,19 @@
 import { create } from 'zustand';
 import { createSelectors } from './createSelectors';
 
-type ListOpenState = {
-  isShopListOpen: boolean;
+type CardOpenState = {
+  isCardOpen: boolean;
 };
 
-type ListOpenAction = {
-  setShopListOpen: (isOpen: boolean) => void;
+type CardOpenAction = {
+  setCardOpen: (isCardOpen: boolean) => void;
 };
 
-const useListOpenBase = create<ListOpenState & ListOpenAction>(
-  (set) => ({
-    isShopListOpen: true,
-    setShopListOpen: (isOpen) => set({ isShopListOpen: isOpen }),
-  })
-);
+const useCardOpenBase = create<CardOpenState & CardOpenAction>((set) => ({
+  isCardOpen: false,
+  setCardOpen: (isCardOpen) => set(() => ({ isCardOpen: isCardOpen })),
+}));
 
-const useListOpenStore = createSelectors(useListOpenBase);
+const useCardOpenStore = createSelectors(useCardOpenBase);
 
-export default useListOpenStore;
+export default useCardOpenStore;

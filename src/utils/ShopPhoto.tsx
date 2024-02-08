@@ -5,6 +5,7 @@ import {
   StyledShopImg,
 } from '../component/shopList/styles/ShopList.styles';
 import Box from '@mui/material/Box';
+import Skeleton from '@mui/material/Skeleton';
 
 type Props = {
   id: string;
@@ -19,15 +20,23 @@ const ShopPhoto = ({ id, photoNames, isSmallSize }: Props) => {
   });
 
   if (isLoading) {
-    return <StyledNoShopImg>Loading...</StyledNoShopImg>;
+    return (
+      <StyledNoShopImg>
+        <Skeleton
+          variant='rectangular'
+          width='100%'
+          height='100%'
+        />
+      </StyledNoShopImg>
+    );
   }
 
   if (!data && !isLoading) {
-    return <StyledNoShopImg>No Image</StyledNoShopImg>;
+    return <StyledNoShopImg>未提供圖片</StyledNoShopImg>;
   }
 
   return (
-    <Box display='flex' justifyContent='center'>
+    <Box display='flex' justifyContent='center' height='100%'>
       <StyledShopImg
         src={data}
         alt='place'

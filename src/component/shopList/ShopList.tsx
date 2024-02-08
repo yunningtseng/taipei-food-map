@@ -1,12 +1,10 @@
 import Box from '@mui/material/Box';
+import Skeleton from '@mui/material/Skeleton';
 import { useMemo } from 'react';
 import { useFetchPlaces } from '../../hooks/useFetchPlaces';
 import useQueryShopStore from '../../store/useQueryShopStore';
 import ShopListItem from './ShopListItem';
-import {
-  StyledShopIListContainer,
-  StyledShopListWrapper,
-} from './styles/ShopList.styles';
+import { StyledShopIListContainer } from './styles/ShopList.styles';
 
 const ShopList = () => {
   const { data, isLoading } = useFetchPlaces();
@@ -24,18 +22,32 @@ const ShopList = () => {
     return newData;
   }, [data, sortBy]);
 
-  if (isLoading) return <Box width='26rem'>Loading...</Box>;
+  if (isLoading)
+    return (
+      <Box width='26rem' height='100%'>
+        <Skeleton variant='rectangular' width='100%' height='100%' />
+      </Box>
+    );
 
-  if (!sortedData) return <div>No data.</div>;
+  if (!sortedData)
+    return (
+      <Box
+        width='100%'
+        height='100%'
+        display='flex'
+        justifyContent='center'
+        alignItems='center'
+      >
+        查無資料
+      </Box>
+    );
 
   return (
-    <StyledShopListWrapper>
-      <StyledShopIListContainer>
-        {sortedData.map((item) => (
-          <ShopListItem key={item.id} item={item} />
-        ))}
-      </StyledShopIListContainer>
-    </StyledShopListWrapper>
+    <StyledShopIListContainer>
+      {sortedData.map((item) => (
+        <ShopListItem key={item.id} item={item} />
+      ))}
+    </StyledShopIListContainer>
   );
 };
 

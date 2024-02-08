@@ -5,7 +5,6 @@ import Grow from '@mui/material/Grow';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import { ReactNode, useRef, useState } from 'react';
-import { dropDownMapping } from '../../const/dropDown';
 import useShopInfoStore from '../../store/useGetShopInfoStore';
 import useQueryShopStore from '../../store/useQueryShopStore';
 import { SelectKey } from '../../types/queryShop';
@@ -41,20 +40,26 @@ const Dropdown = ({ selectKey, children }: Props) => {
     setOpen(false);
   };
 
-  // FIXME
-  const displayTitle = dropDownMapping[selectKey];
+  let displayTab;
+  if (selectKey === 'minRating') {
+    displayTab = `評分${title}`;
+  } else if (selectKey === 'sortBy') {
+    displayTab = `${title}排序`;
+  } else {
+    displayTab = title;
+  }
 
   return (
     <>
       <FilterButton ref={anchorRef} onClick={handleClick} size='small'>
-        {/* ! TODO */}
-        <Typography variant='body2'>{`${title}${displayTitle} `}</Typography>
+        <Typography variant='body2'>{displayTab}</Typography>
         <ArrowDropDownIcon fontSize='small' />
       </FilterButton>
       <ClickAwayListener onClickAway={handleClose}>
         <Popper
           sx={{
             zIndex: 1,
+            margin: '5px',
           }}
           open={open}
           anchorEl={anchorRef.current}
@@ -68,7 +73,7 @@ const Dropdown = ({ selectKey, children }: Props) => {
                   placement === 'bottom' ? 'center top' : 'center bottom',
               }}
             >
-              <Paper>{children}</Paper>
+              <Paper sx={{ margin: '0.5rem' }}>{children}</Paper>
             </Grow>
           )}
         </Popper>

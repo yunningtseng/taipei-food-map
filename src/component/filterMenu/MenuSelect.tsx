@@ -1,7 +1,6 @@
-import MenuItem from '@mui/material/MenuItem';
-import MenuList from '@mui/material/MenuList';
 import useQueryShopStore from '../../store/useQueryShopStore';
 import { SelectKey } from '../../types/queryShop';
+import { StyledTabsMenuList, StyledTabsMenuSelect } from './styles/FilterContent.styles';
 
 type Props = {
   selectKey: SelectKey;
@@ -17,9 +16,9 @@ const MenuSelect = ({ selectKey, options }: Props) => {
   };
 
   return (
-    <MenuList id='split-button-menu' autoFocusItem>
+    <StyledTabsMenuList id='split-button-menu'>
       {options.map((option) => (
-        <MenuItem
+        <StyledTabsMenuSelect
           key={option}
           selected={option == selectedItem}
           onClick={() => {
@@ -27,9 +26,9 @@ const MenuSelect = ({ selectKey, options }: Props) => {
           }}
         >
           {option}
-        </MenuItem>
+        </StyledTabsMenuSelect>
       ))}
-    </MenuList>
+    </StyledTabsMenuList>
   );
 };
 

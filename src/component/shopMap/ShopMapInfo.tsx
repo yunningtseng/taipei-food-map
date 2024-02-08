@@ -1,4 +1,3 @@
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 import StarIcon from '@mui/icons-material/Star';
 import StraightenIcon from '@mui/icons-material/Straighten';
 import Box from '@mui/material/Box';
@@ -25,13 +24,13 @@ const ShopMapInfo = ({ type }: Props) => {
 
   const {
     id,
-    displayName,
+    name,
     address,
     distance,
-    rating,
-    userRatingCount,
     longitude,
     latitude,
+    rating,
+    userRatingCount,
     photoNames,
   } = shopData;
 
@@ -46,12 +45,18 @@ const ShopMapInfo = ({ type }: Props) => {
       <Box display='flex'>
         <ShopPhoto id={id} photoNames={photoNames} isSmallSize />
 
-        <Box>
-          <StyledShopName>{displayName}</StyledShopName>
+        <Box ml={1}>
+          <StyledShopName>{name}</StyledShopName>
 
-          <Box display='flex' gap={1}>
-            <StarIcon fontSize='small' />
-            <Typography variant='body2'>{`${rating} (${userRatingCount})`}</Typography>
+          <StyledDescription>{address}</StyledDescription>
+
+          <Box display='flex' gap={1} mb={0.5}>
+            <StyledTooltip title='評分數(評論數)' placement='top' arrow>
+              <Box display='flex' alignItems='center' gap={0.5}>
+                <StarIcon fontSize='small' />
+                <Typography variant='body2'>{`${rating} (${userRatingCount})`}</Typography>
+              </Box>
+            </StyledTooltip>
 
             <StyledTooltip title='離捷運站直線距離(公尺)' placement='top' arrow>
               <Box display='flex' alignItems='center' gap={0.5}>
@@ -59,11 +64,6 @@ const ShopMapInfo = ({ type }: Props) => {
                 <Typography variant='body2'>{`${distance}公尺`}</Typography>
               </Box>
             </StyledTooltip>
-          </Box>
-
-          <Box display='flex' mt={1}>
-            <LocationOnIcon fontSize='small' />
-            <StyledDescription>{address}</StyledDescription>
           </Box>
         </Box>
       </Box>
