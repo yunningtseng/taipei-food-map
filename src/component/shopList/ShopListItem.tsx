@@ -5,7 +5,6 @@ import StraightenIcon from '@mui/icons-material/Straighten';
 import { useMediaQuery, useTheme } from '@mui/material';
 import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
-import Link from '@mui/material/Link';
 import Menu from '@mui/material/Menu';
 import Typography from '@mui/material/Typography';
 import { MouseEvent, useRef, useState } from 'react';
@@ -19,6 +18,7 @@ import {
   StyledDescription,
   StyledDescriptionContainer,
   StyledMenuItem,
+  StyledMenuLink,
   StyledShopContent,
   StyledShopContentContainer,
   StyledShopItem,
@@ -138,6 +138,7 @@ const ShopListItem = ({ item }: Props) => {
           aria-labelledby='demo-positioned-button'
           anchorEl={moreIconButtonRef.current}
           open={menuOpen}
+          disableScrollLock
           onClose={handleCloseMenu}
           anchorOrigin={{
             vertical: 'bottom',
@@ -149,20 +150,19 @@ const ShopListItem = ({ item }: Props) => {
           }}
         >
           <StyledMenuItem>
-            <Link
+            <StyledMenuLink
               target='_blank'
               href={item.googleMapsUri}
               underline='none'
-              display='flex'
             >
               <Typography variant='body2' onClick={handleCloseMenu}>
                 前往 Google Map
               </Typography>
               <OpenInNewIcon fontSize='small' />
-            </Link>
+            </StyledMenuLink>
           </StyledMenuItem>
           <StyledMenuItem>
-            <Link
+            <StyledMenuLink
               target='_blank'
               href={`https://www.google.com/maps/dir/?api=1&origin=${station}捷運站&destination=${item.name}&destination_place_id=${item.id}&travelmode=walking&hl=zh-TW
               `}
@@ -173,10 +173,10 @@ const ShopListItem = ({ item }: Props) => {
                 規劃路線
               </Typography>
               <OpenInNewIcon fontSize='small' />
-            </Link>
+            </StyledMenuLink>
           </StyledMenuItem>
           <StyledMenuItem>
-            <Link
+            <StyledMenuLink
               target='_blank'
               href={`https://search.google.com/local/reviews?placeid=${item.id}&hl=zh-TW&gl=TW`}
               underline='none'
@@ -186,7 +186,7 @@ const ShopListItem = ({ item }: Props) => {
                 查看評論
               </Typography>
               <OpenInNewIcon fontSize='small' />
-            </Link>
+            </StyledMenuLink>
           </StyledMenuItem>
         </Menu>
 

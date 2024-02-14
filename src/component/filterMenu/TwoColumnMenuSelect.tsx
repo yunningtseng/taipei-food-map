@@ -1,5 +1,4 @@
 import Box from '@mui/material/Box';
-import ListItemText from '@mui/material/ListItemText';
 import useQueryShopStore from '../../store/useQueryShopStore';
 import { StationInfoProps } from '../../types/mrt';
 import { SelectKey } from '../../types/queryShop';
@@ -41,7 +40,7 @@ const TwoColumnMenuSelect = ({
   };
 
   return (
-    <Box display='flex' gap={2}>
+    <Box display='flex'>
       <Box>
         {leftColumnOptions.map((option) => (
           <Box key={option.id}>
@@ -52,7 +51,7 @@ const TwoColumnMenuSelect = ({
                   selectLeftColumnItem(option.id);
                 }}
               >
-                <ListItemText primary={option.name} />
+                <StyledMenuItemText primary={option.name} />
               </StyledMenuItemButton>
             </StyledMenuItem>
           </Box>
@@ -62,11 +61,11 @@ const TwoColumnMenuSelect = ({
       <StyledRightColumnContainer>
         {rightColumnOptions[leftSelectedItem].map((option) => (
           <StyledMenuItem key={option.id}>
-            <StyledMenuItemButton onClick={() => selectRightColumnItem(option)}>
-              <StyledMenuItemText
-                isSelected={option.name === rightSelectedItem}
-                primary={option.label}
-              />
+            <StyledMenuItemButton
+              selected={option.name === rightSelectedItem}
+              onClick={() => selectRightColumnItem(option)}
+            >
+              <StyledMenuItemText primary={option.label} />
             </StyledMenuItemButton>
           </StyledMenuItem>
         ))}

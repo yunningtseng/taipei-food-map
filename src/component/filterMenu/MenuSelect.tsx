@@ -1,6 +1,9 @@
 import useQueryShopStore from '../../store/useQueryShopStore';
 import { SelectKey } from '../../types/queryShop';
-import { StyledTabsMenuList, StyledTabsMenuSelect } from './styles/FilterContent.styles';
+import {
+  StyledTabsMenuList,
+  StyledTabsMenuSelect,
+} from './styles/FilterContent.styles';
 
 type Props = {
   selectKey: SelectKey;

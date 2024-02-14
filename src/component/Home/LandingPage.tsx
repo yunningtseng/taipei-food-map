@@ -10,9 +10,11 @@ import {
   StyledCardWrapper,
 } from '../shopList/styles/ShopCard.styles';
 import ShopMap from '../shopMap/ShopMap';
+import InfoButtonContainer from './InfoButtonContainer';
 import {
   StyledDivider,
   StyledHiddenDiv,
+  StyledInfoContainer,
   StyledShopListWrapper,
   StyledShopMap,
   StyledWrapper,
@@ -56,7 +58,10 @@ const LandingPage = () => {
           <StyledHiddenDiv />
           <StyledShopListWrapper>
             {!lgDown && <FilterGroups />}
-            <StyledDivider />
+            <StyledInfoContainer>
+              <StyledDivider />
+              <InfoButtonContainer />
+            </StyledInfoContainer>
             <ShopList />
           </StyledShopListWrapper>
         </>

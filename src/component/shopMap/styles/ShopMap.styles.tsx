@@ -3,11 +3,10 @@ import { Popup } from 'react-map-gl';
 
 const StyledPopup = styled(Popup)(({ theme }) => ({
   '& .mapboxgl-popup-content': {
-    width: '22rem',
     padding: theme.spacing(0.5),
     border: '2px solid #ccc',
     borderRadius: '5%',
-    backgroundColor: theme.palette.grey[100],
+    backgroundColor: '#F2F1EB',
   },
   '& .mapboxgl-popup-tip': {
     border: 0,
@@ -36,24 +35,4 @@ const StyledDescription = styled('div')(({ theme }) => ({
   marginBottom: theme.spacing(1),
 }));
 
-const StyledPaint = {
-  'circle-color': '#4264fb',
-  'circle-radius': 6,
-  'circle-stroke-width': 1,
-  'circle-stroke-color': '#ffffff',
-};
-
-const StyledHighlightPaint = {
-  'circle-color': '#109d33',
-  'circle-radius': 7,
-  'circle-stroke-width': 2,
-  'circle-stroke-color': '#ffffff',
-};
-
-export {
-  StyledDescription,
-  StyledHighlightPaint,
-  StyledPaint,
-  StyledPopup,
-  StyledShopName,
-};
+export { StyledDescription, StyledPopup, StyledShopName };

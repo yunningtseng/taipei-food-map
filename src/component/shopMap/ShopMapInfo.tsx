@@ -40,7 +40,8 @@ const ShopMapInfo = ({ type }: Props) => {
       closeButton={false}
       longitude={longitude}
       latitude={latitude}
-      offset={12}
+      offset={24}
+      maxWidth='22rem'
     >
       <Box display='flex'>
         <ShopPhoto id={id} photoNames={photoNames} isSmallSize />

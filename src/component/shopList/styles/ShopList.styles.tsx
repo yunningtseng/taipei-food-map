@@ -1,6 +1,7 @@
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
+import Link from '@mui/material/Link';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
@@ -124,6 +125,14 @@ const StyledShopName = styled(CardHeader)(({ theme }) => ({
 
 const StyledMenuItem = styled(MenuItem)({
   minHeight: '2rem',
+  color: '#263238',
+});
+
+const StyledMenuLink = styled(Link)({
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'space-between',
+  color: '#263238',
 });
 
 const StyledShopContentContainer = styled(CardContent)(({ theme }) => ({
@@ -182,6 +191,7 @@ export {
   StyledShopItem,
   StyledShopName,
   StyledMenuItem,
+  StyledMenuLink,
   StyledShopContentContainer,
   StyledShopContent,
   StyledDescriptionContainer,

@@ -1,3 +1,4 @@
+import IconButton from '@mui/material/IconButton';
 import { styled } from '@mui/material/styles';
 
 const StyledWrapper = styled('div')(({ theme }) => ({
@@ -38,7 +39,6 @@ const StyledHiddenDiv = styled('div')(({ theme }) => ({
     height: '60vh',
     display: 'block',
     position: 'relative',
-    zIndex: 30,
     pointerEvents: 'none',
   },
 }));
@@ -48,16 +48,39 @@ const StyledShopListWrapper = styled('div')(({ theme }) => ({
   flexDirection: 'column',
 
   [theme.breakpoints.down('lg')]: {
-    display: 'flex',
+    zIndex: 20,
     justifyContent: 'center',
     alignItems: 'center',
     padding: theme.spacing(1, 2, 0, 2),
     position: 'relative',
-    zIndex: 20,
     backgroundColor: '#fff',
     borderRadius: '1rem',
   },
 }));
+
+const StyledInfoContainer = styled('div')(({ theme }) => ({
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'flex-end',
+  alignItems: 'center',
+  position: 'relative',
+  paddingRight: theme.spacing(1),
+
+  [theme.breakpoints.down('lg')]: {
+    justifyContent: 'center',
+  },
+}));
+
+const StyledInfoIconContainer = styled('div')(({ theme }) => ({
+  [theme.breakpoints.down('lg')]: {
+    position: 'absolute',
+    right: 0,
+  },
+}));
+
+const StyledIconButton = styled(IconButton)({
+  padding: 0,
+});
 
 const StyledDivider = styled('div')(({ theme }) => ({
   display: 'none',
@@ -72,9 +95,12 @@ const StyledDivider = styled('div')(({ theme }) => ({
 }));
 
 export {
-  StyledWrapper,
-  StyledShopMap,
-  StyledShopListWrapper,
   StyledDivider,
   StyledHiddenDiv,
+  StyledIconButton,
+  StyledInfoContainer,
+  StyledInfoIconContainer,
+  StyledShopListWrapper,
+  StyledShopMap,
+  StyledWrapper,
 };

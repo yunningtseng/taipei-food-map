@@ -5,6 +5,7 @@ import {
   getDocs,
   limit,
   query,
+  serverTimestamp,
   setDoc,
   where,
 } from 'firebase/firestore';
@@ -27,7 +28,7 @@ const setPhotoUrl = async (
   id: string,
   photoName: string,
   imgUrl: string,
-  photoId: string
+  photoIndex: number
 ) => {
   const collectionRef = collection(db, 'photos');
   const docRef = doc(collectionRef);
@@ -35,25 +36,27 @@ const setPhotoUrl = async (
     placeId: id,
     url: imgUrl,
     name: photoName,
-    photoId: photoId,
+    photoIndex,
+    createdTime: serverTimestamp(),
   });
 };
 
 type PhotoUrlProps = {
   id: string;
-  photoId: string;
+  photoIndex: number;
 };
 
 type FetchPhotoProps = {
   id: string;
   photoName: string;
+  photoIndex: number;
 };
 
-const getPhotoUrl = async ({ id, photoId }: PhotoUrlProps) => {
+const getPhotoUrl = async ({ id, photoIndex }: PhotoUrlProps) => {
   const q = query(
     collection(db, 'photos'),
     where('placeId', '==', id),
-    where('photoId', '==', photoId),
+    where('photoIndex', '==', photoIndex),
     limit(1)
   );
   const querySnap = await getDocs(q);
@@ -68,23 +71,28 @@ const getPhotoUrl = async ({ id, photoId }: PhotoUrlProps) => {
   return imgUrl;
 };
 
-export const useFetchPhoto = ({ id, photoName }: FetchPhotoProps) => {
-  const photoId = photoName?.slice(-15);
-
+export const useFetchPhoto = ({
+  id,
+  photoName,
+  photoIndex,
+}: FetchPhotoProps) => {
   const fetchAndTransformPhotos = useCallback(async () => {
-    const savedImgUrl = await getPhotoUrl({ id, photoId });
+    const savedImgUrl = await getPhotoUrl({
+      id,
+      photoIndex,
+    });
 
     if (savedImgUrl) {
       return savedImgUrl;
     } else {
       const imgUrl = await fetchImageUrl(photoName);
-      setPhotoUrl(id, photoName, imgUrl, photoId);
+      setPhotoUrl(id, photoName, imgUrl, photoIndex);
       return imgUrl;
     }
-  }, [id, photoName, photoId]);
+  }, [id, photoName, photoIndex]);
 
   const res = useQuery({
-    queryKey: ['placeImage', id, photoId],
+    queryKey: ['placeImage', id, photoIndex],
     queryFn: fetchAndTransformPhotos,
     enabled: photoName !== '',
     staleTime: 1000 * 60 * 60 * 24 * 7,

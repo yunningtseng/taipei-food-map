@@ -1,14 +1,13 @@
 import { FeatureCollection } from 'geojson';
 import mapboxgl from 'mapbox-gl';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import Map, { Layer, MapRef, Source } from 'react-map-gl';
+import Map, { Layer, MapEvent, MapRef, Source } from 'react-map-gl';
 import { useFetchPlaces } from '../../hooks/useFetchPlaces';
 import useShopInfoStore from '../../store/useGetShopInfoStore';
 import useCardOpenStore from '../../store/useListOpenStore';
 import useQueryShopStore from '../../store/useQueryShopStore';
 import { MapPlaceProperties, Place } from '../../types/place';
 import ShopMapInfo from './ShopMapInfo';
-import { StyledHighlightPaint, StyledPaint } from './styles/ShopMap.styles';
 
 const accessToken = import.meta.env.VITE_MAP_BOX_TOKEN;
 
@@ -30,6 +29,32 @@ const ShopMap = () => {
       center: [locationCenter.longitude, locationCenter.latitude],
     });
   }, [locationCenter]);
+
+  const onLoad = (e: MapEvent) => {
+    const map = e.target;
+
+    map.getStyle().layers.forEach((layer: mapboxgl.Layer) => {
+      if (layer.id.endsWith('-label')) {
+        map.setLayoutProperty(layer.id, 'text-field', [
+          'coalesce',
+          ['get', 'name_zh-Hant'],
+          ['get', 'name'],
+        ]);
+      }
+    });
+
+    map.loadImage('data/place-purple.png', (_, image) => {
+      if (image) {
+        map.addImage('place-purple', image);
+      }
+    });
+
+    map.loadImage('data/place-red.png', (_, image) => {
+      if (image) {
+        map.addImage('place-red', image);
+      }
+    });
+  };
 
   const [cursor, setCursor] = useState<string>('grab');
 
@@ -124,7 +149,10 @@ const ShopMap = () => {
         latitude: 25.042274,
         zoom: 14,
       }}
-      mapStyle='mapbox://styles/mapbox/outdoors-v11'
+      maxZoom={17}
+      minZoom={11}
+      onLoad={onLoad}
+      mapStyle='mapbox://styles/yunningtseng/clsipyzc400ks01r6cfhicwmh'
       interactiveLayerIds={['places']}
       onClick={handleShopSelection}
       onMouseMove={handleShopHover}
@@ -135,12 +163,57 @@ const ShopMap = () => {
       cursor={cursor}
     >
       <Source id='places' type='geojson' data={geoJsonData}></Source>
-      <Layer id='places' source='places' type='circle' paint={StyledPaint} />
+      <Layer
+        id='place-text'
+        source='places'
+        type='symbol'
+        layout={{
+          'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+          'text-radial-offset': 1.4,
+          'text-field': ['get', 'name'],
+          'text-size': 13,
+          'text-justify': 'auto',
+          'text-padding': 0,
+        }}
+        paint={{
+          // 'text-color': '#6411e0',
+          'text-color': '#31086e',
+          'text-halo-blur': 1,
+          'text-halo-width': 1,
+          'text-halo-color': '#fff',
+        }}
+      />
+      <Layer
+        id='places'
+        source='places'
+        type='symbol'
+        layout={{
+          'icon-image': 'place-purple',
+          'icon-allow-overlap': true,
+          'icon-size': 0.5,
+          'icon-padding': 0,
+        }}
+        paint={
+          {
+            // 'icon-color': '#6411e0',
+          }
+        }
+      />
       <Layer
         id='places-highlighted'
         source='places'
-        type='circle'
-        paint={StyledHighlightPaint}
+        type='symbol'
+        layout={{
+          'icon-image': 'place-red',
+          'icon-allow-overlap': true,
+          'icon-size': 0.5,
+          'icon-padding': 0,
+        }}
+        paint={
+          {
+            // 'icon-color': '#bd1313',
+          }
+        }
         filter={[
           'any',
           ['==', ['get', 'id'], selectedShop?.id ?? ''],

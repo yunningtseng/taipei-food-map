@@ -17,16 +17,13 @@ const ShopPhoto = ({ id, photoNames, isSmallSize }: Props) => {
   const { data, isLoading } = useFetchPhoto({
     id: id,
     photoName: photoNames?.length ? photoNames[0] : '',
+    photoIndex: 0,
   });
 
   if (isLoading) {
     return (
       <StyledNoShopImg>
-        <Skeleton
-          variant='rectangular'
-          width='100%'
-          height='100%'
-        />
+        <Skeleton variant='rectangular' width='100%' height='100%' />
       </StyledNoShopImg>
     );
   }
