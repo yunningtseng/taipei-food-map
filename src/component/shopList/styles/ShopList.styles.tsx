@@ -28,6 +28,10 @@ const StyledShopIListContainer = styled('div')(({ theme }) => ({
     flexWrap: 'wrap',
     justifyContent: 'space-between',
   },
+
+  [theme.breakpoints.down('sm')]: {
+    marginBottom: theme.spacing(1),
+  },
 }));
 
 const StyledShopItemContainer = styled(Card, {

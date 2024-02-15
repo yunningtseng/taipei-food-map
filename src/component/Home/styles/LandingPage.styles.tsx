@@ -1,5 +1,15 @@
 import IconButton from '@mui/material/IconButton';
+import Toolbar from '@mui/material/Toolbar';
 import { styled } from '@mui/material/styles';
+
+const StyledToolbar = styled(Toolbar)(({ theme }) => ({
+  minHeight: '4rem',
+  background: 'linear-gradient(160deg,  #d65364 20%, #ffa684 100%)',
+
+  [theme.breakpoints.down('sm')]: {
+    minHeight: '3rem',
+  },
+}));
 
 const StyledWrapper = styled('div')(({ theme }) => ({
   height: '100%',
@@ -12,6 +22,10 @@ const StyledWrapper = styled('div')(({ theme }) => ({
     height: 'auto',
     flexDirection: 'column',
     margin: 0,
+  },
+
+  [theme.breakpoints.down('sm')]: {
+    paddingTop: theme.spacing(6),
   },
 }));
 
@@ -95,12 +109,13 @@ const StyledDivider = styled('div')(({ theme }) => ({
 }));
 
 export {
-  StyledDivider,
+  StyledToolbar,
+  StyledWrapper,
+  StyledShopMap,
   StyledHiddenDiv,
-  StyledIconButton,
+  StyledShopListWrapper,
   StyledInfoContainer,
   StyledInfoIconContainer,
-  StyledShopListWrapper,
-  StyledShopMap,
-  StyledWrapper,
+  StyledIconButton,
+  StyledDivider,
 };

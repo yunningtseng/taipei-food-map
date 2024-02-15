@@ -13,7 +13,9 @@ import useCardOpenStore from '../../store/useListOpenStore';
 import useQueryShopStore from '../../store/useQueryShopStore';
 import { Place } from '../../types/place';
 import ShopPhoto from '../../utils/ShopPhoto';
-import { StyledCardChips } from './styles/ShopCard.styles';
+import {
+  StyledCardChipsContainer
+} from './styles/ShopCard.styles';
 import {
   StyledDescription,
   StyledDescriptionContainer,
@@ -215,7 +217,7 @@ const ShopListItem = ({ item }: Props) => {
         </StyledDescriptionContainer>
 
         {cardCanOpen && (
-          <StyledCardChips>
+          <StyledCardChipsContainer>
             <Chip
               label='Google Map'
               component='a'
@@ -224,6 +226,10 @@ const ShopListItem = ({ item }: Props) => {
               size='small'
               clickable
               icon={<OpenInNewIcon fontSize='small' />}
+              sx={{
+                typography: 'body2',
+                padding: theme.spacing(0.5),
+              }}
             />
             <Chip
               label='規劃路線'
@@ -234,6 +240,10 @@ const ShopListItem = ({ item }: Props) => {
               size='small'
               clickable
               icon={<OpenInNewIcon fontSize='small' />}
+              sx={{
+                typography: 'body2',
+                padding: theme.spacing(0.5),
+              }}
             />
             <Chip
               label='查看評論'
@@ -243,8 +253,12 @@ const ShopListItem = ({ item }: Props) => {
               size='small'
               clickable
               icon={<OpenInNewIcon fontSize='small' />}
+              sx={{
+                typography: 'body2',
+                padding: theme.spacing(0.5),
+              }}
             />
-          </StyledCardChips>
+          </StyledCardChipsContainer>
         )}
       </StyledShopItem>
     </StyledShopItemContainer>

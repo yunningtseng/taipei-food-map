@@ -27,25 +27,25 @@ type QueryShopAction = {
 const useQueryShopStoreBase = create<QueryShopState & QueryShopAction>(
   (set) => ({
     locationCenter: {
-      longitude: 121.508511,
-      latitude: 25.042274,
+      longitude: 121.517415,
+      latitude: 25.04631,
     },
     distance: 1,
     locationRestriction: {
       rectangle: {
         low: {
-          latitude: 25.033246565971,
-          longitude: 121.49860172164702,
+          latitude: 25.037282570874147,
+          longitude: 121.50750539728473,
         },
         high: {
-          latitude: 25.051301423061208,
-          longitude: 121.51842027835298,
+          latitude: 25.055337418156775,
+          longitude: 121.52732460271527,
         },
       },
     },
     foodType: '蛋糕',
     line: 'BL',
-    station: '西門',
+    station: '台北車站',
     minRating: '不限',
     sortBy: '相關度',
     setSelectValue: ({ selectKey, value }) =>
