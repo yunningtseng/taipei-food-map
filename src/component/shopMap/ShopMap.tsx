@@ -25,6 +25,19 @@ const ShopMap = () => {
   const mapRef = useRef<MapRef>(null);
 
   useEffect(() => {
+    const handleResize = () => {
+      setTimeout(() => {
+        mapRef.current?.resize();
+      }, 0);
+    };
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
     mapRef.current?.flyTo({
       center: [locationCenter.longitude, locationCenter.latitude],
     });
@@ -43,13 +56,13 @@ const ShopMap = () => {
       }
     });
 
-    map.loadImage('data/place-purple.png', (_, image) => {
+    map.loadImage('src/images/place-purple.png', (_, image) => {
       if (image) {
         map.addImage('place-purple', image);
       }
     });
 
-    map.loadImage('data/place-red.png', (_, image) => {
+    map.loadImage('src/images/place-red.png', (_, image) => {
       if (image) {
         map.addImage('place-red', image);
       }
@@ -176,7 +189,6 @@ const ShopMap = () => {
           'text-padding': 0,
         }}
         paint={{
-          // 'text-color': '#6411e0',
           'text-color': '#31086e',
           'text-halo-blur': 1,
           'text-halo-width': 1,
@@ -193,11 +205,6 @@ const ShopMap = () => {
           'icon-size': 0.5,
           'icon-padding': 0,
         }}
-        paint={
-          {
-            // 'icon-color': '#6411e0',
-          }
-        }
       />
       <Layer
         id='places-highlighted'
@@ -209,11 +216,6 @@ const ShopMap = () => {
           'icon-size': 0.5,
           'icon-padding': 0,
         }}
-        paint={
-          {
-            // 'icon-color': '#bd1313',
-          }
-        }
         filter={[
           'any',
           ['==', ['get', 'id'], selectedShop?.id ?? ''],

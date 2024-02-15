@@ -1,3 +1,4 @@
+// @ts-expect-error no problem with the import
 import * as turf from '@turf/turf';
 import { RawPlace } from '../types/place';
 import { LocationCenter } from '../types/queryShop';
