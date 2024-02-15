@@ -56,13 +56,13 @@ const ShopMap = () => {
       }
     });
 
-    map.loadImage('src/images/place-purple.png', (_, image) => {
+    map.loadImage('/images/place-purple.png', (_, image) => {
       if (image) {
         map.addImage('place-purple', image);
       }
     });
 
-    map.loadImage('src/images/place-red.png', (_, image) => {
+    map.loadImage('/images/place-red.png', (_, image) => {
       if (image) {
         map.addImage('place-red', image);
       }

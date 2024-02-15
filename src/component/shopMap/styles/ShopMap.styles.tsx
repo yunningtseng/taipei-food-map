@@ -6,8 +6,8 @@ const StyledPopup = styled(Popup)(({ theme }) => ({
     padding: theme.spacing(0.5),
     border: '2px solid #ccc',
     borderRadius: '5%',
-    backgroundColor: '#F2F1EB',
   },
+
   '& .mapboxgl-popup-tip': {
     border: 0,
   },
