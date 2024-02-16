@@ -27,8 +27,8 @@ type QueryShopAction = {
 const useQueryShopStoreBase = create<QueryShopState & QueryShopAction>(
   (set) => ({
     locationCenter: {
-      longitude: 121.517415,
-      latitude: 25.04631,
+      longitude: 121.51753000000001,
+      latitude: 25.04625,
     },
     distance: 1,
     locationRestriction: {

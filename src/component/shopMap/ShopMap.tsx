@@ -2,11 +2,12 @@ import { FeatureCollection } from 'geojson';
 import mapboxgl from 'mapbox-gl';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Map, { Layer, MapEvent, MapRef, Source } from 'react-map-gl';
+import mrtGeoData from '../../../data/mrtGeo.json';
 import { useFetchPlaces } from '../../hooks/useFetchPlaces';
 import useShopInfoStore from '../../store/useGetShopInfoStore';
 import useCardOpenStore from '../../store/useListOpenStore';
 import useQueryShopStore from '../../store/useQueryShopStore';
-import { MapPlaceProperties, Place } from '../../types/place';
+import { MapMrtProperties, MapPlaceProperties, Place } from '../../types/place';
 import ShopMapInfo from './ShopMapInfo';
 
 const accessToken = import.meta.env.VITE_MAP_BOX_TOKEN;
@@ -67,13 +68,19 @@ const ShopMap = () => {
         map.addImage('place-red', image);
       }
     });
+
+    map.loadImage('/images/mrt.png', (_, image) => {
+      if (image) {
+        map.addImage('mrt', image);
+      }
+    });
   };
 
   const [cursor, setCursor] = useState<string>('grab');
 
-  const convertToGeoJSON = useCallback((placeListData?: Place[]) => {
+  const convertToGeoJSON = useCallback((data?: Place[]) => {
     const features =
-      placeListData?.map((item) => ({
+      data?.map((item) => ({
         type: 'Feature',
         properties: {
           id: item.id,
@@ -158,8 +165,8 @@ const ShopMap = () => {
       ref={mapRef}
       mapboxAccessToken={accessToken}
       initialViewState={{
-        longitude: 121.508511,
-        latitude: 25.042274,
+        longitude: 121.51753000000001,
+        latitude: 25.04625,
         zoom: 14,
       }}
       maxZoom={17}
@@ -176,6 +183,11 @@ const ShopMap = () => {
       cursor={cursor}
     >
       <Source id='places' type='geojson' data={geoJsonData}></Source>
+      <Source
+        id='mrt-text'
+        type='geojson'
+        data={mrtGeoData as MapMrtProperties}
+      ></Source>
       <Layer
         id='place-text'
         source='places'
@@ -221,6 +233,29 @@ const ShopMap = () => {
           ['==', ['get', 'id'], selectedShop?.id ?? ''],
           ['==', ['get', 'id'], hoveredShop?.id ?? ''],
         ]}
+      />
+      <Layer
+        id='mrt'
+        source='mrt-text'
+        type='symbol'
+        layout={{
+          'icon-image': 'taipei-metro',
+          'icon-allow-overlap': true,
+          'icon-size': ['step', ['zoom'], 0.8, 12, 1],
+          'icon-padding': 0,
+          'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
+          'text-radial-offset': 1.2,
+          'text-field': ['get', 'station'],
+          'text-size': ['step', ['zoom'], 11, 13, 12],
+          'text-justify': 'auto',
+          'text-padding': 0,
+        }}
+        paint={{
+          'text-color': '#085309',
+          'text-halo-blur': 1,
+          'text-halo-width': 1,
+          'text-halo-color': '#fff',
+        }}
       />
 
       <ShopMapInfo type='selectedShop' />
