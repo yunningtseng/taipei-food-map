@@ -31,9 +31,9 @@ const Dropdown = ({ selectKey, children }: Props) => {
 
   let displayTab;
   if (selectKey === 'minRating') {
-    displayTab = `評分${title}`;
+    displayTab = `評分${title}${title === '不限' ? '' : '以上'}`;
   } else if (selectKey === 'sortBy') {
-    displayTab = `${title}排序`;
+    displayTab = `依${title}排序`;
   } else {
     displayTab = title;
   }

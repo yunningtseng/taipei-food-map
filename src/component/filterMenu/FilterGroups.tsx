@@ -50,7 +50,7 @@ const FilterGroups = () => {
         <Dropdown selectKey='sortBy'>
           <MenuSelect
             selectKey='sortBy'
-            options={['相關度', '評分數', '評論數']}
+            options={['相關度', '評分', '評論數']}
           />
         </Dropdown>
       </StyledTabs>

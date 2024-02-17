@@ -76,20 +76,5 @@ export type MapPlaceProperties = {
   rating: number;
   userRatingCount: number;
   photoNames: string;
-};
-
-export type MapMrtProperties = {
-  type: FeatureCollection;
-  features: {
-    type: Feature;
-    properties: {
-      station: string;
-      longitude: number;
-      latitude: number;
-    };
-    geometry: {
-      type: Point;
-      coordinates: [number, number];
-    };
-  }[];
+  type: string;
 };

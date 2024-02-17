@@ -7,7 +7,7 @@ import { useFetchPlaces } from '../../hooks/useFetchPlaces';
 import useShopInfoStore from '../../store/useGetShopInfoStore';
 import useCardOpenStore from '../../store/useListOpenStore';
 import useQueryShopStore from '../../store/useQueryShopStore';
-import { MapMrtProperties, MapPlaceProperties, Place } from '../../types/place';
+import { MapPlaceProperties, Place } from '../../types/place';
 import ShopMapInfo from './ShopMapInfo';
 
 const accessToken = import.meta.env.VITE_MAP_BOX_TOKEN;
@@ -19,6 +19,9 @@ const ShopMap = () => {
   const setHoveredShop = useShopInfoStore.use.setHoveredShop();
   const selectedShop = useShopInfoStore.use.selectedShop();
   const hoveredShop = useShopInfoStore.use.hoveredShop();
+
+  const setRightSelectedItem = useQueryShopStore.use.setSelectValue();
+  const setLocationCenter = useQueryShopStore.use.setLocationCenter();
 
   const locationCenter = useQueryShopStore.use.locationCenter();
   const setCardOpen = useCardOpenStore.use.setCardOpen();
@@ -90,6 +93,7 @@ const ShopMap = () => {
           rating: item.rating,
           userRatingCount: item.userRatingCount,
           photoNames: item.photoNames,
+          type: 'place',
         },
         geometry: {
           type: 'Point',
@@ -108,7 +112,8 @@ const ShopMap = () => {
   const handleShopInteraction = useCallback(
     (
       event: mapboxgl.MapLayerMouseEvent,
-      setShop: (shop: Place | null) => void
+      setShop: (shop: Place | null) => void,
+      interactionType: string
     ) => {
       const {
         features,
@@ -118,42 +123,53 @@ const ShopMap = () => {
 
       const feature = features && features[0];
 
-      setShop(null);
-
-      if (feature && feature.properties) {
-        const {
-          id,
-          name,
-          address,
-          distance,
-          rating,
-          userRatingCount,
-          photoNames,
-        } = feature.properties as MapPlaceProperties;
-
-        setShop({
-          id,
-          name,
-          address,
-          distance,
-          longitude: lng,
-          latitude: lat,
-          rating,
-          userRatingCount,
-          photoNames: JSON.parse(photoNames),
+      if (feature?.properties?.type === 'mrt' && interactionType === 'click') {
+        setShop(null);
+        setLocationCenter({ longitude: lng, latitude: lat });
+        setRightSelectedItem({
+          selectKey: 'station',
+          value: feature.properties.station,
         });
+      } else if (feature?.properties?.type === 'place') {
+        if (feature && feature.properties) {
+          setShop(null);
+
+          const {
+            id,
+            name,
+            address,
+            distance,
+            rating,
+            userRatingCount,
+            photoNames,
+          } = feature.properties as MapPlaceProperties;
+
+          setShop({
+            id,
+            name,
+            address,
+            distance,
+            longitude: lng,
+            latitude: lat,
+            rating,
+            userRatingCount,
+            photoNames: JSON.parse(photoNames),
+          });
+        }
+      } else {
+        setShop(null);
       }
     },
     []
   );
 
   const handleShopSelection = (event: mapboxgl.MapLayerMouseEvent) => {
-    handleShopInteraction(event, setSelectedShop);
+    handleShopInteraction(event, setSelectedShop, 'click');
     setCardOpen(true);
   };
 
   const handleShopHover = (event: mapboxgl.MapLayerMouseEvent) => {
-    handleShopInteraction(event, setHoveredShop);
+    handleShopInteraction(event, setHoveredShop, 'hover');
   };
 
   const onMouseEnter = useCallback(() => setCursor('pointer'), []);
@@ -173,7 +189,7 @@ const ShopMap = () => {
       minZoom={11}
       onLoad={onLoad}
       mapStyle='mapbox://styles/yunningtseng/clsipyzc400ks01r6cfhicwmh'
-      interactiveLayerIds={['places']}
+      interactiveLayerIds={['places', 'mrt']}
       onClick={handleShopSelection}
       onMouseMove={handleShopHover}
       onMouseEnter={onMouseEnter}
@@ -186,7 +202,7 @@ const ShopMap = () => {
       <Source
         id='mrt-text'
         type='geojson'
-        data={mrtGeoData as MapMrtProperties}
+        data={mrtGeoData as FeatureCollection}
       ></Source>
       <Layer
         id='place-text'
@@ -216,6 +232,7 @@ const ShopMap = () => {
           'icon-allow-overlap': true,
           'icon-size': 0.5,
           'icon-padding': 0,
+          // 'icon-anchor': 'bottom',
         }}
       />
       <Layer
@@ -227,6 +244,7 @@ const ShopMap = () => {
           'icon-allow-overlap': true,
           'icon-size': 0.5,
           'icon-padding': 0,
+          // 'icon-anchor': 'bottom',
         }}
         filter={[
           'any',

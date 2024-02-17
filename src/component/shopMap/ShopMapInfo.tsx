@@ -52,17 +52,17 @@ const ShopMapInfo = ({ type }: Props) => {
           <StyledDescription>{address}</StyledDescription>
 
           <Box display='flex' gap={1} mb={0.5}>
-            <StyledTooltip title='評分數(評論數)' placement='top' arrow>
+            <StyledTooltip title='評分(評論數)' placement='top' arrow>
               <Box display='flex' alignItems='center' gap={0.5}>
                 <StarIcon fontSize='small' />
                 <Typography variant='body2'>{`${rating} (${userRatingCount})`}</Typography>
               </Box>
             </StyledTooltip>
 
-            <StyledTooltip title='離捷運站直線距離(公尺)' placement='top' arrow>
+            <StyledTooltip title='與捷運站的直線距離' placement='top' arrow>
               <Box display='flex' alignItems='center' gap={0.5}>
                 <StraightenIcon fontSize='small' />
-                <Typography variant='body2'>{`${distance}公尺`}</Typography>
+                <Typography variant='body2'>{`${distance}m`}</Typography>
               </Box>
             </StyledTooltip>
           </Box>

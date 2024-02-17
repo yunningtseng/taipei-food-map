@@ -201,14 +201,14 @@ const ShopListItem = ({ item }: Props) => {
         </StyledShopContentContainer>
 
         <StyledDescriptionContainer isCardOpen={cardCanOpen as boolean}>
-          <StyledTooltip title='評分數（評論數）' placement='top' arrow>
+          <StyledTooltip title='評分(評論數)' placement='top' arrow>
             <StyledDescription>
               <StarIcon fontSize='small' />
               {`${item.rating} (${item.userRatingCount})`}
             </StyledDescription>
           </StyledTooltip>
 
-          <StyledTooltip title='離捷運站直線距離(公尺)' placement='top' arrow>
+          <StyledTooltip title='與捷運站的直線距離' placement='top' arrow>
             <StyledDescription>
               <StraightenIcon fontSize='small' />
               {`${item.distance}m`}

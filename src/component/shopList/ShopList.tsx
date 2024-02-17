@@ -14,7 +14,7 @@ const ShopList = () => {
     if (!data) return;
 
     const newData = [...data];
-    if (sortBy === '評分數') {
+    if (sortBy === '評分') {
       newData.sort((a, b) => b.rating - a.rating);
     } else if (sortBy === '評論數') {
       newData.sort((a, b) => b.userRatingCount - a.userRatingCount);

@@ -33,6 +33,7 @@ export const transformMRTGeoData = () => {
       type: 'Feature',
       properties: {
         station: item.displayName.text,
+        type: 'mrt',
       },
       geometry: {
         type: 'Point',

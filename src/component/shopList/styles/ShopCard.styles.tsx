@@ -33,7 +33,10 @@ const StyledCardChipsContainer = styled('div')(({ theme }) => ({
   overflowY: 'hidden',
   whiteSpace: 'nowrap',
   scrollbarWidth: 'none',
+
+  '&::-webkit-scrollbar': {
+    display: 'none',
+  },
 }));
 
 export { StyledCardChipsContainer, StyledCardCloseButton, StyledCardWrapper };
-
