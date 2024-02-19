@@ -2,11 +2,13 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Link from '@mui/material/Link';
+import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
 
-type CardOpenProps = {
+type CardProps = {
+  shopNumber: number;
   isCardOpen: boolean;
 };
 
@@ -14,29 +16,13 @@ type ShopImgProps = {
   isSmallSize: boolean;
 };
 
-const StyledShopIListContainer = styled('div')(({ theme }) => ({
-  maxWidth: '26rem',
-  overflow: 'hidden',
-  overflowY: 'auto',
-  border: '1px solid #ccc',
-  borderRadius: '0.5rem',
-
-  [theme.breakpoints.down('lg')]: {
-    maxWidth: '100%',
-    height: '100%',
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-
-  [theme.breakpoints.down('sm')]: {
-    marginBottom: theme.spacing(1),
-  },
-}));
+type TypeProps = {
+  type: string;
+};
 
 const StyledShopItemContainer = styled(Card, {
-  shouldForwardProp: (prop) => prop !== 'isCardOpen',
-})<CardOpenProps>(({ theme, isCardOpen }) => ({
+  shouldForwardProp: (prop) => prop !== 'shopNumber' && prop !== 'isCardOpen',
+})<CardProps>(({ theme, shopNumber, isCardOpen }) => ({
   display: 'flex',
   cursor: 'pointer',
   boxShadow: 'none',
@@ -47,7 +33,7 @@ const StyledShopItemContainer = styled(Card, {
   },
 
   [theme.breakpoints.down('lg')]: {
-    width: '50%',
+    width: shopNumber === 1 ? '100%' : '50%',
   },
 
   [theme.breakpoints.down('md')]: {
@@ -62,6 +48,15 @@ const StyledShopItemContainer = styled(Card, {
       },
     }),
   },
+}));
+
+const StyledShopItem = styled('div')(({ theme }) => ({
+  minWidth: 0,
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  marginBottom: theme.spacing(1),
 }));
 
 const StyledShopImg = styled('img', {
@@ -79,36 +74,28 @@ const StyledShopImg = styled('img', {
     width: '8rem',
     height: '7rem',
   }),
-}));
-
-const StyledNoShopImg = styled('div')(({ theme }) => ({
-  minWidth: '9rem',
-  minHeight: '8rem',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  margin: theme.spacing(0.5),
-  backgroundColor: '#ccc',
 
   [theme.breakpoints.down('sm')]: {
-    minWidth: '7rem',
-    minHeight: '6rem',
+    width: '7.5rem',
+    height: '7rem',
   },
 }));
 
-const StyledShopItem = styled('div')({
-  minWidth: 0,
-  width: '100%',
-  display: 'flex',
-  flexDirection: 'column',
+const StyledNoShopImg = styled('div')({
+  minWidth: '9rem',
+  minHeight: '8rem',
 });
 
-const StyledShopName = styled(CardHeader)(({ theme }) => ({
-  padding: theme.spacing(1, 1, 0, 1),
+const StyledShopName = styled(CardHeader, {
+  shouldForwardProp: (prop) => prop !== 'type',
+})<TypeProps>(({ theme, type }) => ({
+  padding: theme.spacing(0.5, 1, 0, 1),
   width: '100%',
 
   '& .MuiCardHeader-title': {
-    ...theme.typography.subtitle1,
+    ...(type === 'map'
+      ? theme.typography.subtitle2
+      : theme.typography.subtitle1),
     overflow: 'hidden',
     display: '-webkit-box',
     WebkitBoxOrient: 'vertical',
@@ -127,6 +114,12 @@ const StyledShopName = styled(CardHeader)(({ theme }) => ({
   },
 }));
 
+const StyledMenu = styled(Menu)({
+  '& .MuiList-root': {
+    padding: 0,
+  },
+});
+
 const StyledMenuItem = styled(MenuItem)({
   minHeight: '2rem',
   color: '#263238',
@@ -139,8 +132,10 @@ const StyledMenuLink = styled(Link)({
   color: '#263238',
 });
 
-const StyledShopContentContainer = styled(CardContent)(({ theme }) => ({
-  padding: theme.spacing(1),
+const StyledShopContentContainer = styled(CardContent, {
+  shouldForwardProp: (prop) => prop !== 'type',
+})<TypeProps>(({ theme, type }) => ({
+  padding: type === 'map' ? theme.spacing(0, 1) : theme.spacing(1),
   color: '#70757a',
 
   '&:last-child': {
@@ -153,25 +148,11 @@ const StyledShopContent = styled('div')(({ theme }) => ({
   width: '100%',
 }));
 
-const StyledDescriptionContainer = styled('div', {
-  shouldForwardProp: (prop) => prop !== 'isCardOpen',
-})<CardOpenProps>(({ theme, isCardOpen }) => ({
+const StyledDescriptionContainer = styled('div')(({ theme }) => ({
   width: '100%',
   display: 'flex',
   gap: theme.spacing(2),
-  marginBottom: theme.spacing(1),
-
-  ...(!isCardOpen && {
-    height: '100%',
-    alignItems: 'end',
-  }),
-}));
-
-const StyledDescription = styled('div')(({ theme }) => ({
-  ...theme.typography.subtitle2,
-  display: 'flex',
-  alignItems: 'center',
-  gap: theme.spacing(0.5),
+  padding: theme.spacing(1, 1, 0, 1),
 }));
 
 const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
@@ -187,18 +168,25 @@ const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
   },
 }));
 
+const StyledDescription = styled('div')(({ theme }) => ({
+  ...theme.typography.subtitle2,
+  display: 'flex',
+  alignItems: 'center',
+  gap: theme.spacing(0.5),
+}));
+
 export {
-  StyledShopIListContainer,
-  StyledShopItemContainer,
-  StyledShopImg,
-  StyledNoShopImg,
-  StyledShopItem,
-  StyledShopName,
+  StyledDescription,
+  StyledDescriptionContainer,
+  StyledMenu,
   StyledMenuItem,
   StyledMenuLink,
-  StyledShopContentContainer,
+  StyledNoShopImg,
   StyledShopContent,
-  StyledDescriptionContainer,
-  StyledDescription,
+  StyledShopContentContainer,
+  StyledShopImg,
+  StyledShopItem,
+  StyledShopItemContainer,
+  StyledShopName,
   StyledTooltip,
 };

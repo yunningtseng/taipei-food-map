@@ -1,10 +1,29 @@
 import Box from '@mui/material/Box';
-import Skeleton from '@mui/material/Skeleton';
+import { styled } from '@mui/material/styles';
 import { useMemo } from 'react';
 import { useFetchPlaces } from '../../hooks/useFetchPlaces';
 import useQueryShopStore from '../../store/useQueryShopStore';
-import ShopListItem from './ShopListItem';
-import { StyledShopIListContainer } from './styles/ShopList.styles';
+import ShopListItem from '../shopItem/ShopListItem';
+import ShopSkeleton from './ShopSkeleton';
+
+const StyledShopIListContainer = styled('div')(({ theme }) => ({
+  maxWidth: '26rem',
+  overflow: 'hidden',
+  overflowY: 'auto',
+  border: '1px solid #ccc',
+  borderRadius: '0.5rem',
+  marginRight: theme.spacing(1),
+  marginBottom: theme.spacing(1),
+
+  [theme.breakpoints.down('lg')]: {
+    maxWidth: '100%',
+    height: '100%',
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    marginRight: theme.spacing(0),
+  },
+}));
 
 const ShopList = () => {
   const { data, isLoading } = useFetchPlaces();
@@ -22,12 +41,7 @@ const ShopList = () => {
     return newData;
   }, [data, sortBy]);
 
-  if (isLoading)
-    return (
-      <Box width='26rem' height='100%'>
-        <Skeleton variant='rectangular' width='100%' height='100%' />
-      </Box>
-    );
+  if (isLoading) return <ShopSkeleton />;
 
   if (!sortedData)
     return (
@@ -42,10 +56,12 @@ const ShopList = () => {
       </Box>
     );
 
+  const shopNumber = sortedData.length;
+
   return (
     <StyledShopIListContainer>
       {sortedData.map((item) => (
-        <ShopListItem key={item.id} item={item} />
+        <ShopListItem key={item.id} item={item} shopNumber={shopNumber} />
       ))}
     </StyledShopIListContainer>
   );

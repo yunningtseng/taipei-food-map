@@ -1,19 +1,30 @@
-import StarIcon from '@mui/icons-material/Star';
-import StraightenIcon from '@mui/icons-material/Straighten';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
+import { Popup } from 'react-map-gl';
 import useShopInfoStore from '../../store/useGetShopInfoStore';
-import ShopPhoto from '../../utils/ShopPhoto';
-import { StyledTooltip } from '../shopList/styles/ShopList.styles';
-import {
-  StyledDescription,
-  StyledPopup,
-  StyledShopName,
-} from './styles/ShopMap.styles';
+import ShopContent from '../shopItem/ShopContent';
+import ShopPhoto from '../shopItem/ShopPhoto';
 
 type Props = {
   type: 'selectedShop' | 'hoveredShop';
 };
+
+const StyledPopup = styled(Popup)(({ theme }) => ({
+  '& .mapboxgl-popup-content': {
+    width: '22rem',
+    padding: theme.spacing(0.5),
+    border: '2px solid #ccc',
+    borderRadius: '5%',
+  },
+
+  '& .mapboxgl-popup-tip': {
+    border: 0,
+  },
+
+  [theme.breakpoints.down('sm')]: {
+    display: 'none',
+  },
+}));
 
 const ShopMapInfo = ({ type }: Props) => {
   const shopData = useShopInfoStore.use[type]();
@@ -22,17 +33,7 @@ const ShopMapInfo = ({ type }: Props) => {
     return null;
   }
 
-  const {
-    id,
-    name,
-    address,
-    distance,
-    longitude,
-    latitude,
-    rating,
-    userRatingCount,
-    photoNames,
-  } = shopData;
+  const { id, longitude, latitude, photoNames } = shopData;
 
   return (
     <StyledPopup
@@ -45,28 +46,7 @@ const ShopMapInfo = ({ type }: Props) => {
     >
       <Box display='flex'>
         <ShopPhoto id={id} photoNames={photoNames} isSmallSize />
-
-        <Box ml={1}>
-          <StyledShopName>{name}</StyledShopName>
-
-          <StyledDescription>{address}</StyledDescription>
-
-          <Box display='flex' gap={1} mb={0.5}>
-            <StyledTooltip title='評分(評論數)' placement='top' arrow>
-              <Box display='flex' alignItems='center' gap={0.5}>
-                <StarIcon fontSize='small' />
-                <Typography variant='body2'>{`${rating} (${userRatingCount})`}</Typography>
-              </Box>
-            </StyledTooltip>
-
-            <StyledTooltip title='與捷運站的直線距離' placement='top' arrow>
-              <Box display='flex' alignItems='center' gap={0.5}>
-                <StraightenIcon fontSize='small' />
-                <Typography variant='body2'>{`${distance}m`}</Typography>
-              </Box>
-            </StyledTooltip>
-          </Box>
-        </Box>
+        <ShopContent item={shopData} type='map' />
       </Box>
     </StyledPopup>
   );

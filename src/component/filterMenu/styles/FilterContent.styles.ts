@@ -12,6 +12,7 @@ const StyledFilter = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   gap: theme.spacing(2),
+  marginTop: theme.spacing(1),
 
   [theme.breakpoints.down('lg')]: {
     width: '100%',
@@ -30,10 +31,10 @@ const StyledTabs = styled(Tabs)(({ theme }) => ({
   '& .MuiButtonBase-root': {
     width: 'auto',
     minWidth: 'auto',
-    border: '2px solid #ffff',
+    border: '2px solid #fff',
 
     '&:hover': {
-      border: '2px solid #ffff',
+      border: '2px solid #fff',
     },
   },
 
@@ -41,7 +42,7 @@ const StyledTabs = styled(Tabs)(({ theme }) => ({
     color: 'black',
     borderRadius: '50%',
     opacity: 1,
-    backgroundColor: '#e8def8',
+    backgroundColor: '#f9cdbb',
 
     '&.Mui-disabled': {
       display: 'none',
@@ -49,37 +50,35 @@ const StyledTabs = styled(Tabs)(({ theme }) => ({
   },
 }));
 
-const StyledTabsMenuList = styled(MenuList)({
-  padding: 0,
-});
-
-const StyledTabsMenuSelect = styled(MenuItem)(({ theme }) => ({
-  minHeight: 'auto',
-  backgroundColor: '#eceff1',
-  ...theme.typography.body2,
-
-  '&:hover': {
-    backgroundColor: '#cfd8dc',
-  },
-  '&.Mui-selected': {
-    backgroundColor: '#b0bec5',
-  },
-  '&.Mui-selected:hover': {
-    backgroundColor: '#b0bec5',
-  },
-}));
-
 const StyledTabButton = styled(Button)(({ theme }) => ({
   display: 'flex',
   gap: theme.spacing(1),
-  color: '#1d192b',
-  backgroundColor: '#e8def8',
-  border: 'none',
+  color: '#000',
+  backgroundColor: '#f9cdbb',
   borderRadius: '0.5rem',
 
   '&:hover': {
-    backgroundColor: '#d1c4e9',
-    border: 'none',
+    backgroundColor: '#f3b296',
+  },
+}));
+
+const StyledMenuList = styled(MenuList)({
+  padding: 0,
+});
+
+const StyledMenuSelect = styled(MenuItem)(({ theme }) => ({
+  minHeight: 'auto',
+  backgroundColor: '#f8fafc',
+  ...theme.typography.body2,
+
+  '&:hover': {
+    backgroundColor: '#f4e4d7',
+  },
+  '&.Mui-selected': {
+    backgroundColor: '#f4e4d7',
+  },
+  '&.Mui-selected:hover': {
+    backgroundColor: '#f4e4d7',
   },
 }));
 
@@ -94,22 +93,22 @@ const StyledRightColumnContainer = styled('div')(({ theme }) => ({
   },
 }));
 
-const StyledMenuItem = styled(ListItem)(({ theme }) => ({
-  backgroundColor: '#eceff1',
+const StyledTwoColumnItem = styled(ListItem)(({ theme }) => ({
+  backgroundColor: '#f8fafc',
   padding: theme.spacing(0),
 }));
 
-const StyledMenuItemButton = styled(ListItemButton)(({ theme }) => ({
+const StyledTwoColumnItemButton = styled(ListItemButton)(({ theme }) => ({
   padding: theme.spacing(1),
 
   '&:hover': {
-    backgroundColor: '#cfd8dc',
+    backgroundColor: '#f4e4d7',
   },
   '&.Mui-selected': {
-    backgroundColor: '#b0bec5',
+    backgroundColor: '#f4e4d7',
   },
   '&.Mui-selected:hover': {
-    backgroundColor: '#b0bec5',
+    backgroundColor: '#f4e4d7',
   },
 }));
 
@@ -122,12 +121,12 @@ const StyledMenuItemText = styled(ListItemText)(({ theme }) => ({
 
 export {
   StyledFilter,
-  StyledMenuItem,
-  StyledMenuItemButton,
   StyledMenuItemText,
+  StyledMenuList,
+  StyledMenuSelect,
   StyledRightColumnContainer,
   StyledTabButton,
   StyledTabs,
-  StyledTabsMenuList,
-  StyledTabsMenuSelect
+  StyledTwoColumnItem,
+  StyledTwoColumnItemButton,
 };

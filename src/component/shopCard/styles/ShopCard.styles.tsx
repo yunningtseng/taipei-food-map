@@ -24,19 +24,4 @@ const StyledCardCloseButton = styled(IconButton)(({ theme }) => ({
   },
 }));
 
-const StyledCardChipsContainer = styled('div')(({ theme }) => ({
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: theme.spacing(0.5),
-  marginBottom: theme.spacing(1),
-  overflowX: 'auto',
-  overflowY: 'hidden',
-  whiteSpace: 'nowrap',
-  scrollbarWidth: 'none',
-
-  '&::-webkit-scrollbar': {
-    display: 'none',
-  },
-}));
-
-export { StyledCardChipsContainer, StyledCardCloseButton, StyledCardWrapper };
+export { StyledCardCloseButton, StyledCardWrapper };

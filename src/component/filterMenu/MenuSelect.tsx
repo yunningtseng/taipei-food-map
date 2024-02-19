@@ -1,8 +1,8 @@
 import useQueryShopStore from '../../store/useQueryShopStore';
 import { SelectKey } from '../../types/queryShop';
 import {
-  StyledTabsMenuList,
-  StyledTabsMenuSelect,
+  StyledMenuList,
+  StyledMenuSelect,
 } from './styles/FilterContent.styles';
 
 type Props = {
@@ -19,9 +19,9 @@ const MenuSelect = ({ selectKey, options }: Props) => {
   };
 
   return (
-    <StyledTabsMenuList id='split-button-menu'>
+    <StyledMenuList id='split-button-menu'>
       {options.map((option) => (
-        <StyledTabsMenuSelect
+        <StyledMenuSelect
           key={option}
           selected={option == selectedItem}
           onClick={() => {
@@ -29,9 +29,9 @@ const MenuSelect = ({ selectKey, options }: Props) => {
           }}
         >
           {option}
-        </StyledTabsMenuSelect>
+        </StyledMenuSelect>
       ))}
-    </StyledTabsMenuList>
+    </StyledMenuList>
   );
 };
 

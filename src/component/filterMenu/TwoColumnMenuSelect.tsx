@@ -1,13 +1,14 @@
 import Box from '@mui/material/Box';
+import { useRef } from 'react';
 import useQueryShopStore from '../../store/useQueryShopStore';
 import { StationInfoProps } from '../../types/mrt';
 import { SelectKey } from '../../types/queryShop';
 import { Option } from '../../types/select';
 import {
-  StyledMenuItem,
-  StyledMenuItemButton,
   StyledMenuItemText,
   StyledRightColumnContainer,
+  StyledTwoColumnItem,
+  StyledTwoColumnItemButton,
 } from './styles/FilterContent.styles';
 
 type Props = {
@@ -30,8 +31,14 @@ const TwoColumnMenuSelect = ({
   const setRightSelectedItem = useQueryShopStore.use.setSelectValue();
   const setLocationCenter = useQueryShopStore.use.setLocationCenter();
 
+  const rightColumnRef = useRef<HTMLDivElement>(null);
+
   const selectLeftColumnItem = (option: string) => {
     setLeftSelectedItem({ selectKey: leftSelectKey, value: option });
+
+    if (rightColumnRef.current) {
+      rightColumnRef.current.scrollTop = 0;
+    }
   };
 
   const selectRightColumnItem = (option: StationInfoProps) => {
@@ -41,33 +48,33 @@ const TwoColumnMenuSelect = ({
 
   return (
     <Box display='flex'>
-      <Box>
+      <Box sx={{ backgroundColor: '#f8fafc' }}>
         {leftColumnOptions.map((option) => (
           <Box key={option.id}>
-            <StyledMenuItem>
-              <StyledMenuItemButton
+            <StyledTwoColumnItem>
+              <StyledTwoColumnItemButton
                 selected={option.id === leftSelectedItem}
                 onClick={() => {
                   selectLeftColumnItem(option.id);
                 }}
               >
                 <StyledMenuItemText primary={option.name} />
-              </StyledMenuItemButton>
-            </StyledMenuItem>
+              </StyledTwoColumnItemButton>
+            </StyledTwoColumnItem>
           </Box>
         ))}
       </Box>
 
-      <StyledRightColumnContainer>
+      <StyledRightColumnContainer ref={rightColumnRef}>
         {rightColumnOptions[leftSelectedItem].map((option) => (
-          <StyledMenuItem key={option.id}>
-            <StyledMenuItemButton
+          <StyledTwoColumnItem key={option.id}>
+            <StyledTwoColumnItemButton
               selected={option.name === rightSelectedItem}
               onClick={() => selectRightColumnItem(option)}
             >
               <StyledMenuItemText primary={option.label} />
-            </StyledMenuItemButton>
-          </StyledMenuItem>
+            </StyledTwoColumnItemButton>
+          </StyledTwoColumnItem>
         ))}
       </StyledRightColumnContainer>
     </Box>

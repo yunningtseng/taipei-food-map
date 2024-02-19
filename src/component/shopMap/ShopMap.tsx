@@ -60,9 +60,9 @@ const ShopMap = () => {
       }
     });
 
-    map.loadImage('/images/place-purple.png', (_, image) => {
+    map.loadImage('/images/place-blue.png', (_, image) => {
       if (image) {
-        map.addImage('place-purple', image);
+        map.addImage('place-blue', image);
       }
     });
 
@@ -217,7 +217,7 @@ const ShopMap = () => {
           'text-padding': 0,
         }}
         paint={{
-          'text-color': '#31086e',
+          'text-color': '#106181',
           'text-halo-blur': 1,
           'text-halo-width': 1,
           'text-halo-color': '#fff',
@@ -228,11 +228,10 @@ const ShopMap = () => {
         source='places'
         type='symbol'
         layout={{
-          'icon-image': 'place-purple',
+          'icon-image': 'place-blue',
           'icon-allow-overlap': true,
           'icon-size': 0.5,
           'icon-padding': 0,
-          // 'icon-anchor': 'bottom',
         }}
       />
       <Layer
@@ -244,7 +243,6 @@ const ShopMap = () => {
           'icon-allow-overlap': true,
           'icon-size': 0.5,
           'icon-padding': 0,
-          // 'icon-anchor': 'bottom',
         }}
         filter={[
           'any',

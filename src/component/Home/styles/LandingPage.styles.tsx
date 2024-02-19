@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   minHeight: '4rem',
-  background: 'linear-gradient(160deg,  #d65364 20%, #ffa684 100%)',
+  background: 'linear-gradient(160deg,  #1f92a4 20%, #88d7d8 100%)',
 
   [theme.breakpoints.down('sm')]: {
     minHeight: '3rem',
@@ -19,7 +19,6 @@ const StyledWrapper = styled('div')(({ theme }) => ({
   paddingTop: theme.spacing(8),
 
   [theme.breakpoints.down('lg')]: {
-    height: 'auto',
     flexDirection: 'column',
     margin: 0,
   },
@@ -36,13 +35,7 @@ const StyledShopMap = styled('div')(({ theme }) => ({
   flexDirection: 'row-reverse',
 
   [theme.breakpoints.down('lg')]: {
-    width: '100%',
-    height: '60%',
     position: 'fixed',
-  },
-
-  [theme.breakpoints.down('sm')]: {
-    height: '100%',
   },
 }));
 
@@ -50,23 +43,24 @@ const StyledHiddenDiv = styled('div')(({ theme }) => ({
   display: 'none',
 
   [theme.breakpoints.down('lg')]: {
-    height: '60vh',
+    minHeight: '60%',
+    height: '100%',
     display: 'block',
-    position: 'relative',
     pointerEvents: 'none',
   },
 }));
 
 const StyledShopListWrapper = styled('div')(({ theme }) => ({
+  maxHeight: '100%',
   display: 'flex',
   flexDirection: 'column',
 
   [theme.breakpoints.down('lg')]: {
+    maxHeight: 'none',
     zIndex: 20,
     justifyContent: 'center',
     alignItems: 'center',
     padding: theme.spacing(1, 2, 0, 2),
-    position: 'relative',
     backgroundColor: '#fff',
     borderRadius: '1rem',
   },
@@ -108,14 +102,47 @@ const StyledDivider = styled('div')(({ theme }) => ({
   },
 }));
 
+const StyledSkeletonContainer = styled('div')(({ theme }) => ({
+  width: '100%',
+  minWidth: 0,
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  flexWrap: 'wrap',
+  gap: theme.spacing(1),
+  paddingRight: theme.spacing(1),
+
+  [theme.breakpoints.down('lg')]: {
+    flexDirection: 'row',
+    paddingRight: theme.spacing(0),
+  },
+}));
+
+const StyledSkeleton = styled('div')(({ theme }) => ({
+  height: '8rem',
+  display: 'flex',
+  gap: theme.spacing(1),
+  marginBottom: theme.spacing(1),
+
+  [theme.breakpoints.down('lg')]: {
+    width: '49%',
+  },
+
+  [theme.breakpoints.down('md')]: {
+    width: '100%',
+  },
+}));
+
 export {
-  StyledToolbar,
-  StyledWrapper,
-  StyledShopMap,
+  StyledDivider,
   StyledHiddenDiv,
-  StyledShopListWrapper,
+  StyledIconButton,
   StyledInfoContainer,
   StyledInfoIconContainer,
-  StyledIconButton,
-  StyledDivider,
+  StyledShopListWrapper,
+  StyledShopMap,
+  StyledSkeleton,
+  StyledSkeletonContainer,
+  StyledToolbar,
+  StyledWrapper,
 };
