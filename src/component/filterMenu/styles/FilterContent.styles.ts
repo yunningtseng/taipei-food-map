@@ -42,7 +42,7 @@ const StyledTabs = styled(Tabs)(({ theme }) => ({
     color: 'black',
     borderRadius: '50%',
     opacity: 1,
-    backgroundColor: '#f9cdbb',
+    backgroundColor: '#ffbb9f',
 
     '&.Mui-disabled': {
       display: 'none',
@@ -54,11 +54,11 @@ const StyledTabButton = styled(Button)(({ theme }) => ({
   display: 'flex',
   gap: theme.spacing(1),
   color: '#000',
-  backgroundColor: '#f9cdbb',
+  backgroundColor: '#ffbb9f',
   borderRadius: '0.5rem',
 
   '&:hover': {
-    backgroundColor: '#f3b296',
+    backgroundColor: '#fca681',
   },
 }));
 

@@ -217,7 +217,7 @@ const ShopMap = () => {
           'text-padding': 0,
         }}
         paint={{
-          'text-color': '#106181',
+          'text-color': '#07435d',
           'text-halo-blur': 1,
           'text-halo-width': 1,
           'text-halo-color': '#fff',
