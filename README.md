@@ -1,30 +1,62 @@
-# React + TypeScript + Vite
+# Food Map
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Offering a map to find stores based on specific criteria.
 
-Currently, two official plugins are available:
+Visit <https://foodmap-24935.web.app/>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- Quick Filter & Find
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+  - Enables quick searches for stores by type, proximity to a subway station, minimum rating, and sorting options for display on the map.
 
-- Configure the top-level `parserOptions` property like this:
+- Map Interaction
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+  - Interacting with a store in the list or its icon on the map displays detailed information within the map.
+  - Selecting a subway station icon shifts the map's focus to that station, showcasing nearby stores.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- Shop Detail
+
+  - Information for each store includes links to Google Maps for directions, route planning, and viewing reviews.
+
+- Responsive Design
+
+  - The interface adapts to different breakpoints for optimal user interaction, ensuring easy use on mobile devices.
+
+## Tech
+
+- Vite
+
+  - Offers development with fast build times.
+
+- TypeScript
+
+  - Enhances development by ensuring type safety and elevating code quality.
+
+- Zustand
+
+  - Simplifies state management with a minimal and hook-based setup.
+
+- React Query
+
+  - Enhances fetching, caching, and state synchronization, leading to smoother and faster user interactions.
+
+- Material UI & Styled Components
+
+  - Facilitate rapid development and allow for extensive customization to override styles.
+
+- Google Map Places API
+
+  - Utilizes Places API's Text Search and Place Photo to retrieve relevant information and images of stores.
+
+- MapBox
+
+  - Provides highly customizable designs, visually engaging interfaces, improved efficiency, and dynamic user interactions.
+
+- Firebase Firestore
+
+  - Enhances efficiency and reduces query costs by caching images.
+
+- Firebase Hosting
+
+  - Offers scalable, serverless backend solutions for deploying applications.
