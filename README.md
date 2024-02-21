@@ -18,6 +18,10 @@ Visit <https://foodmap-24935.web.app/>
 
   - Each store's details include links to Google Maps for directions, route planning, and viewing reviews.
 
+- Responsive Design
+
+  - The interface is designed to adapt to various breakpoints, ensuring optimal user interaction and ease of use on mobile devices.
+
 ## Tech
 
 - Vite
