@@ -1,62 +1,57 @@
 # Food Map
 
-Offering a map to find stores based on specific criteria.
-
+A user-friendly map interface enabling swift searches of stores based on a variety of filter criteria
 Visit <https://foodmap-24935.web.app/>
 
 ## Features
 
 - Quick Filter & Find
 
-  - Enables quick searches for stores by type, proximity to a subway station, minimum rating, and sorting options for display on the map.
+  - Perform quick searches for stores by type, proximity to subway stations, minimum rating, and sorting options for display on the map.
 
 - Map Interaction
 
-  - Interacting with a store in the list or its icon on the map displays detailed information within the map.
-  - Selecting a subway station icon shifts the map's focus to that station, showcasing nearby stores.
+  - Detailed information is displayed by interacting with a store's list or its icon on the map.
+  - Clicking on a subway station icon refocuses the map to that station, highlighting nearby stores.
 
 - Shop Detail
 
-  - Information for each store includes links to Google Maps for directions, route planning, and viewing reviews.
-
-- Responsive Design
-
-  - The interface adapts to different breakpoints for optimal user interaction, ensuring easy use on mobile devices.
+  - Each store's details include links to Google Maps for directions, route planning, and viewing reviews.
 
 ## Tech
 
 - Vite
 
-  - Offers development with fast build times.
+  - Provides a development environment with exceptionally fast build times.
 
 - TypeScript
 
-  - Enhances development by ensuring type safety and elevating code quality.
+  - Ensures type safety and improves code quality during development.
 
 - Zustand
 
-  - Simplifies state management with a minimal and hook-based setup.
+  - Offers a minimalistic and hook-based approach to state management.
 
 - React Query
 
-  - Enhances fetching, caching, and state synchronization, leading to smoother and faster user interactions.
+  - Improves data fetching, caching, and state synchronization for enhanced user experiences.
 
 - Material UI & Styled Components
 
-  - Facilitate rapid development and allow for extensive customization to override styles.
-
-- Google Map Places API
-
-  - Utilizes Places API's Text Search and Place Photo to retrieve relevant information and images of stores.
+  - Enable fast development and extensive style customization options.
 
 - MapBox
 
-  - Provides highly customizable designs, visually engaging interfaces, improved efficiency, and dynamic user interactions.
+  - Delivers customizable map designs, engaging visual interfaces, and dynamic interactions for users.
+
+- Google Map Places API
+
+  - Uses the Places API's Text Search and Place Photo features to fetch relevant store information and images.
 
 - Firebase Firestore
 
-  - Enhances efficiency and reduces query costs by caching images.
+  - Uses image caching to increase efficiency and lower query costs.
 
 - Firebase Hosting
 
-  - Offers scalable, serverless backend solutions for deploying applications.
+  - Provides a scalable, serverless backend for application deployment, ensuring reliability and speed.
