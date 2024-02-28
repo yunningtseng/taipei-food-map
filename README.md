@@ -49,7 +49,7 @@ Visit <https://taipei-food-map.web.app/>
 
   - Delivers customizable map designs, engaging visual interfaces, and dynamic interactions for users.
 
-- Google Map Places API
+- Google Places API
 
   - Uses the Places API's Text Search and Place Photo features to fetch relevant store information and images.
 
