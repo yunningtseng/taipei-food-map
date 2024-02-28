@@ -1,7 +1,8 @@
 # Food Map
 
-A user-friendly map interface enabling swift searches of stores based on a variety of filter criteria
-Visit <https://foodmap-24935.web.app/>
+An interactive map for searching various types of food stores near MRT stations.
+
+Visit <https://taipei-food-map.web.app/>
 
 ## Features
 

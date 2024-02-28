@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "taipei-food-map",
     "public": "dist",
     "ignore": [
       "firebase.json",
