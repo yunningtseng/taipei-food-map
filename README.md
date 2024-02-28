@@ -1,4 +1,4 @@
-# Food Map
+# Taipei Food Map
 
 An interactive map for searching various types of food stores near MRT stations.
 
