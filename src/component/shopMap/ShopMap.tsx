@@ -60,15 +60,15 @@ const ShopMap = () => {
       }
     });
 
-    map.loadImage('/images/place-blue.png', (_, image) => {
+    map.loadImage('/images/placeBlue.png', (_, image) => {
       if (image) {
-        map.addImage('place-blue', image);
+        map.addImage('placeBlue', image);
       }
     });
 
-    map.loadImage('/images/place-red.png', (_, image) => {
+    map.loadImage('/images/placeRed.png', (_, image) => {
       if (image) {
-        map.addImage('place-red', image);
+        map.addImage('placeRed', image);
       }
     });
 
@@ -228,7 +228,7 @@ const ShopMap = () => {
         source='places'
         type='symbol'
         layout={{
-          'icon-image': 'place-blue',
+          'icon-image': 'placeBlue',
           'icon-allow-overlap': true,
           'icon-size': 0.5,
           'icon-padding': 0,
@@ -239,7 +239,7 @@ const ShopMap = () => {
         source='places'
         type='symbol'
         layout={{
-          'icon-image': 'place-red',
+          'icon-image': 'placeRed',
           'icon-allow-overlap': true,
           'icon-size': 0.5,
           'icon-padding': 0,

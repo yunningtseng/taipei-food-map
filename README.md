@@ -10,18 +10,34 @@ Visit <https://taipei-food-map.web.app/>
 
   - Perform quick searches for stores by type, proximity to subway stations, minimum rating, and sorting options for display on the map.
 
+    <img
+        src="/public/images/searchFilter.gif" width="600"
+      />
+
 - Map Interaction
 
   - Detailed information is displayed by interacting with a store's list or its icon on the map.
   - Clicking on a subway station icon refocuses the map to that station, highlighting nearby stores.
 
+    <img
+        src="/public/images/mapInteraction.gif" width="600"
+      />
+
 - Shop Detail
 
   - Each store's details include links to Google Maps for directions, route planning, and viewing reviews.
 
+    <img
+        src="/public/images/shopDetail.gif" width="600"
+      />
+
 - Responsive Design
 
   - The interface is designed to adapt to various breakpoints, ensuring optimal user interaction and ease of use on mobile devices.
+
+    <img
+        src="/public/images/responsiveDesign.gif" width="600"
+      />
 
 ## Tech
 
